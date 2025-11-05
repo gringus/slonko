@@ -29,7 +29,7 @@ DEPEND="
 	virtual/libusb:1
 	!bundled-libs? (
 		media-libs/libharu
-		virtual/zlib
+		virtual/zlib:=
 	)
 "
 RDEPEND="${DEPEND}"
