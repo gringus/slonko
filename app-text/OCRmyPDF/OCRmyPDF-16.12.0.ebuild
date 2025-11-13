@@ -29,7 +29,7 @@ RDEPEND="
 	>=app-text/tesseract-4.1.1[jpeg,tiff,png,webp]
 	>=dev-python/deprecation-2.1.0[${PYTHON_USEDEP}]
 	>=dev-python/packaging-20[${PYTHON_USEDEP}]
-	>=dev-python/pikepdf-8.10.1[${PYTHON_USEDEP}]
+	>=dev-python/pikepdf-10[${PYTHON_USEDEP}]
 	>=dev-python/pillow-10.0.1[jpeg,jpeg2k,lcms,tiff,webp,zlib,${PYTHON_USEDEP}]
 	>=dev-python/pluggy-1[${PYTHON_USEDEP}]
 	>=dev-python/rich-13[${PYTHON_USEDEP}]
@@ -43,8 +43,11 @@ BDEPEND="
 		>=dev-python/hypothesis-6.36.0[${PYTHON_USEDEP}]
 		dev-python/pytest-helpers-namespace[${PYTHON_USEDEP}]
 		dev-python/pytest-xdist[${PYTHON_USEDEP}]
+		dev-python/python-dotenv[${PYTHON_USEDEP}]
 		dev-python/python-xmp-toolkit[${PYTHON_USEDEP}]
 		>=dev-python/reportlab-3.6.8[${PYTHON_USEDEP}]
+		dev-python/typer[${PYTHON_USEDEP}]
+		dev-python/watchdog[${PYTHON_USEDEP}]
 		media-libs/exempi
 		>=media-libs/jbig2enc-0.29
 		media-libs/libxmp
