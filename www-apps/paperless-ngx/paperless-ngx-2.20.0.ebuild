@@ -43,7 +43,7 @@ DEPEND="
 	${PYTHON_DEPS}
 	$(python_gen_cond_dep '
 		>=dev-python/babel-2.17[${PYTHON_USEDEP}]
-		>=dev-python/bleach-6.2.0[${PYTHON_USEDEP}]
+		>=dev-python/bleach-6.3.0[${PYTHON_USEDEP}]
 		>=dev-python/celery-5.5.1[${PYTHON_USEDEP}]
 		>=dev-python/channels-4.2[${PYTHON_USEDEP}]
 		>=dev-python/channels-redis-4.2[${PYTHON_USEDEP}]
@@ -51,23 +51,24 @@ DEPEND="
 		>=dev-python/dateparser-1.2[${PYTHON_USEDEP}]
 		>=dev-python/django-5.2.5[${PYTHON_USEDEP}]
 		<dev-python/django-5.3[${PYTHON_USEDEP}]
-		>=dev-python/django-allauth-65.4.0[${PYTHON_USEDEP}]
+		>=dev-python/django-allauth-65.12.1[${PYTHON_USEDEP}]
 		>=dev-python/django-cachalot-2.8.0[${PYTHON_USEDEP}]
 		>=dev-python/django-celery-results-2.6.0[${PYTHON_USEDEP}]
-		>=dev-python/django-cors-headers-4.7.0[${PYTHON_USEDEP}]
+		>=dev-python/django-cors-headers-4.9.0[${PYTHON_USEDEP}]
 		>=dev-python/django-extensions-4.1[${PYTHON_USEDEP}]
 		>=dev-python/django-filter-25.1[${PYTHON_USEDEP}]
-		>=dev-python/django-guardian-3.0.3[${PYTHON_USEDEP}]
+		>=dev-python/django-guardian-3.2.0[${PYTHON_USEDEP}]
 		>=dev-python/django-multiselectfield-1.0.1[${PYTHON_USEDEP}]
 		dev-python/django-redis[${PYTHON_USEDEP}]
 		>=dev-python/django-soft-delete-1.0.18[${PYTHON_USEDEP}]
+		>=dev-python/django-treenode-0.23.2[${PYTHON_USEDEP}]
 		>=dev-python/djangorestframework-3.16.0[${PYTHON_USEDEP}]
 		>=dev-python/djangorestframework-guardian-0.4.0[${PYTHON_USEDEP}]
 		>=dev-python/drf-spectacular-0.28[${PYTHON_USEDEP}]
-		>=dev-python/drf-spectacular-sidecar-2025.8.1[${PYTHON_USEDEP}]
+		>=dev-python/drf-spectacular-sidecar-2025.10.1[${PYTHON_USEDEP}]
 		>=dev-python/drf-writable-nested-0.7.1[${PYTHON_USEDEP}]
-		>=dev-python/filelock-3.19.1[${PYTHON_USEDEP}]
-		>=dev-python/gotenberg-client-0.11.0[${PYTHON_USEDEP}]
+		>=dev-python/filelock-3.20.0[${PYTHON_USEDEP}]
+		>=dev-python/gotenberg-client-0.12.0[${PYTHON_USEDEP}]
 		>=dev-python/httpx-oauth-0.16[${PYTHON_USEDEP}]
 		dev-python/humanize[${PYTHON_USEDEP}]
 		>=dev-python/imap-tools-1.11.0[${PYTHON_USEDEP}]
@@ -78,7 +79,7 @@ DEPEND="
 		>=dev-python/pathvalidate-3.3.1[${PYTHON_USEDEP}]
 		>=dev-python/pdf2image-1.17.0[${PYTHON_USEDEP}]
 		>=dev-python/python-dateutil-2.9.0[${PYTHON_USEDEP}]
-		>=dev-python/python-dotenv-1.1.0[${PYTHON_USEDEP}]
+		>=dev-python/python-dotenv-1.2.1[${PYTHON_USEDEP}]
 		>=dev-python/python-gnupg-0.5.4[${PYTHON_USEDEP}]
 		>=dev-python/python-ipware-3.0.0[${PYTHON_USEDEP}]
 		>=dev-python/python-magic-0.4.27[${PYTHON_USEDEP}]
@@ -94,18 +95,18 @@ DEPEND="
 		>=dev-python/whitenoise-6.9[${PYTHON_USEDEP}]
 		>=dev-python/whoosh-reloaded-2.7.5[${PYTHON_USEDEP}]
 		>=www-servers/granian-2.5.1[${PYTHON_USEDEP}]')
-	>=app-text/OCRmyPDF-16.10
+	>=app-text/OCRmyPDF-16.12
 	app-text/poppler[utils]
 	media-gfx/imagemagick[xml]
 	media-gfx/optipng
 	media-libs/jbig2enc
 	audit? ( $(python_gen_cond_dep '
-		>=dev-python/django-auditlog-3.2.1[${PYTHON_USEDEP}]') )
+		>=dev-python/django-auditlog-3.3.0[${PYTHON_USEDEP}]') )
 	compression? ( $(python_gen_cond_dep '
 		>=dev-python/django-compression-middleware-0.5.0[${PYTHON_USEDEP}]') )
 	mysql? ( >=dev-python/mysqlclient-2.2.7 )
 	postgres? ( $(python_gen_cond_dep '
-		>=dev-python/psycopg-3.2.9[native-extensions,${PYTHON_USEDEP}]') )
+		>=dev-python/psycopg-3.2.12[native-extensions,${PYTHON_USEDEP}]') )
 	!remote-redis? ( dev-db/redis )
 	zxing? ( >=media-libs/zxing-cpp-2.3.0[python,${PYTHON_SINGLE_USEDEP}] )
 "
