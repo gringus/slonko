@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{11..12} )
+PYTHON_COMPAT=( python3_{11..13} )
 
 inherit bash-completion-r1 distutils-r1 optfeature
 
@@ -24,64 +24,64 @@ KEYWORDS="~amd64"
 IUSE="examples"
 
 RDEPEND="
-	>=dev-python/billiard-4.2.0[${PYTHON_USEDEP}]
+	>=dev-python/billiard-4.2.1[${PYTHON_USEDEP}]
 	<dev-python/billiard-5.0.0[${PYTHON_USEDEP}]
 	>=dev-python/click-8.1.2[${PYTHON_USEDEP}]
 	<dev-python/click-9.0.0[${PYTHON_USEDEP}]
 	>=dev-python/click-didyoumean-0.3.0[${PYTHON_USEDEP}]
 	>=dev-python/click-plugins-1.1.1[${PYTHON_USEDEP}]
 	>=dev-python/click-repl-0.2.0[${PYTHON_USEDEP}]
+	>=dev-python/exceptiongroup-1.3.0[${PYTHON_USEDEP}]
 	>=dev-python/python-dateutil-2.8.2[${PYTHON_USEDEP}]
-	>=dev-python/kombu-5.3.4[${PYTHON_USEDEP}]
-	<dev-python/kombu-6.0[${PYTHON_USEDEP}]
+	>=dev-python/kombu-5.6.0[${PYTHON_USEDEP}]
 	>=dev-python/pytz-2022.7[${PYTHON_USEDEP}]
 	>=dev-python/vine-5.1.0[${PYTHON_USEDEP}]
 	<dev-python/vine-6.0.0[${PYTHON_USEDEP}]
+	dev-python/tzlocal[${PYTHON_USEDEP}]
 "
 
 BDEPEND="
 	test? (
 		$(python_gen_impl_dep 'ncurses(+)')
 		>=dev-python/boto3-1.26.143[${PYTHON_USEDEP}]
-		>=dev-python/cryptography-42.0.5[${PYTHON_USEDEP}]
+		>=dev-python/cryptography-46.0.3[${PYTHON_USEDEP}]
 		dev-python/elasticsearch[${PYTHON_USEDEP}]
-		>=dev-python/moto-4.1.11[${PYTHON_USEDEP}]
-		<dev-python/moto-5.1.0[${PYTHON_USEDEP}]
-		>=dev-python/msgpack-1.0.8[${PYTHON_USEDEP}]
+		dev-python/elastic-transport[${PYTHON_USEDEP}]
+		dev-python/greenlet[${PYTHON_USEDEP}]
+		dev-python/moto[${PYTHON_USEDEP}]
+		>=dev-python/msgpack-1.1.0[${PYTHON_USEDEP}]
+		>=dev-python/pycurl-7.45.4[${PYTHON_USEDEP}]
 		>=dev-python/python-memcached-1.61[${PYTHON_USEDEP}]
-		>=dev-python/pymongo-4.0.2[${PYTHON_USEDEP}]
-		>=dev-python/pytest-celery-1.0.0[${PYTHON_USEDEP}]
+		>=dev-python/pymongo-4.1.1[${PYTHON_USEDEP}]
+		>=dev-python/pytest-celery-1.2.0[${PYTHON_USEDEP}]
+		<dev-python/pytest-celery-1.3.0[${PYTHON_USEDEP}]
 		dev-python/pytest-click[${PYTHON_USEDEP}]
 		>=dev-python/pytest-order-1.2.1[${PYTHON_USEDEP}]
-		>=dev-python/pytest-subtests-0.12.1[${PYTHON_USEDEP}]
-		>=dev-python/pytest-timeout-2.3.1[${PYTHON_USEDEP}]
+		>=dev-python/pytest-rerunfailures-15.0[${PYTHON_USEDEP}]
+		>=dev-python/pytest-subtests-0.14.1[${PYTHON_USEDEP}]
+		>=dev-python/pytest-timeout-2.4.0[${PYTHON_USEDEP}]
 		>=dev-python/pyyaml-3.10[${PYTHON_USEDEP}]
-		>=dev-python/redis-4.5.2[${PYTHON_USEDEP}]
-		<dev-python/redis-6.0.0[${PYTHON_USEDEP}]
+		dev-python/redis[${PYTHON_USEDEP}]
 		dev-python/tblib[${PYTHON_USEDEP}]
 		sci-astronomy/pyephem[${PYTHON_USEDEP}]
 	)
 	doc? (
 		dev-python/docutils[${PYTHON_USEDEP}]
-		>=dev-python/sphinx-celery-2.1.1[${PYTHON_USEDEP}]
-		>=dev-python/sphinx-click-5.1.0[${PYTHON_USEDEP}]
 		dev-python/jinja2[${PYTHON_USEDEP}]
+		<dev-python/sphinx-9[${PYTHON_USEDEP}]
 		dev-python/sqlalchemy[${PYTHON_USEDEP}]
 	)
 "
 
 distutils_enable_tests pytest
-distutils_enable_sphinx docs --no-autodoc
-
-EPYTEST_DESELECT=(
-	# Failing tests
-	t/unit/utils/test_platforms.py::test_fd_by_path
-	t/unit/utils/test_platforms.py::test_DaemonContext::test_open
-)
+distutils_enable_sphinx docs \
+	'>=dev-python/sphinx-celery-2.1.1' \
+	'>=dev-python/sphinx-click-6.0.0'
 
 EPYTEST_IGNORE=(
-	# Disable gcs backend
+	# Disable backends
 	t/unit/backends/test_gcs.py
+	t/unit/backends/test_azureblockblob.py
 )
 
 python_install_all() {
