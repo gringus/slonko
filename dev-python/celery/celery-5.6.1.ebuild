@@ -31,7 +31,6 @@ RDEPEND="
 	>=dev-python/click-didyoumean-0.3.0[${PYTHON_USEDEP}]
 	>=dev-python/click-plugins-1.1.1[${PYTHON_USEDEP}]
 	>=dev-python/click-repl-0.2.0[${PYTHON_USEDEP}]
-	>=dev-python/exceptiongroup-1.3.0[${PYTHON_USEDEP}]
 	>=dev-python/python-dateutil-2.8.2[${PYTHON_USEDEP}]
 	>=dev-python/kombu-5.6.0[${PYTHON_USEDEP}]
 	>=dev-python/pytz-2022.7[${PYTHON_USEDEP}]
