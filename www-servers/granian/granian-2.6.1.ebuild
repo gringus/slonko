@@ -11,17 +11,17 @@ PYTHON_COMPAT=( python3_{10..14} )
 CRATES="
 	aes@0.8.4
 	anyhow@1.0.100
-	arc-swap@1.7.1
+	arc-swap@1.8.0
 	atomic-waker@1.1.2
 	autocfg@1.5.0
 	base64@0.22.1
-	base64ct@1.8.0
+	base64ct@1.8.2
 	bitflags@2.10.0
 	block-buffer@0.10.4
 	block-padding@0.3.3
 	bytes@1.11.0
 	cbc@0.1.2
-	cc@1.2.46
+	cc@1.2.51
 	cfg-if@1.0.4
 	cipher@0.4.4
 	const-oid@0.9.6
@@ -35,7 +35,8 @@ CRATES="
 	either@1.15.0
 	encoding_rs@0.8.35
 	equivalent@1.0.2
-	find-msvc-tools@0.1.5
+	errno@0.3.14
+	find-msvc-tools@0.1.6
 	fnv@1.0.7
 	futures-channel@0.3.31
 	futures-core@0.3.31
@@ -49,33 +50,33 @@ CRATES="
 	generic-array@0.14.7
 	getrandom@0.2.16
 	getrandom@0.3.4
-	h2@0.4.12
-	hashbrown@0.16.0
+	h2@0.4.13
+	hashbrown@0.16.1
 	heck@0.5.0
 	hmac@0.12.1
 	http-body-util@0.1.3
 	http-body@1.0.1
-	http@1.3.1
+	http@1.4.0
 	httparse@1.10.1
 	httpdate@1.0.3
-	hyper-util@0.1.18
+	hyper-util@0.1.19
 	hyper@1.8.1
-	indexmap@2.12.0
+	indexmap@2.12.1
 	indoc@2.0.7
 	inout@0.1.4
 	itertools@0.14.0
-	itoa@1.0.15
-	libc@0.2.177
+	itoa@1.0.17
+	libc@0.2.179
 	libmimalloc-sys@0.1.44
 	lock_api@0.4.14
-	log@0.4.28
+	log@0.4.29
 	memchr@2.7.6
 	memoffset@0.9.1
 	mimalloc@0.1.48
 	mime@0.3.17
 	mime_guess@2.0.5
-	mio@1.1.0
-	ntapi@0.4.1
+	mio@1.1.1
+	ntapi@0.4.2
 	objc2-core-foundation@0.3.2
 	objc2-io-kit@0.3.2
 	once_cell@1.21.3
@@ -88,16 +89,16 @@ CRATES="
 	pin-utils@0.1.0
 	pkcs5@0.7.1
 	pkcs8@0.10.2
-	portable-atomic@1.11.1
+	portable-atomic@1.13.0
 	ppv-lite86@0.2.21
-	proc-macro2@1.0.103
-	pyo3-build-config@0.27.1
-	pyo3-ffi@0.27.1
-	pyo3-macros-backend@0.27.1
-	pyo3-macros@0.27.1
-	pyo3@0.27.1
+	proc-macro2@1.0.105
+	pyo3-build-config@0.27.2
+	pyo3-ffi@0.27.2
+	pyo3-macros-backend@0.27.2
+	pyo3-macros@0.27.2
+	pyo3@0.27.2
 	python3-dll-a@0.2.14
-	quote@1.0.42
+	quote@1.0.43
 	r-efi@5.3.0
 	rand@0.9.2
 	rand_chacha@0.9.0
@@ -106,9 +107,9 @@ CRATES="
 	redox_syscall@0.5.18
 	ring@0.17.14
 	rustls-pemfile@2.2.0
-	rustls-pki-types@1.13.0
+	rustls-pki-types@1.13.2
 	rustls-webpki@0.103.8
-	rustls@0.23.35
+	rustls@0.23.36
 	rustversion@1.0.22
 	salsa20@0.10.2
 	scopeguard@1.2.0
@@ -118,30 +119,30 @@ CRATES="
 	sha1@0.10.6
 	sha2@0.10.9
 	shlex@1.3.0
-	signal-hook-registry@1.4.6
+	signal-hook-registry@1.4.8
 	slab@0.4.11
 	smallvec@1.15.1
 	socket2@0.6.1
 	spki@0.7.3
 	subtle@2.6.1
-	syn@2.0.110
+	syn@2.0.114
 	sysinfo@0.37.2
-	target-lexicon@0.13.3
+	target-lexicon@0.13.4
 	thiserror-impl@2.0.17
 	thiserror@2.0.17
 	tikv-jemalloc-sys@0.6.1+5.3.0-1-ge13ca993e8ccb9ba9847cc330696e02839f328f7
 	tikv-jemallocator@0.6.1
 	tokio-macros@2.6.0
 	tokio-rustls@0.26.4
-	tokio-stream@0.1.17
+	tokio-stream@0.1.18
 	tokio-tungstenite@0.28.0
-	tokio-util@0.7.17
-	tokio@1.48.0
-	tracing-core@0.1.34
-	tracing@0.1.41
+	tokio-util@0.7.18
+	tokio@1.49.0
+	tracing-core@0.1.36
+	tracing@0.1.44
 	tungstenite@0.28.0
 	typenum@1.19.0
-	unicase@2.8.1
+	unicase@2.9.0
 	unicode-ident@1.0.22
 	unindent@0.2.4
 	untrusted@0.9.0
@@ -186,8 +187,8 @@ CRATES="
 	windows_x86_64_msvc@0.52.6
 	windows_x86_64_msvc@0.53.1
 	wit-bindgen@0.46.0
-	zerocopy-derive@0.8.27
-	zerocopy@0.8.27
+	zerocopy-derive@0.8.32
+	zerocopy@0.8.32
 	zeroize@1.8.2
 "
 
