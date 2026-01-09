@@ -3,8 +3,8 @@
 
 EAPI=8
 
-DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{9..12} )
+DISTUTILS_USE_PEP517=hatchling
+PYTHON_COMPAT=( python3_{10..14} )
 
 inherit distutils-r1
 
@@ -16,7 +16,9 @@ LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
-#S="${WORKDIR}/hijridate-${PV}"
+BDEPEND="
+	dev-python/hatch-fancy-pypi-readme[${PYTHON_USEDEP}]
+"
 
 distutils_enable_tests pytest
 distutils_enable_sphinx docs \
