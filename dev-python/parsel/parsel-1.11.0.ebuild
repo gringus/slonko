@@ -3,9 +3,9 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{8..12} )
-DISTUTILS_USE_PEP517=setuptools
-inherit distutils-r1 pypi
+PYTHON_COMPAT=( python3_{9..14} )
+DISTUTILS_USE_PEP517=hatchling
+inherit distutils-r1
 
 DESCRIPTION="Utility to extract data from XML/HTML documents using XPath or CSS selectors"
 HOMEPAGE="
@@ -13,6 +13,7 @@ HOMEPAGE="
 	https://pypi.org/project/parsel/
 	https://github.com/scrapy/parsel
 "
+SRC_URI="https://github.com/scrapy/${PN}/archive/v${PV}.tar.gz -> ${P}.gh.tar.gz"
 
 LICENSE="BSD"
 SLOT=0
@@ -20,9 +21,9 @@ KEYWORDS="~amd64"
 
 RDEPEND="
 	>=dev-python/cssselect-1.2.0[${PYTHON_USEDEP}]
-	dev-python/jmespath[${PYTHON_USEDEP}]
-	dev-python/lxml[${PYTHON_USEDEP}]
-	dev-python/packaging[${PYTHON_USEDEP}]
+	>=dev-python/jmespath-1.0.0[${PYTHON_USEDEP}]
+	>=dev-python/lxml-5.1.0[${PYTHON_USEDEP}]
+	>=dev-python/packaging-23.0[${PYTHON_USEDEP}]
 	>=dev-python/w3lib-1.19.0[${PYTHON_USEDEP}]
 "
 BDEPEND="
