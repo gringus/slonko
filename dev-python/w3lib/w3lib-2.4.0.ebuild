@@ -3,8 +3,8 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..12} pypy3 )
-DISTUTILS_USE_PEP517=setuptools
+PYTHON_COMPAT=( python3_{10..14} pypy3 )
+DISTUTILS_USE_PEP517=hatchling
 inherit distutils-r1 pypi
 
 DESCRIPTION="Library of web-related functions"
@@ -20,6 +20,5 @@ KEYWORDS="~amd64"
 
 distutils_enable_tests pytest
 distutils_enable_sphinx docs \
-	dev-python/sphinx-hoverxref \
 	dev-python/sphinx-notfound-page \
 	dev-python/sphinx-rtd-theme
