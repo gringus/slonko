@@ -9,36 +9,39 @@ DISTUTILS_USE_PEP517=maturin
 PYTHON_COMPAT=( python3_{10..14} )
 
 CRATES="
-	addr2line@0.24.2
-	adler2@2.0.1
 	aes@0.8.4
-	anyhow@1.0.99
-	arc-swap@1.7.1
+	anyhow@1.0.100
+	arc-swap@1.8.0
 	atomic-waker@1.1.2
 	autocfg@1.5.0
-	backtrace@0.3.75
 	base64@0.22.1
-	base64ct@1.8.0
-	bitflags@2.9.3
+	base64ct@1.8.3
+	bitflags@2.10.0
 	block-buffer@0.10.4
 	block-padding@0.3.3
-	bytes@1.10.1
+	bytes@1.11.0
 	cbc@0.1.2
-	cc@1.2.35
-	cfg-if@1.0.3
+	cc@1.2.55
+	cfg-if@1.0.4
+	ciborium-io@0.2.2
+	ciborium-ll@0.2.2
+	ciborium@0.2.2
 	cipher@0.4.4
 	const-oid@0.9.6
 	cpufeatures@0.2.17
 	crossbeam-channel@0.5.15
 	crossbeam-utils@0.8.21
-	crypto-common@0.1.6
-	data-encoding@2.9.0
+	crunchy@0.2.4
+	crypto-common@0.1.7
+	data-encoding@2.10.0
 	der@0.7.10
 	digest@0.10.7
+	doctest-file@1.0.0
 	either@1.15.0
 	encoding_rs@0.8.35
 	equivalent@1.0.2
-	find-msvc-tools@0.1.0
+	errno@0.3.14
+	find-msvc-tools@0.1.9
 	fnv@1.0.7
 	futures-channel@0.3.31
 	futures-core@0.3.31
@@ -50,144 +53,159 @@ CRATES="
 	futures-util@0.3.31
 	futures@0.3.31
 	generic-array@0.14.7
-	getrandom@0.2.16
-	getrandom@0.3.3
-	gimli@0.31.1
-	h2@0.4.12
-	hashbrown@0.15.5
+	getrandom@0.2.17
+	getrandom@0.3.4
+	h2@0.4.13
+	half@2.7.1
+	hashbrown@0.16.1
 	heck@0.5.0
 	hmac@0.12.1
 	http-body-util@0.1.3
 	http-body@1.0.1
-	http@1.3.1
+	http@1.4.0
 	httparse@1.10.1
 	httpdate@1.0.3
-	hyper-util@0.1.16
-	hyper@1.7.0
-	indexmap@2.11.0
-	indoc@2.0.6
+	hyper-util@0.1.19
+	hyper@1.8.1
+	indexmap@2.13.0
+	indoc@2.0.7
 	inout@0.1.4
-	io-uring@0.7.10
 	itertools@0.14.0
-	itoa@1.0.15
-	libc@0.2.175
+	itoa@1.0.17
+	libc@0.2.180
 	libmimalloc-sys@0.1.44
-	lock_api@0.4.13
-	log@0.4.27
-	memchr@2.7.5
+	lock_api@0.4.14
+	log@0.4.29
+	memchr@2.7.6
 	memoffset@0.9.1
 	mimalloc@0.1.48
 	mime@0.3.17
 	mime_guess@2.0.5
-	miniz_oxide@0.8.9
-	mio@1.0.4
-	ntapi@0.4.1
-	objc2-core-foundation@0.3.1
-	objc2-io-kit@0.3.1
-	object@0.36.7
+	mio@1.1.1
+	ntapi@0.4.2
+	objc2-core-foundation@0.3.2
+	objc2-io-kit@0.3.2
 	once_cell@1.21.3
-	parking_lot@0.12.4
-	parking_lot_core@0.9.11
+	parking_lot@0.12.5
+	parking_lot_core@0.9.12
 	pbkdf2@0.12.2
-	pem@3.0.5
+	pem@3.0.6
 	percent-encoding@2.3.2
 	pin-project-lite@0.2.16
 	pin-utils@0.1.0
 	pkcs5@0.7.1
 	pkcs8@0.10.2
-	portable-atomic@1.11.1
+	portable-atomic@1.13.1
 	ppv-lite86@0.2.21
-	proc-macro2@1.0.101
-	pyo3-build-config@0.25.1
-	pyo3-ffi@0.25.1
-	pyo3-log@0.12.4
-	pyo3-macros-backend@0.25.1
-	pyo3-macros@0.25.1
-	pyo3@0.25.1
+	proc-macro2@1.0.106
+	pyo3-build-config@0.27.2
+	pyo3-ffi@0.27.2
+	pyo3-macros-backend@0.27.2
+	pyo3-macros@0.27.2
+	pyo3@0.27.2
 	python3-dll-a@0.2.14
-	quote@1.0.40
+	quote@1.0.44
 	r-efi@5.3.0
 	rand@0.9.2
 	rand_chacha@0.9.0
 	rand_core@0.6.4
-	rand_core@0.9.3
-	redox_syscall@0.5.17
+	rand_core@0.9.5
+	recvmsg@1.0.0
+	redox_syscall@0.5.18
 	ring@0.17.14
-	rustc-demangle@0.1.26
 	rustls-pemfile@2.2.0
-	rustls-pki-types@1.12.0
-	rustls-webpki@0.103.4
-	rustls@0.23.31
+	rustls-pki-types@1.14.0
+	rustls-webpki@0.103.9
+	rustls@0.23.36
+	rustversion@1.0.22
 	salsa20@0.10.2
 	scopeguard@1.2.0
 	scrypt@0.11.0
-	serde@1.0.219
-	serde_derive@1.0.219
+	serde@1.0.228
+	serde_core@1.0.228
+	serde_derive@1.0.228
 	sha1@0.10.6
 	sha2@0.10.9
 	shlex@1.3.0
-	signal-hook-registry@1.4.6
-	slab@0.4.11
+	signal-hook-registry@1.4.8
+	slab@0.4.12
 	smallvec@1.15.1
-	socket2@0.6.0
+	socket2@0.6.2
 	spki@0.7.3
 	subtle@2.6.1
-	syn@2.0.106
-	sysinfo@0.36.1
-	target-lexicon@0.13.2
-	thiserror-impl@2.0.16
-	thiserror@2.0.16
-	tikv-jemalloc-sys@0.6.0+5.3.0-1-ge13ca993e8ccb9ba9847cc330696e02839f328f7
-	tikv-jemallocator@0.6.0
-	tls-listener@0.11.0
-	tokio-macros@2.5.0
-	tokio-rustls@0.26.2
-	tokio-stream@0.1.17
-	tokio-tungstenite@0.27.0
-	tokio-util@0.7.16
-	tokio@1.47.1
-	tracing-core@0.1.34
-	tracing@0.1.41
-	tungstenite@0.27.0
-	typenum@1.18.0
-	unicase@2.8.1
-	unicode-ident@1.0.18
+	syn@2.0.114
+	sysinfo@0.37.2
+	target-lexicon@0.13.4
+	thiserror-impl@2.0.18
+	thiserror@2.0.18
+	tikv-jemalloc-sys@0.6.1+5.3.0-1-ge13ca993e8ccb9ba9847cc330696e02839f328f7
+	tikv-jemallocator@0.6.1
+	tokio-macros@2.6.0
+	tokio-rustls@0.26.4
+	tokio-stream@0.1.18
+	tokio-tungstenite@0.28.0
+	tokio-util@0.7.18
+	tokio@1.49.0
+	tracing-core@0.1.36
+	tracing@0.1.44
+	tungstenite@0.28.0
+	typenum@1.19.0
+	unicase@2.9.0
+	unicode-ident@1.0.22
 	unindent@0.2.4
 	untrusted@0.9.0
 	utf-8@0.7.6
 	version_check@0.9.5
 	wasi@0.11.1+wasi-snapshot-preview1
-	wasi@0.14.3+wasi-0.2.4
+	wasip2@1.0.2+wasi-0.2.9
+	widestring@1.2.1
 	winapi-i686-pc-windows-gnu@0.4.0
 	winapi-x86_64-pc-windows-gnu@0.4.0
 	winapi@0.3.9
 	windows-collections@0.2.0
 	windows-core@0.61.2
 	windows-future@0.2.1
-	windows-implement@0.60.0
-	windows-interface@0.59.1
+	windows-implement@0.60.2
+	windows-interface@0.59.3
 	windows-link@0.1.3
+	windows-link@0.2.1
 	windows-numerics@0.2.0
 	windows-result@0.3.4
 	windows-strings@0.4.2
 	windows-sys@0.52.0
-	windows-sys@0.59.0
+	windows-sys@0.60.2
+	windows-sys@0.61.2
 	windows-targets@0.52.6
+	windows-targets@0.53.5
 	windows-threading@0.1.0
 	windows@0.61.3
 	windows_aarch64_gnullvm@0.52.6
+	windows_aarch64_gnullvm@0.53.1
 	windows_aarch64_msvc@0.52.6
+	windows_aarch64_msvc@0.53.1
 	windows_i686_gnu@0.52.6
+	windows_i686_gnu@0.53.1
 	windows_i686_gnullvm@0.52.6
+	windows_i686_gnullvm@0.53.1
 	windows_i686_msvc@0.52.6
+	windows_i686_msvc@0.53.1
 	windows_x86_64_gnu@0.52.6
+	windows_x86_64_gnu@0.53.1
 	windows_x86_64_gnullvm@0.52.6
+	windows_x86_64_gnullvm@0.53.1
 	windows_x86_64_msvc@0.52.6
-	wit-bindgen@0.45.0
-	zerocopy-derive@0.8.26
-	zerocopy@0.8.26
-	zeroize@1.8.1
+	windows_x86_64_msvc@0.53.1
+	wit-bindgen@0.51.0
+	zerocopy-derive@0.8.37
+	zerocopy@0.8.37
+	zeroize@1.8.2
 "
+
+declare -A GIT_CRATES=(
+	[interprocess]='https://github.com/kotauskas/interprocess;44351c4fe88c72ead4f3b0b762c4cf45beb90841;interprocess-%commit%'
+	[pyo3-log]='https://github.com/gi0baro/pyo3-log;5725d1dc79f34c6286938d3be8bcd89e540bae76;pyo3-log-%commit%'
+	[tls-listener]='https://github.com/gi0baro/tls-listener;28d8a48209466324343d133414ea9af218faebb3;tls-listener-%commit%'
+)
 
 inherit cargo distutils-r1 pypi
 
@@ -202,7 +220,8 @@ SRC_URI+="
 LICENSE="BSD"
 # Dependent crate licenses
 LICENSE+="
-	Apache-2.0 Apache-2.0-with-LLVM-exceptions BSD ISC MIT Unicode-3.0
+	0BSD Apache-2.0 Apache-2.0-with-LLVM-exceptions BSD ISC MIT
+	Unicode-3.0
 "
 SLOT="0"
 KEYWORDS="amd64"
@@ -210,7 +229,7 @@ KEYWORDS="amd64"
 DOCS=( README.md )
 
 RDEPEND="
-	>=dev-python/click-8.0.0[${PYTHON_USEDEP}]
+	>=dev-python/click-8.1.0[${PYTHON_USEDEP}]
 "
 DEPEND="
 	${RDEPEND}
