@@ -10,8 +10,8 @@ PYTHON_COMPAT=( python3_{10..14} )
 
 CRATES="
 	aes@0.8.4
-	anyhow@1.0.100
-	arc-swap@1.8.0
+	anyhow@1.0.101
+	arc-swap@1.8.1
 	atomic-waker@1.1.2
 	autocfg@1.5.0
 	base64@0.22.1
@@ -19,7 +19,7 @@ CRATES="
 	bitflags@2.10.0
 	block-buffer@0.10.4
 	block-padding@0.3.3
-	bytes@1.11.0
+	bytes@1.11.1
 	cbc@0.1.2
 	cc@1.2.55
 	cfg-if@1.0.4
@@ -65,7 +65,7 @@ CRATES="
 	http@1.4.0
 	httparse@1.10.1
 	httpdate@1.0.3
-	hyper-util@0.1.19
+	hyper-util@0.1.20
 	hyper@1.8.1
 	indexmap@2.13.0
 	indoc@2.0.7
@@ -76,7 +76,7 @@ CRATES="
 	libmimalloc-sys@0.1.44
 	lock_api@0.4.14
 	log@0.4.29
-	memchr@2.7.6
+	memchr@2.8.0
 	memoffset@0.9.1
 	mimalloc@0.1.48
 	mime@0.3.17
@@ -196,8 +196,8 @@ CRATES="
 	windows_x86_64_msvc@0.52.6
 	windows_x86_64_msvc@0.53.1
 	wit-bindgen@0.51.0
-	zerocopy-derive@0.8.37
-	zerocopy@0.8.37
+	zerocopy-derive@0.8.39
+	zerocopy@0.8.39
 	zeroize@1.8.2
 "
 
