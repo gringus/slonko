@@ -1,0 +1,42 @@
+# Copyright 1999-2026 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+EAPI=8
+
+PYTHON_COMPAT=( python3_{10..13} )
+DISTUTILS_USE_PEP517=setuptools
+DISTUTILS_EXT=1
+inherit distutils-r1
+
+MY_HB="harfbuzz-12.3.2"
+DESCRIPTION="Streamlined Cython bindings for the HarfBuzz shaping engine"
+HOMEPAGE="https://github.com/harfbuzz/uharfbuzz"
+SRC_URI="
+	https://github.com/harfbuzz/${PN}/archive/v${PV}.tar.gz -> ${P}.gh.tar.gz
+	https://github.com/harfbuzz/harfbuzz/releases/download/${MY_HB}/${MY_HB}.tar.xz
+"
+LICENSE="Apache-2.0"
+SLOT="0"
+KEYWORDS="~amd64"
+
+BDEPEND="
+	dev-python/cython[${PYTHON_USEDEP}]
+	dev-python/pkgconfig[${PYTHON_USEDEP}]
+	dev-python/setuptools-scm[${PYTHON_USEDEP}]
+"
+
+EPYTEST_PLUGINS=( )
+
+distutils_enable_tests pytest
+
+python_prepare_all() {
+	distutils-r1_python_prepare_all
+	export SETUPTOOLS_SCM_PRETEND_VERSION="${PV%_*}"
+	rmdir harfbuzz
+	mv "${WORKDIR}"/${MY_HB} harfbuzz
+}
+
+python_install() {
+	distutils-r1_python_install
+	python_optimize "${ED}"/$(python_get_sitedir)/${PN}
+}
