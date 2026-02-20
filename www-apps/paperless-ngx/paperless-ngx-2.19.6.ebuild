@@ -86,6 +86,7 @@ DEPEND="
 		>=dev-python/pyzbar-0.1.9[${PYTHON_USEDEP}]
 		>=dev-python/rapidfuzz-3.14.0[${PYTHON_USEDEP}]
 		>=dev-python/redis-5.2.1[${PYTHON_USEDEP}]
+		<dev-python/redis-7.2.0[${PYTHON_USEDEP}]
 		>=dev-python/scikit-learn-1.7.0[${PYTHON_USEDEP}]
 		>=dev-python/setproctitle-1.3.4[${PYTHON_USEDEP}]
 		>=dev-python/tika-client-0.10.0[${PYTHON_USEDEP}]
