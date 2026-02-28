@@ -10,18 +10,18 @@ PYTHON_COMPAT=( python3_{10..14} )
 
 CRATES="
 	aes@0.8.4
-	anyhow@1.0.101
-	arc-swap@1.8.1
+	anyhow@1.0.102
+	arc-swap@1.8.2
 	atomic-waker@1.1.2
 	autocfg@1.5.0
 	base64@0.22.1
 	base64ct@1.8.3
-	bitflags@2.10.0
+	bitflags@2.11.0
 	block-buffer@0.10.4
 	block-padding@0.3.3
 	bytes@1.11.1
 	cbc@0.1.2
-	cc@1.2.55
+	cc@1.2.56
 	cfg-if@1.0.4
 	ciborium-io@0.2.2
 	ciborium-ll@0.2.2
@@ -43,15 +43,15 @@ CRATES="
 	errno@0.3.14
 	find-msvc-tools@0.1.9
 	fnv@1.0.7
-	futures-channel@0.3.31
-	futures-core@0.3.31
-	futures-executor@0.3.31
-	futures-io@0.3.31
-	futures-macro@0.3.31
-	futures-sink@0.3.31
-	futures-task@0.3.31
-	futures-util@0.3.31
-	futures@0.3.31
+	futures-channel@0.3.32
+	futures-core@0.3.32
+	futures-executor@0.3.32
+	futures-io@0.3.32
+	futures-macro@0.3.32
+	futures-sink@0.3.32
+	futures-task@0.3.32
+	futures-util@0.3.32
+	futures@0.3.32
 	generic-array@0.14.7
 	getrandom@0.2.17
 	getrandom@0.3.4
@@ -72,7 +72,7 @@ CRATES="
 	inout@0.1.4
 	itertools@0.14.0
 	itoa@1.0.17
-	libc@0.2.180
+	libc@0.2.182
 	libmimalloc-sys@0.1.44
 	lock_api@0.4.14
 	log@0.4.29
@@ -82,7 +82,7 @@ CRATES="
 	mime@0.3.17
 	mime_guess@2.0.5
 	mio@1.1.1
-	ntapi@0.4.2
+	ntapi@0.4.3
 	objc2-core-foundation@0.3.2
 	objc2-io-kit@0.3.2
 	once_cell@1.21.3
@@ -116,7 +116,7 @@ CRATES="
 	rustls-pemfile@2.2.0
 	rustls-pki-types@1.14.0
 	rustls-webpki@0.103.9
-	rustls@0.23.36
+	rustls@0.23.37
 	rustversion@1.0.22
 	salsa20@0.10.2
 	scopeguard@1.2.0
@@ -133,9 +133,9 @@ CRATES="
 	socket2@0.6.2
 	spki@0.7.3
 	subtle@2.6.1
-	syn@2.0.114
+	syn@2.0.117
 	sysinfo@0.37.2
-	target-lexicon@0.13.4
+	target-lexicon@0.13.5
 	thiserror-impl@2.0.18
 	thiserror@2.0.18
 	tikv-jemalloc-sys@0.6.1+5.3.0-1-ge13ca993e8ccb9ba9847cc330696e02839f328f7
@@ -151,7 +151,7 @@ CRATES="
 	tungstenite@0.28.0
 	typenum@1.19.0
 	unicase@2.9.0
-	unicode-ident@1.0.22
+	unicode-ident@1.0.24
 	unindent@0.2.4
 	untrusted@0.9.0
 	utf-8@0.7.6
