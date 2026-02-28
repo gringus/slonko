@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=hatchling
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{10..14} )
 
 inherit distutils-r1
 
@@ -16,7 +16,7 @@ LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
 
-RDEPEND=">=dev-python/portalocker-1.6.0[${PYTHON_USEDEP}]"
+RDEPEND=">=dev-python/portalocker-2.6.0[${PYTHON_USEDEP}]"
 DEPEND="${RDEPEND}"
 BDEPEND="
 	test? (
