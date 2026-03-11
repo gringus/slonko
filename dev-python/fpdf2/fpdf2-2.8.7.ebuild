@@ -33,6 +33,8 @@ RDEPEND="
 "
 BDEPEND="
 	test? (
+		app-arch/brotli[python]
+		app-text/qpdf
 		dev-python/cryptography[${PYTHON_USEDEP}]
 		dev-python/endesive[${PYTHON_USEDEP}]
 		dev-python/uharfbuzz[${PYTHON_USEDEP}]
