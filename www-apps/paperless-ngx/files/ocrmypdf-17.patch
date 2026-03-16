@@ -1,0 +1,37 @@
+diff --git a/pyproject.toml b/pyproject.toml
+index 339e788c41..1240805e54 100644
+diff --git a/src/paperless_tesseract/parsers.py b/src/paperless_tesseract/parsers.py
+index 0e01464217..73532caa0d 100644
+--- a/src/paperless_tesseract/parsers.py
++++ b/src/paperless_tesseract/parsers.py
+@@ -221,7 +221,7 @@ def construct_ocrmypdf_parameters(
+         if TYPE_CHECKING:
+             assert isinstance(self.settings, OcrConfig)
+         ocrmypdf_args = {
+-            "input_file": input_file,
++            "input_file_or_options": input_file,
+             "output_file": output_file,
+             # need to use threads, since this will be run in daemonized
+             # processes via the task library.
+@@ -285,7 +285,7 @@ def construct_ocrmypdf_parameters(
+                     "for compatibility with img2pdf",
+                 )
+                 # Replace the input file with the non-alpha
+-                ocrmypdf_args["input_file"] = self.remove_alpha(input_file)
++                ocrmypdf_args["input_file_or_options"] = self.remove_alpha(input_file)
+ 
+             if dpi:
+                 self.log.debug(f"Detected DPI for image {input_file}: {dpi}")
+diff --git a/src/paperless_tesseract/tests/test_parser.py b/src/paperless_tesseract/tests/test_parser.py
+index e9c05b03ec..2703f30dde 100644
+--- a/src/paperless_tesseract/tests/test_parser.py
++++ b/src/paperless_tesseract/tests/test_parser.py
+@@ -778,7 +778,7 @@ def test_ocrmypdf_parameters(self) -> None:
+             safe_fallback=False,
+         )
+ 
+-        self.assertEqual(params["input_file"], "input.pdf")
++        self.assertEqual(params["input_file_or_options"], "input.pdf")
+         self.assertEqual(params["output_file"], "output.pdf")
+         self.assertEqual(params["sidecar"], "sidecar.txt")
+ 

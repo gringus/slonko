@@ -97,8 +97,7 @@ DEPEND="
 		>=dev-python/whitenoise-6.9[${PYTHON_USEDEP}]
 		>=dev-python/whoosh-reloaded-2.7.5[${PYTHON_USEDEP}]
 		>=www-servers/granian-2.5.1[${PYTHON_USEDEP}]')
-	>=app-text/OCRmyPDF-16.12
-	<app-text/OCRmyPDF-17
+	>=app-text/OCRmyPDF-17.3
 	app-text/poppler[utils]
 	media-gfx/imagemagick[xml]
 	media-gfx/optipng
@@ -117,6 +116,7 @@ RDEPEND="${DEPEND}"
 
 PATCHES=(
 	"${FILESDIR}/channels-4.2.patch"
+	"${FILESDIR}/ocrmypdf-17.patch"
 )
 
 DOCS=( docker/rootfs/etc/ImageMagick-6/paperless-policy.xml )
