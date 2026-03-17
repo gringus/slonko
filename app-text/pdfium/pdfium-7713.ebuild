@@ -132,6 +132,7 @@ src_configure() {
 		"pdf_is_standalone=true"
 		"treat_warnings_as_errors=false"
 		"use_custom_libcxx=false"
+		"use_libcxx_modules=false"
 		"use_glib=true"
 		"pdf_use_partition_alloc=false"
 		"pdf_use_skia=false"
@@ -160,11 +161,15 @@ src_compile() {
 }
 
 src_test() {
-	# FlateModule.Encode may fail with system zlib (produces different results)
-	# RetainPtr.SetContains may fail with use_custom_libcxx=false
-	export GTEST_FILTER="*:-FlateModule.Encode:RetainPtr.SetContains"
+	local skip_tests=(
+		# May fail with system zlib (produces different results)
+		FlateModule.Encode
+		# May fail with use_custom_libcxx=false
+		RetainPtr.SetContains
+	)
+	local test_filter="-$(IFS=:; printf '%s' "${skip_tests[*]}")"
 
-	out/Release/pdfium_unittests || die
+	out/Release/pdfium_unittests --gtest_filter="${test_filter}" || die "Tests failed!"
 }
 
 src_install() {
