@@ -13,6 +13,7 @@ TEST_FONT="cd96fc55dc243f6c6f4cb63ad117cad6cd48dceb"
 
 EGIT_REPO_URI="https://pdfium.googlesource.com/pdfium.git"
 EGIT_BRANCH="chromium/${PV}"
+EGIT_COMMIT="fcfdf1c3e22ed9d0f2341d596297393cc7f5ad53"
 
 SRC_URI="
 	https://raw.githubusercontent.com/chromium/chromium/${CHROMIUM_VERSION}/tools/generate_shim_headers/generate_shim_headers.py
@@ -116,7 +117,6 @@ src_prepare() {
 	ln -sf /usr/include/fast_float third_party/fast_float/src/include/
 }
 
-# use_glib = false
 src_configure() {
 	echo "build_with_chromium = false" > "${S}"/build/config/gclient_args.gni
 
