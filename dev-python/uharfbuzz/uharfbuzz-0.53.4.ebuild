@@ -8,12 +8,12 @@ DISTUTILS_USE_PEP517=setuptools
 DISTUTILS_EXT=1
 inherit distutils-r1
 
-MY_HB="harfbuzz-12.3.2"
+MY_HB="harfbuzz-13.2.1"
 DESCRIPTION="Streamlined Cython bindings for the HarfBuzz shaping engine"
 HOMEPAGE="https://github.com/harfbuzz/uharfbuzz"
 SRC_URI="
 	https://github.com/harfbuzz/${PN}/archive/v${PV}.tar.gz -> ${P}.gh.tar.gz
-	https://github.com/harfbuzz/harfbuzz/releases/download/${MY_HB}/${MY_HB}.tar.xz
+	https://github.com/harfbuzz/harfbuzz/releases/download/${MY_HB#*-}/${MY_HB}.tar.xz
 "
 LICENSE="Apache-2.0"
 SLOT="0"
