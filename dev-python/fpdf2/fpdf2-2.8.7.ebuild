@@ -6,17 +6,7 @@ EAPI=8
 DISTUTILS_USE_PEP517=setuptools
 PYTHON_COMPAT=( python3_{10..14} )
 
-#DOCS_BUILDER="mkdocs"
-#DOCS_DEPEND="
-#	dev-python/lxml
-#	dev-python/mkdocs-git-revision-date-localized-plugin
-#	dev-python/mkdocs-material
-#	dev-python/mkdocs-minify-plugin
-#	dev-python/mkdocs-redirects
-#	dev-python/pdoc3
-#"
-
-inherit distutils-r1 # docs
+inherit distutils-r1
 
 DESCRIPTION="Simple & fast PDF generation for Python"
 HOMEPAGE="https://py-pdf.github.io/fpdf2/"

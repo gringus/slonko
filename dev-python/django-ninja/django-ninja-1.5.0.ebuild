@@ -3,18 +3,10 @@
 
 EAPI=8
 
-DOCS_BUILDER="mkdocs"
-DOCS_DEPEND="
-	dev-python/markdown-include
-	dev-python/mkdocs-material
-	dev-python/mkdocstrings-python
-"
-DOCS_DIR="docs"
-
 DISTUTILS_USE_PEP517=flit
 PYTHON_COMPAT=( python3_{11..14} )
 
-inherit distutils-r1 docs pypi
+inherit distutils-r1 pypi
 
 DESCRIPTION="Fast Django REST Framework"
 HOMEPAGE="

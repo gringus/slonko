@@ -3,13 +3,6 @@
 
 EAPI=8
 
-#DOCS_BUILDER="mkdocs"
-#DOCS_DEPEND="
-#	dev-python/griffe-inherited-docstrings
-#	dev-python/mkdocs-material
-#	dev-python/mkdocstrings-python
-#"
-
 DISTUTILS_USE_PEP517=hatchling
 PYTHON_COMPAT=( python3_{9..13} )
 
