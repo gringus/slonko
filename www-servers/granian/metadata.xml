@@ -10,4 +10,10 @@
 		<remote-id type="github">emmett-framework/granian</remote-id>
 		<remote-id type="pypi">granian</remote-id>
 	</upstream>
+<use>
+	<flag name="mimalloc">
+		Build using <pkg>dev-libs/mimalloc</pkg> as memory allocator
+	</flag>
+</use>
+
 </pkgmetadata>

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -11,7 +11,7 @@ PYTHON_COMPAT=( python3_{10..14} )
 CRATES="
 	aes@0.8.4
 	anyhow@1.0.102
-	arc-swap@1.8.2
+	arc-swap@1.9.1
 	atomic-waker@1.1.2
 	autocfg@1.5.0
 	base64@0.22.1
@@ -21,7 +21,7 @@ CRATES="
 	block-padding@0.3.3
 	bytes@1.11.1
 	cbc@0.1.2
-	cc@1.2.56
+	cc@1.2.59
 	cfg-if@1.0.4
 	ciborium-io@0.2.2
 	ciborium-ll@0.2.2
@@ -36,7 +36,7 @@ CRATES="
 	data-encoding@2.10.0
 	der@0.7.10
 	digest@0.10.7
-	doctest-file@1.0.0
+	doctest-file@1.1.1
 	either@1.15.0
 	encoding_rs@0.8.35
 	equivalent@1.0.2
@@ -66,13 +66,13 @@ CRATES="
 	httparse@1.10.1
 	httpdate@1.0.3
 	hyper-util@0.1.20
-	hyper@1.8.1
-	indexmap@2.13.0
+	hyper@1.9.0
+	indexmap@2.13.1
 	indoc@2.0.7
 	inout@0.1.4
 	itertools@0.14.0
-	itoa@1.0.17
-	libc@0.2.182
+	itoa@1.0.18
+	libc@0.2.184
 	libmimalloc-sys@0.1.44
 	lock_api@0.4.14
 	log@0.4.29
@@ -81,18 +81,17 @@ CRATES="
 	mimalloc@0.1.48
 	mime@0.3.17
 	mime_guess@2.0.5
-	mio@1.1.1
+	mio@1.2.0
 	ntapi@0.4.3
 	objc2-core-foundation@0.3.2
 	objc2-io-kit@0.3.2
-	once_cell@1.21.3
+	once_cell@1.21.4
 	parking_lot@0.12.5
 	parking_lot_core@0.9.12
 	pbkdf2@0.12.2
 	pem@3.0.6
 	percent-encoding@2.3.2
-	pin-project-lite@0.2.16
-	pin-utils@0.1.0
+	pin-project-lite@0.2.17
 	pkcs5@0.7.1
 	pkcs8@0.10.2
 	portable-atomic@1.13.1
@@ -103,8 +102,8 @@ CRATES="
 	pyo3-macros-backend@0.27.2
 	pyo3-macros@0.27.2
 	pyo3@0.27.2
-	python3-dll-a@0.2.14
-	quote@1.0.44
+	python3-dll-a@0.2.15
+	quote@1.0.45
 	r-efi@5.3.0
 	rand@0.9.2
 	rand_chacha@0.9.0
@@ -115,7 +114,7 @@ CRATES="
 	ring@0.17.14
 	rustls-pemfile@2.2.0
 	rustls-pki-types@1.14.0
-	rustls-webpki@0.103.9
+	rustls-webpki@0.103.10
 	rustls@0.23.37
 	rustversion@1.0.22
 	salsa20@0.10.2
@@ -130,31 +129,30 @@ CRATES="
 	signal-hook-registry@1.4.8
 	slab@0.4.12
 	smallvec@1.15.1
-	socket2@0.6.2
+	socket2@0.6.3
 	spki@0.7.3
 	subtle@2.6.1
 	syn@2.0.117
-	sysinfo@0.37.2
+	sysinfo@0.38.4
 	target-lexicon@0.13.5
 	thiserror-impl@2.0.18
 	thiserror@2.0.18
 	tikv-jemalloc-sys@0.6.1+5.3.0-1-ge13ca993e8ccb9ba9847cc330696e02839f328f7
 	tikv-jemallocator@0.6.1
-	tokio-macros@2.6.0
+	tokio-macros@2.7.0
 	tokio-rustls@0.26.4
 	tokio-stream@0.1.18
-	tokio-tungstenite@0.28.0
+	tokio-tungstenite@0.29.0
 	tokio-util@0.7.18
-	tokio@1.49.0
+	tokio@1.51.0
 	tracing-core@0.1.36
 	tracing@0.1.44
-	tungstenite@0.28.0
+	tungstenite@0.29.0
 	typenum@1.19.0
 	unicase@2.9.0
 	unicode-ident@1.0.24
 	unindent@0.2.4
 	untrusted@0.9.0
-	utf-8@0.7.6
 	version_check@0.9.5
 	wasi@0.11.1+wasi-snapshot-preview1
 	wasip2@1.0.2+wasi-0.2.9
@@ -162,42 +160,31 @@ CRATES="
 	winapi-i686-pc-windows-gnu@0.4.0
 	winapi-x86_64-pc-windows-gnu@0.4.0
 	winapi@0.3.9
-	windows-collections@0.2.0
-	windows-core@0.61.2
-	windows-future@0.2.1
+	windows-collections@0.3.2
+	windows-core@0.62.2
+	windows-future@0.3.2
 	windows-implement@0.60.2
 	windows-interface@0.59.3
-	windows-link@0.1.3
 	windows-link@0.2.1
-	windows-numerics@0.2.0
-	windows-result@0.3.4
-	windows-strings@0.4.2
+	windows-numerics@0.3.1
+	windows-result@0.4.1
+	windows-strings@0.5.1
 	windows-sys@0.52.0
-	windows-sys@0.60.2
 	windows-sys@0.61.2
 	windows-targets@0.52.6
-	windows-targets@0.53.5
-	windows-threading@0.1.0
-	windows@0.61.3
+	windows-threading@0.2.1
+	windows@0.62.2
 	windows_aarch64_gnullvm@0.52.6
-	windows_aarch64_gnullvm@0.53.1
 	windows_aarch64_msvc@0.52.6
-	windows_aarch64_msvc@0.53.1
 	windows_i686_gnu@0.52.6
-	windows_i686_gnu@0.53.1
 	windows_i686_gnullvm@0.52.6
-	windows_i686_gnullvm@0.53.1
 	windows_i686_msvc@0.52.6
-	windows_i686_msvc@0.53.1
 	windows_x86_64_gnu@0.52.6
-	windows_x86_64_gnu@0.53.1
 	windows_x86_64_gnullvm@0.52.6
-	windows_x86_64_gnullvm@0.53.1
 	windows_x86_64_msvc@0.52.6
-	windows_x86_64_msvc@0.53.1
 	wit-bindgen@0.51.0
-	zerocopy-derive@0.8.39
-	zerocopy@0.8.39
+	zerocopy-derive@0.8.48
+	zerocopy@0.8.48
 	zeroize@1.8.2
 "
 
@@ -224,7 +211,7 @@ LICENSE+="
 	Unicode-3.0
 "
 SLOT="0"
-KEYWORDS="amd64"
+KEYWORDS="~amd64"
 
 DOCS=( README.md )
 
@@ -239,12 +226,12 @@ BDEPEND="
 	${RUST_DEPEND}
 	test? (
 		>=dev-python/httpx-0.28[${PYTHON_USEDEP}]
-		>=dev-python/pytest-asyncio-0.26[${PYTHON_USEDEP}]
 		>=dev-python/sniffio-1.3[${PYTHON_USEDEP}]
 		>=dev-python/websockets-15.0[${PYTHON_USEDEP}]
 	)
 "
 
+EPYTEST_PLUGINS=( pytest-asyncio )
 distutils_enable_tests pytest
 
 src_unpack() {
