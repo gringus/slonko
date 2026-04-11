@@ -6,7 +6,7 @@ EAPI=8
 MY_PROG="${P}-1"
 
 DESCRIPTION="Epson scanner management utility"
-HOMEPAGE="https://download.ebz.epson.net/dsc/search/01/search/?OSC=LX"
+HOMEPAGE="https://download-center.epson.com"
 SRC_URI="https://download-center.epson.com/f/module/1ef33427-5366-4a18-9726-c44197b04301/${MY_PROG}.src.tar.gz"
 S="${WORKDIR}/${MY_PROG}"
 

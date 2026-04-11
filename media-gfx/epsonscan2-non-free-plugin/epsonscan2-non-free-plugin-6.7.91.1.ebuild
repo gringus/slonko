@@ -6,10 +6,7 @@ EAPI=8
 inherit rpm
 
 DESCRIPTION="Plugins for Epson Scan 2"
-
-HOMEPAGE="https://download.ebz.epson.net/dsc/search/01/search/?OSC=LX"
-# This is distributed as part of the "bundle driver"; since we already have the
-# opensource part separately we just install the nonfree part here.
+HOMEPAGE="https://download-center.epson.com"
 
 REL="23"
 PLUGIN_VERSION="1.0.0.6-1"
