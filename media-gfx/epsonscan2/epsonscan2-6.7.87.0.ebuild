@@ -6,8 +6,8 @@ EAPI=8
 MY_PROG="${P}-1"
 
 DESCRIPTION="Epson scanner management utility"
-HOMEPAGE="https://support.epson.net/linux/en/epsonscan2.php"
-SRC_URI="https://download3.ebz.epson.net/dsc/f/03/00/17/08/06/1babf9876ebb16956420a601b92ee28b57cd7db7/${MY_PROG}.src.tar.gz"
+HOMEPAGE="https://download.ebz.epson.net/dsc/search/01/search/?OSC=LX"
+SRC_URI="https://download-center.epson.com/f/module/1ef33427-5366-4a18-9726-c44197b04301/${MY_PROG}.src.tar.gz"
 S="${WORKDIR}/${MY_PROG}"
 
 inherit cmake desktop flag-o-matic udev
@@ -15,7 +15,6 @@ inherit cmake desktop flag-o-matic udev
 LICENSE="GPL-3+"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="bundled-libs"
 
 DEPEND="
 	dev-libs/boost
@@ -23,16 +22,15 @@ DEPEND="
 	dev-qt/qtgui:5
 	dev-qt/qtwidgets:5
 	media-gfx/sane-backends
+	media-libs/libharu
 	media-libs/libjpeg-turbo:=
 	media-libs/libpng
 	media-libs/tiff
 	virtual/libusb:1
-	!bundled-libs? (
-		media-libs/libharu
-		virtual/zlib:=
-	)
+	virtual/zlib:=
 "
 RDEPEND="${DEPEND}"
+RESTRICT="mirror fetch"
 
 PATCHES=(
 	"${FILESDIR}/0002-Fix-crash.patch"
@@ -42,20 +40,20 @@ PATCHES=(
 	"${FILESDIR}/0006-Fix-desktop-deprecated.patch"
 )
 
+pkg_nofetch() {
+	einfo "Please download ${SRC_URI}"
+	einfo "manually using your browser and move it to your distfiles directory."
+}
+
 src_prepare() {
+	sed -i -e '/create_symlink/d' CMakeLists.txt || die
+	# Unbundle libharu and zlib
+	rm -rf thirdparty/{HaruPDF,zlib}
 	sed -i \
-		-e '/\(execute_process.*\)${EPSON_INSTALL_ROOT}/d' \
-		-e "s|^\(set(EPSON_VERSION \).*|\1-${PV})|g" \
-		CMakeLists.txt || die
-	if ! use bundled-libs; then
-		# Force usage of system libraries
-		rm -rf thirdparty/{HaruPDF,zlib}
-		sed -i \
-			-e '/thirdparty\/HaruPDF/d' \
-			-e '/thirdparty\/zlib/d' \
-			-e 's|^\([[:blank:]]*\)\(usb-1.0\)|\1\2\n\1hpdf\n\1z|' \
-			src/Controller/CMakeLists.txt || die
-	fi
+		-e '/thirdparty\/HaruPDF/d' \
+		-e '/thirdparty\/zlib/d' \
+		-e 's|^\([[:blank:]]*\)\(usb-1.0\)|\1\2\n\1hpdf\n\1z|' \
+		src/Controller/CMakeLists.txt || die
 
 	# Boost 1.87 compatibility (BOOST_NO_CXX11_RVALUE_REFERENCES should be set by Boost)
 	find . -name CMakeLists.txt -exec sed -e '/add_definitions.*DBOOST_NO_CXX11_RVALUE_REFERENCES/d' -i {} \;
@@ -69,9 +67,19 @@ src_prepare() {
 	cmake_src_prepare
 }
 
+src_configure() {
+	local mycmakeargs=(
+		-DEPSON_OCR_INSTALL_PATH=/usr/$(get_libdir)/epsonscan2-ocr
+		-DQT_VERSION_MAJOR=5
+	)
+	export EPSON_VERSION=${PV}
+	cmake_src_configure
+}
+
 src_install() {
 	cmake_src_install
 	# Sane symlinks
+	dosym ../epsonscan2/libsane-epsonscan2.so /usr/$(get_libdir)/sane/libsane-epsonscan2.so
 	dosym ../epsonscan2/libsane-epsonscan2.so /usr/$(get_libdir)/sane/libsane-epsonscan2.so.1
 	dosym ../epsonscan2/libsane-epsonscan2.so /usr/$(get_libdir)/sane/libsane-epsonscan2.so.1.0.0
 	# Desktop icon
