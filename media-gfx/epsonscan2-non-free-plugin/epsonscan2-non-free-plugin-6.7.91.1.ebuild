@@ -7,7 +7,7 @@ inherit rpm
 
 DESCRIPTION="Plugins for Epson Scan 2"
 
-HOMEPAGE="https://support.epson.net/linux/en/epsonscan2.php"
+HOMEPAGE="https://download.ebz.epson.net/dsc/search/01/search/?OSC=LX"
 # This is distributed as part of the "bundle driver"; since we already have the
 # opensource part separately we just install the nonfree part here.
 
