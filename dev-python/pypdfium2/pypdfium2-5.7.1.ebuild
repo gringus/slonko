@@ -17,7 +17,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 
 RDEPEND="
-	=app-text/pdfium-7776
+	=app-text/pdfium-7802
 "
 BDEPEND="
 	test? (
