@@ -67,7 +67,6 @@ EPYTEST_DESELECT=(
 	tests/test_hocrtransform.py::test_fpdf2_matches_sandwich
 	# Known language issues
 	tests/test_multilingual_direct.py::TestMultilingual::test_render_multilingual_hocr_basic
-	tests/test_fpdf_renderer.py::TestWordSegmentation::test_cjk_no_spurious_spaces
 )
 distutils_enable_tests pytest
 distutils_enable_sphinx docs \
