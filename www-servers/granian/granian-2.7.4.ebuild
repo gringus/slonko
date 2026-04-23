@@ -16,12 +16,12 @@ CRATES="
 	autocfg@1.5.0
 	base64@0.22.1
 	base64ct@1.8.3
-	bitflags@2.11.0
+	bitflags@2.11.1
 	block-buffer@0.10.4
 	block-padding@0.3.3
 	bytes@1.11.1
 	cbc@0.1.2
-	cc@1.2.59
+	cc@1.2.60
 	cfg-if@1.0.4
 	ciborium-io@0.2.2
 	ciborium-ll@0.2.2
@@ -57,7 +57,7 @@ CRATES="
 	getrandom@0.3.4
 	h2@0.4.13
 	half@2.7.1
-	hashbrown@0.16.1
+	hashbrown@0.17.0
 	heck@0.5.0
 	hmac@0.12.1
 	http-body-util@0.1.3
@@ -67,18 +67,18 @@ CRATES="
 	httpdate@1.0.3
 	hyper-util@0.1.20
 	hyper@1.9.0
-	indexmap@2.13.1
+	indexmap@2.14.0
 	indoc@2.0.7
 	inout@0.1.4
 	itertools@0.14.0
 	itoa@1.0.18
-	libc@0.2.184
-	libmimalloc-sys@0.1.44
+	libc@0.2.185
+	libmimalloc-sys@0.1.47
 	lock_api@0.4.14
 	log@0.4.29
 	memchr@2.8.0
 	memoffset@0.9.1
-	mimalloc@0.1.48
+	mimalloc@0.1.50
 	mime@0.3.17
 	mime_guess@2.0.5
 	mio@1.2.0
@@ -105,7 +105,7 @@ CRATES="
 	python3-dll-a@0.2.15
 	quote@1.0.45
 	r-efi@5.3.0
-	rand@0.9.2
+	rand@0.9.4
 	rand_chacha@0.9.0
 	rand_core@0.6.4
 	rand_core@0.9.5
@@ -114,8 +114,8 @@ CRATES="
 	ring@0.17.14
 	rustls-pemfile@2.2.0
 	rustls-pki-types@1.14.0
-	rustls-webpki@0.103.10
-	rustls@0.23.37
+	rustls-webpki@0.103.13
+	rustls@0.23.39
 	rustversion@1.0.22
 	salsa20@0.10.2
 	scopeguard@1.2.0
@@ -144,18 +144,18 @@ CRATES="
 	tokio-stream@0.1.18
 	tokio-tungstenite@0.29.0
 	tokio-util@0.7.18
-	tokio@1.51.0
+	tokio@1.52.1
 	tracing-core@0.1.36
 	tracing@0.1.44
 	tungstenite@0.29.0
-	typenum@1.19.0
+	typenum@1.20.0
 	unicase@2.9.0
 	unicode-ident@1.0.24
 	unindent@0.2.4
 	untrusted@0.9.0
 	version_check@0.9.5
 	wasi@0.11.1+wasi-snapshot-preview1
-	wasip2@1.0.2+wasi-0.2.9
+	wasip2@1.0.3+wasi-0.2.9
 	widestring@1.2.1
 	winapi-i686-pc-windows-gnu@0.4.0
 	winapi-x86_64-pc-windows-gnu@0.4.0
@@ -182,7 +182,7 @@ CRATES="
 	windows_x86_64_gnu@0.52.6
 	windows_x86_64_gnullvm@0.52.6
 	windows_x86_64_msvc@0.52.6
-	wit-bindgen@0.51.0
+	wit-bindgen@0.57.1
 	zerocopy-derive@0.8.48
 	zerocopy@0.8.48
 	zeroize@1.8.2
