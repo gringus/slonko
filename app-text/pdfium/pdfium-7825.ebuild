@@ -13,7 +13,7 @@ TEST_FONT="cd96fc55dc243f6c6f4cb63ad117cad6cd48dceb"
 
 EGIT_REPO_URI="https://pdfium.googlesource.com/pdfium.git"
 EGIT_BRANCH="chromium/${PV}"
-EGIT_COMMIT="fcfdf1c3e22ed9d0f2341d596297393cc7f5ad53"
+EGIT_COMMIT="d5960c8270a7d06203316c2d6f0ba606547fdb07"
 
 SRC_URI="
 	https://raw.githubusercontent.com/chromium/chromium/${CHROMIUM_VERSION}/tools/generate_shim_headers/generate_shim_headers.py
@@ -84,7 +84,6 @@ src_unpack() {
 		git-r3_src_unpack
 
 		tar xf "${DISTDIR}"/chromium-testfonts-${TEST_FONT}.tar.gz -C "${S}"/third_party/test_fonts || die
-
 	else
 		# Remove test dependencies
 		sed -i \
@@ -132,7 +131,6 @@ src_configure() {
 		"pdf_is_standalone=true"
 		"treat_warnings_as_errors=false"
 		"use_custom_libcxx=false"
-		"use_libcxx_modules=false"
 		"use_glib=true"
 		"pdf_use_partition_alloc=false"
 		"pdf_use_skia=false"
