@@ -3,8 +3,8 @@
 
 EAPI="8"
 ETYPE="sources"
-K_WANT_GENPATCHES="base extras"
-K_GENPATCHES_VER="221"
+K_WANT_GENPATCHES="base extras experimental"
+K_GENPATCHES_VER="279"
 
 inherit kernel-2
 detect_version
