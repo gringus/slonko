@@ -114,7 +114,7 @@ src_configure() {
 		-DUSE_GTK=$(usex gtk)
 		-DUSE_METACITY=$(usex gnome)
 		-DUSE_PROTOBUF=$(usex protobuf)
-		-DCMAKE_CXX_STANDARD=17
+		-DCMAKE_CXX_STANDARD=20
 		-DCMAKE_BUILD_TYPE=Release
 		-DCOMPIZ_BUILD_TESTING=$(usex test)
 		-DCOMPIZ_DEFAULT_PLUGINS=composite,opengl,decor,resize,place,move,ccp
