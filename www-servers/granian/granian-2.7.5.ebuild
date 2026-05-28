@@ -13,7 +13,7 @@ CRATES="
 	anyhow@1.0.102
 	arc-swap@1.9.1
 	atomic-waker@1.1.2
-	autocfg@1.5.0
+	autocfg@1.5.1
 	base64@0.22.1
 	base64ct@1.8.3
 	bitflags@2.11.1
@@ -21,7 +21,7 @@ CRATES="
 	block-padding@0.3.3
 	bytes@1.11.1
 	cbc@0.1.2
-	cc@1.2.60
+	cc@1.2.62
 	cfg-if@1.0.4
 	ciborium-io@0.2.2
 	ciborium-ll@0.2.2
@@ -33,11 +33,11 @@ CRATES="
 	crossbeam-utils@0.8.21
 	crunchy@0.2.4
 	crypto-common@0.1.7
-	data-encoding@2.10.0
+	data-encoding@2.11.0
 	der@0.7.10
 	digest@0.10.7
 	doctest-file@1.1.1
-	either@1.15.0
+	either@1.16.0
 	encoding_rs@0.8.35
 	equivalent@1.0.2
 	errno@0.3.14
@@ -55,9 +55,9 @@ CRATES="
 	generic-array@0.14.7
 	getrandom@0.2.17
 	getrandom@0.3.4
-	h2@0.4.13
+	h2@0.4.14
 	half@2.7.1
-	hashbrown@0.17.0
+	hashbrown@0.17.1
 	heck@0.5.0
 	hmac@0.12.1
 	http-body-util@0.1.3
@@ -72,13 +72,13 @@ CRATES="
 	inout@0.1.4
 	itertools@0.14.0
 	itoa@1.0.18
-	libc@0.2.185
-	libmimalloc-sys@0.1.47
+	libc@0.2.186
+	libmimalloc-sys@0.1.49
 	lock_api@0.4.14
 	log@0.4.29
 	memchr@2.8.0
 	memoffset@0.9.1
-	mimalloc@0.1.50
+	mimalloc@0.1.52
 	mime@0.3.17
 	mime_guess@2.0.5
 	mio@1.2.0
@@ -113,9 +113,9 @@ CRATES="
 	redox_syscall@0.5.18
 	ring@0.17.14
 	rustls-pemfile@2.2.0
-	rustls-pki-types@1.14.0
+	rustls-pki-types@1.14.1
 	rustls-webpki@0.103.13
-	rustls@0.23.39
+	rustls@0.23.40
 	rustversion@1.0.22
 	salsa20@0.10.2
 	scopeguard@1.2.0
@@ -144,7 +144,7 @@ CRATES="
 	tokio-stream@0.1.18
 	tokio-tungstenite@0.29.0
 	tokio-util@0.7.18
-	tokio@1.52.1
+	tokio@1.52.3
 	tracing-core@0.1.36
 	tracing@0.1.44
 	tungstenite@0.29.0
