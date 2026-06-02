@@ -8,7 +8,7 @@ HOMEPAGE="https://pdfium.googlesource.com"
 
 inherit git-r3 ninja-utils
 
-CHROMIUM_VERSION="147.0.${PV}.0"
+CHROMIUM_VERSION="150.0.${PV}.0"
 TEST_FONT="cd96fc55dc243f6c6f4cb63ad117cad6cd48dceb"
 
 EGIT_REPO_URI="https://pdfium.googlesource.com/pdfium.git"
