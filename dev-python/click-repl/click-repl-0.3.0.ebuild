@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{10..13} pypy3 )
+PYTHON_COMPAT=( python3_{10..14} pypy3 )
 
 inherit distutils-r1
 
@@ -14,6 +14,10 @@ HOMEPAGE="
 	https://pypi.org/project/click-repl/
 "
 SRC_URI="https://github.com/click-contrib/${PN}/archive/${PV}.tar.gz -> ${P}.gh.tar.gz"
+
+PATCHES=(
+	"${FILESDIR}/132.patch"
+)
 
 LICENSE="MIT"
 SLOT="0"
@@ -25,6 +29,7 @@ RDEPEND="
 "
 
 DOCS=( README.md )
+EPYTEST_PLUGINS=( )
 
 distutils_enable_tests pytest
 
