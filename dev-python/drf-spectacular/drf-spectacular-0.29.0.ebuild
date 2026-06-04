@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{8..13} )
+PYTHON_COMPAT=( python3_{10..14} )
 
 inherit distutils-r1
 
@@ -20,6 +20,7 @@ RESTRICT="!test? ( test )"
 
 RDEPEND="
 	>=dev-python/django-2.2[${PYTHON_USEDEP}]
+	<dev-python/django-6.0[${PYTHON_USEDEP}]
 	>=dev-python/djangorestframework-3.10.3[${PYTHON_USEDEP}]
 	>=dev-python/inflection-0.3.1[${PYTHON_USEDEP}]
 	>=dev-python/jsonschema-2.6.0[${PYTHON_USEDEP}]
