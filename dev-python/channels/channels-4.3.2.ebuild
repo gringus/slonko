@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{8..11} )
+PYTHON_COMPAT=( python3_{10..14} )
 
 inherit distutils-r1
 
@@ -17,25 +17,27 @@ SLOT="0"
 KEYWORDS="~amd64"
 
 DEPEND="
-	>=dev-python/django-2.2[${PYTHON_USEDEP}]
+	>=dev-python/asgiref-3.5.0[${PYTHON_USEDEP}]
+	>=dev-python/django-4.2[${PYTHON_USEDEP}]
 "
 BDEPEND="
 	test? (
 		dev-python/async-timeout[${PYTHON_USEDEP}]
-		>=dev-python/daphne-3.0[${PYTHON_USEDEP}]
-		<dev-python/daphne-4.0[${PYTHON_USEDEP}]
+		>=dev-python/daphne-4.0.0[${PYTHON_USEDEP}]
 		dev-python/pytest-asyncio[${PYTHON_USEDEP}]
 		dev-python/pytest-django[${PYTHON_USEDEP}]
 	)
 "
 
-DOCS=( README.rst )
+EPYTEST_IGNORE=(
+	tests/sample_project/tests/test_selenium.py
+)
 
 distutils_enable_tests pytest
+distutils_enable_sphinx docs \
+	dev-python/sphinx-rtd-theme
 
-python_prepare_all() {
-	# https://github.com/django/channels/issues/1915
-	echo 'asyncio_mode = auto' >> setup.cfg
-
-	distutils-r1_python_prepare_all
+python_install() {
+	distutils-r1_python_install
+	rm -rf "${D}$(python_get_sitedir)"/tests || die
 }
