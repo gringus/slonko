@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=hatchling
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{10..14} )
 COMMIT="8163419b91d6b8c6ecb0c4edd30a0338f43db442"
 
 inherit distutils-r1
