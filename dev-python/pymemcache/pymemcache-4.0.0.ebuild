@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( pypy3 python3_{8..13} python3_13t )
+PYTHON_COMPAT=( pypy3 python3_{10..14} python3_13t )
 inherit distutils-r1
 
 DESCRIPTION="A comprehensive, fast, pure-Python memcached client."
