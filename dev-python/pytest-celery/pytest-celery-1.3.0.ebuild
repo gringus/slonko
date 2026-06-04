@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=poetry
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{10..14} )
 inherit distutils-r1
 
 DESCRIPTION="a shim pytest plugin to enable celery.contrib.pytest"
@@ -29,12 +29,12 @@ BDEPEND="
 		dev-python/redis[${PYTHON_USEDEP}]
 		dev-python/python-memcached[${PYTHON_USEDEP}]
 	)
+	doc? (
+		>=dev-python/sphinx-celery-2.1.3[${PYTHON_USEDEP}]
+		>=dev-python/sphinx-click-6.0.0[${PYTHON_USEDEP}]
+		>=dev-python/sphinxcontrib-mermaid-1.0.0[${PYTHON_USEDEP}]
+	)
 "
-# Requires sphinx-mermaid
-#	doc? (
-#		>=dev-python/sphinx-celery-2.1.3[${PYTHON_USEDEP}]
-#		>=dev-python/sphinx-click-6.0.0[${PYTHON_USEDEP}]
-#	)
 EPYTEST_DESELECT=(
 	# Require docker
 	"tests/integration"
@@ -42,7 +42,7 @@ EPYTEST_DESELECT=(
 )
 
 distutils_enable_tests pytest
-#distutils_enable_sphinx docs --no-autodoc
+distutils_enable_sphinx docs --no-autodoc
 
 python_prepare_all() {
 	# Remove coverage
