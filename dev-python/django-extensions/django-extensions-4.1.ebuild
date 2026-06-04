@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{10..14} )
 
 inherit distutils-r1 pypi
 
@@ -17,6 +17,7 @@ KEYWORDS="~amd64"
 
 DEPEND="
 	>=dev-python/django-4.2[${PYTHON_USEDEP}]
+	<dev-python/django-6.0[${PYTHON_USEDEP}]
 	dev-python/pyasyncore[${PYTHON_USEDEP}]
 	dev-python/pygments[${PYTHON_USEDEP}]
 	dev-python/shortuuid[${PYTHON_USEDEP}]
