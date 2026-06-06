@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{11..13} )
+PYTHON_COMPAT=( python3_{11..14} )
 
 inherit bash-completion-r1 distutils-r1 optfeature
 
@@ -43,7 +43,7 @@ BDEPEND="
 	test? (
 		$(python_gen_impl_dep 'ncurses(+)')
 		>=dev-python/boto3-1.26.143[${PYTHON_USEDEP}]
-		>=dev-python/cryptography-46.0.3[${PYTHON_USEDEP}]
+		>=dev-python/cryptography-46.0.5[${PYTHON_USEDEP}]
 		dev-python/elasticsearch[${PYTHON_USEDEP}]
 		dev-python/elastic-transport[${PYTHON_USEDEP}]
 		dev-python/greenlet[${PYTHON_USEDEP}]
@@ -52,8 +52,7 @@ BDEPEND="
 		>=dev-python/pycurl-7.45.4[${PYTHON_USEDEP}]
 		>=dev-python/python-memcached-1.61[${PYTHON_USEDEP}]
 		>=dev-python/pymongo-4.1.1[${PYTHON_USEDEP}]
-		>=dev-python/pytest-celery-1.2.0[${PYTHON_USEDEP}]
-		<dev-python/pytest-celery-1.3.0[${PYTHON_USEDEP}]
+		>=dev-python/pytest-celery-1.3.0[${PYTHON_USEDEP}]
 		dev-python/pytest-click[${PYTHON_USEDEP}]
 		>=dev-python/pytest-order-1.2.1[${PYTHON_USEDEP}]
 		>=dev-python/pytest-rerunfailures-15.0[${PYTHON_USEDEP}]
@@ -67,7 +66,7 @@ BDEPEND="
 	doc? (
 		dev-python/docutils[${PYTHON_USEDEP}]
 		dev-python/jinja2[${PYTHON_USEDEP}]
-		<dev-python/sphinx-9[${PYTHON_USEDEP}]
+		dev-python/sphinx[${PYTHON_USEDEP}]
 		dev-python/sqlalchemy[${PYTHON_USEDEP}]
 	)
 "
@@ -81,6 +80,10 @@ EPYTEST_IGNORE=(
 	# Disable backends
 	t/unit/backends/test_gcs.py
 	t/unit/backends/test_azureblockblob.py
+)
+EPYTEST_DESELECT=(
+	# Requires dev-python/pyramid-celery 
+	t/unit/app/test_preload_cli.py::test_preload_options
 )
 
 python_install_all() {
