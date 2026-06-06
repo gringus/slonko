@@ -1,0 +1,24 @@
+From 4b71ed5cd39722037a20888759409940c4227e6f Mon Sep 17 00:00:00 2001
+From: Eric Kafe <kafe.eric@gmail.com>
+Date: Wed, 3 Jun 2026 07:30:45 +0200
+Subject: [PATCH] Fix TransitionParser sparse index dtype for scikit-learn 1.9
+ (#3591)
+
+---
+ nltk/parse/transitionparser.py | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/nltk/parse/transitionparser.py b/nltk/parse/transitionparser.py
+index 07d09b535f..4643d86625 100644
+--- a/nltk/parse/transitionparser.py
++++ b/nltk/parse/transitionparser.py
+@@ -523,6 +523,9 @@ def train(self, depgraphs, modelfile, verbose=True):
+             input_file.close()
+             # Using the temporary file to train the libsvm classifier
+             x_train, y_train = load_svmlight_file(input_file.name)
++            x_train = x_train.astype("float64")
++            x_train.indices = x_train.indices.astype("int32", copy=False)
++            x_train.indptr = x_train.indptr.astype("int32", copy=False)
+             # The parameter is set according to the paper:
+             # Algorithms for Deterministic Incremental Dependency Parsing by Joakim Nivre
+             # Todo : because of probability = True => very slow due to
