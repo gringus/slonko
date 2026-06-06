@@ -18,10 +18,11 @@ RESTRICT="bindist mirror"
 
 BDEPEND="app-arch/unzip"
 
+# app-text/xmlstarlet is needed for xml command
 # https://github.com/nltk/nltk_data/commits/gh-pages
 
 PACKAGES_ZIP=(
-	# wget -O - https://www.nltk.org/nltk_data/ | xml sel -t -m '//package[@unzip=0]' -v @subdir -o "/" -v @id -n - | sort
+	# wget -qO - https://www.nltk.org/nltk_data/ | xml sel -t -m '//package[@unzip=0]' -v @subdir -o "/" -v @id -n - | sort
 	corpora/bcp47
 	corpora/comtrans
 	corpora/conll2007
@@ -46,7 +47,7 @@ PACKAGES_ZIP=(
 )
 
 PACKAGES_UNPACK=(
-	# wget -O - https://www.nltk.org/nltk_data/ | xml sel -t -m '//package[@unzip=1]' -v @subdir -o "/" -v @id -n - | sort
+	# wget -qO - https://www.nltk.org/nltk_data/ | xml sel -t -m '//package[@unzip=1]' -v @subdir -o "/" -v @id -n - | sort
 	chunkers/maxent_ne_chunker
 	chunkers/maxent_ne_chunker_tab
 	corpora/abc
@@ -79,6 +80,7 @@ PACKAGES_UNPACK=(
 	corpora/kimmo
 	corpora/lin_thesaurus
 	corpora/mac_morpho
+	corpora/mock_corpus
 	corpora/movie_reviews
 	corpora/mte_teip5
 	corpora/names
