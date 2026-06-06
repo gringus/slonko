@@ -65,7 +65,7 @@ DEPEND="
 	acct-group/tibber-exporter
 	acct-user/tibber-exporter
 "
-BDEPEND=">=dev-lang/go-1.24"
+BDEPEND=">=dev-lang/go-1.25"
 RDEPEND="${DEPEND}"
 
 src_compile() {
