@@ -142,6 +142,8 @@ src_prepare() {
 
 	PAPERLESS_ENABLE_COMPRESSION=$(use compression && echo true || echo false)
 	PAPERLESS_AUDIT_LOG_ENABLED=$(use audit && echo true || echo false)
+	# See https://github.com/paperless-ngx/paperless-ngx/discussions/9920
+	OMP_NUM_THREADS=1
 	EOF
 }
 
