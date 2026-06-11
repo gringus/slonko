@@ -16,12 +16,12 @@ CRATES="
 	autocfg@1.5.1
 	base64@0.22.1
 	base64ct@1.8.3
-	bitflags@2.11.1
+	bitflags@2.13.0
 	block-buffer@0.10.4
 	block-padding@0.3.3
 	bytes@1.11.1
 	cbc@0.1.2
-	cc@1.2.62
+	cc@1.2.63
 	cfg-if@1.0.4
 	ciborium-io@0.2.2
 	ciborium-ll@0.2.2
@@ -36,6 +36,7 @@ CRATES="
 	data-encoding@2.11.0
 	der@0.7.10
 	digest@0.10.7
+	dispatch2@0.3.1
 	doctest-file@1.1.1
 	either@1.16.0
 	encoding_rs@0.8.35
@@ -62,11 +63,11 @@ CRATES="
 	hmac@0.12.1
 	http-body-util@0.1.3
 	http-body@1.0.1
-	http@1.4.0
+	http@1.4.2
 	httparse@1.10.1
 	httpdate@1.0.3
 	hyper-util@0.1.20
-	hyper@1.9.0
+	hyper@1.10.1
 	indexmap@2.14.0
 	indoc@2.0.7
 	inout@0.1.4
@@ -75,16 +76,20 @@ CRATES="
 	libc@0.2.186
 	libmimalloc-sys@0.1.49
 	lock_api@0.4.14
-	log@0.4.29
-	memchr@2.8.0
+	log@0.4.32
+	memchr@2.8.1
 	memoffset@0.9.1
 	mimalloc@0.1.52
 	mime@0.3.17
 	mime_guess@2.0.5
-	mio@1.2.0
+	mio@1.2.1
 	ntapi@0.4.3
 	objc2-core-foundation@0.3.2
+	objc2-encode@4.1.0
+	objc2-foundation@0.3.2
 	objc2-io-kit@0.3.2
+	objc2-open-directory@0.3.2
+	objc2@0.6.4
 	once_cell@1.21.4
 	parking_lot@0.12.5
 	parking_lot_core@0.9.12
@@ -125,20 +130,20 @@ CRATES="
 	serde_derive@1.0.228
 	sha1@0.10.6
 	sha2@0.10.9
-	shlex@1.3.0
+	shlex@2.0.1
 	signal-hook-registry@1.4.8
 	slab@0.4.12
 	smallvec@1.15.1
-	socket2@0.6.3
+	socket2@0.6.4
 	spki@0.7.3
 	subtle@2.6.1
 	syn@2.0.117
-	sysinfo@0.38.4
+	sysinfo@0.39.3
 	target-lexicon@0.13.5
 	thiserror-impl@2.0.18
 	thiserror@2.0.18
-	tikv-jemalloc-sys@0.6.1+5.3.0-1-ge13ca993e8ccb9ba9847cc330696e02839f328f7
-	tikv-jemallocator@0.6.1
+	tikv-jemalloc-sys@0.7.1+5.3.1-0-g81034ce1f1373e37dc865038e1bc8eeecf559ce8
+	tikv-jemallocator@0.7.0
 	tokio-macros@2.7.0
 	tokio-rustls@0.26.4
 	tokio-stream@0.1.18
@@ -148,7 +153,7 @@ CRATES="
 	tracing-core@0.1.36
 	tracing@0.1.44
 	tungstenite@0.29.0
-	typenum@1.20.0
+	typenum@1.20.1
 	unicase@2.9.0
 	unicode-ident@1.0.24
 	unindent@0.2.4
@@ -183,8 +188,8 @@ CRATES="
 	windows_x86_64_gnullvm@0.52.6
 	windows_x86_64_msvc@0.52.6
 	wit-bindgen@0.57.1
-	zerocopy-derive@0.8.48
-	zerocopy@0.8.48
+	zerocopy-derive@0.8.52
+	zerocopy@0.8.52
 	zeroize@1.8.2
 "
 
