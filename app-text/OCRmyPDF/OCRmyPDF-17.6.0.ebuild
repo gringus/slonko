@@ -58,10 +58,6 @@ BDEPEND="
 
 EPYTEST_PLUGINS=()
 EPYTEST_XDIST=1
-# Too many dependencies
-EPYTEST_IGNORE=(
-	tests/test_watcher.py
-)
 EPYTEST_DESELECT=(
 	# Recompressing/Deflating JPEGs
 	tests/test_hocrtransform.py::test_fpdf2_matches_sandwich
