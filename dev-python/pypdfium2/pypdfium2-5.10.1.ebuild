@@ -17,7 +17,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 
 RDEPEND="
-	=app-text/pdfium-7825
+	=app-text/pdfium-7891
 "
 BDEPEND="
 	test? (
@@ -25,8 +25,9 @@ BDEPEND="
 		dev-python/numpy[${PYTHON_USEDEP}]
 	)
 "
+
 PATCHES=(
-	"${FILESDIR}"/run_cmd.patch
+	"${FILESDIR}"/run_cmd2.patch
 )
 
 DOCS=( README.md )

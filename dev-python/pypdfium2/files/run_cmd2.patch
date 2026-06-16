@@ -1,0 +1,13 @@
+--- a/setupsrc/base.py	2026-06-16 20:36:17.429812410 -0000
++++ b/setupsrc/base.py	2026-06-16 20:38:17.515992123 -0000
+@@ -601,7 +601,9 @@
+     elif silent:
+         kwargs["stdout"] = subprocess.DEVNULL
+         kwargs["stderr"] = subprocess.DEVNULL
+-    
++    else:
++        kwargs["capture_output"] = True
++ 
+     comp_process = subprocess.run(command, cwd=cwd, check=check, **kwargs)
+     if capture:
+         return comp_process.stdout.decode("utf-8").strip()
