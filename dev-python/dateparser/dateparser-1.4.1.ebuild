@@ -16,14 +16,13 @@ SLOT="0"
 KEYWORDS="~amd64"
 
 RDEPEND="
-	dev-python/python-dateutil[${PYTHON_USEDEP}]
-	dev-python/pytz[${PYTHON_USEDEP}]
-	dev-python/regex[${PYTHON_USEDEP}]
-	dev-python/tzlocal[${PYTHON_USEDEP}]
+	>=dev-python/python-dateutil-2.7.0[${PYTHON_USEDEP}]
+	>=dev-python/pytz-2024.2[${PYTHON_USEDEP}]
+	>=dev-python/regex-2024.9.11[${PYTHON_USEDEP}]
+	>=dev-python/tzlocal-0.2[${PYTHON_USEDEP}]
 "
 BDEPEND="
 	test? (
-		dev-libs/fastText[python,${PYTHON_USEDEP}]
 		dev-python/gitpython[${PYTHON_USEDEP}]
 		dev-python/convertdate[${PYTHON_USEDEP}]
 		dev-python/hijridate[${PYTHON_USEDEP}]
@@ -33,12 +32,9 @@ BDEPEND="
 		dev-python/ruamel-yaml[${PYTHON_USEDEP}]
 	)
 "
-
 EPYTEST_DESELECT=(
 	dateparser/date.py::dateparser.date.DateDataParser.get_date_data
 	dateparser/search/__init__.py::dateparser.search.search_dates
-	# Tests that require network
-	tests/test_language_detect.py::CustomLangDetectParserTest::test_custom_language_detect_fast_text_{0,1}
 )
 
 distutils_enable_tests pytest
@@ -54,7 +50,6 @@ python_prepare_all() {
 
 pkg_postinst() {
 	optfeature "calendars support" "dev-python/hijridate dev-python/convertdate"
-	optfeature "fasttext support" "dev-libs/fastText[python]"
 	optfeature "operations on language files" dev-python/ruamel-yaml
 	optfeature "language detection support" dev-python/langdetect
 }
