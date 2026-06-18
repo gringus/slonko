@@ -324,7 +324,7 @@ src_install() {
 	cmake_src_install
 
 	if ! use systemd; then
-		rm -f "${ED}/usr/lib/systemd/system/lemond.service"
-		rmdir -p "${ED}/usr/lib/systemd/system" 2>/dev/null
+		rm -f "${ED}"/usr/lib/systemd/{system,user}/lemond.service
+		rmdir -p "${ED}"/usr/lib/systemd/{system,user} 2>/dev/null
 	fi
 }
