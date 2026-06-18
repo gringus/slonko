@@ -1,13 +1,9 @@
 # Copyright 2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-# TODO
-# Peroper systemd handling
-# GUI support
-
 EAPI=8
 
-# awk -F\" '/resolved/ {printf("\t\"%s\"\n",substr($4,28))}' package-lock.json | xclip -i -selection clipboard
+# awk -F\" '/resolved/ {printf("\t\"%s\"\n",substr($4,28))}' src/web-app/package-lock.json | xclip -i -selection clipboard
 NPM_MODULES=(
 	"@discoveryjs/json-ext/-/json-ext-0.6.3.tgz"
 	"@jridgewell/gen-mapping/-/gen-mapping-0.3.13.tgz"
@@ -250,7 +246,7 @@ RDEPEND="
 	>=app-arch/zstd-1.5.5
 	>=dev-cpp/cpp-httplib-0.26.0
 	>=net-libs/libwebsockets-4.3.3
-	>=net-libs/mbedtls-3.0
+	net-libs/mbedtls:3
 	>=net-misc/curl-8.5.0
 	sys-libs/libcap
 	systemd? ( sys-apps/systemd:= )
@@ -307,11 +303,6 @@ src_prepare() {
 		sed -e '/pkg_check_modules(SYSTEMD QUIET libsystemd)/d' \
 			-i CMakeLists.txt || die
 	fi
-
-	# We have mbedcrypto-3 instead of mbedcrypto
-	sed -i \
-		-e 's|pkg_check_modules(MBEDCRYPTO QUIET mbedcrypto)|pkg_check_modules(MBEDCRYPTO QUIET mbedcrypto-3)|' \
-		src/cpp/cli/CMakeLists.txt || die
 }
 
 src_configure() {
@@ -322,6 +313,18 @@ src_configure() {
 		# Workaround for missing cpp-httplib pkgconfig support
 		-DUSE_SYSTEM_HTTPLIB=ON
 		-DHTTPLIB_LINK_LIBRARIES=cpp-httplib
+		# We have mbedcrypto-3 instead of mbedcrypto
+		-DMBEDTLS_INCLUDE_DIR=/usr/include/mbedtls3
+		-DMBEDCRYPTO_LIBRARY=/usr/lib64/libmbedcrypto-3.so
 	)
 	cmake_src_configure
+}
+
+src_install() {
+	cmake_src_install
+
+	if ! use systemd; then
+		rm -f "${ED}/usr/lib/systemd/system/lemond.service"
+		rmdir -p "${ED}/usr/lib/systemd/system" 2>/dev/null
+	fi
 }
