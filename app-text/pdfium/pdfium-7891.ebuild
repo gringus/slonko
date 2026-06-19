@@ -34,6 +34,7 @@ BDEPEND="
 "
 DEPEND="
 	dev-cpp/fast_float
+	dev-libs/glib
 	dev-libs/icu
 	media-libs/freetype
 	media-libs/harfbuzz
@@ -133,7 +134,7 @@ src_configure() {
 		"treat_warnings_as_errors=false"
 		"use_cxx23=false"
 		"use_custom_libcxx=false"
-		"use_glib=false"
+		"use_glib=true"
 		"pdf_use_partition_alloc=false"
 		"pdf_use_skia=false"
 		"use_sysroot=false"
