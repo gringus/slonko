@@ -6,7 +6,9 @@
 		<name>Marcin Deranek</name>
 	</maintainer>
 	<use>
+		<flag name="doc">Install doxygen developer documentation</flag>
 		<flag name="experimental">Enable experimental features via <pkg>media-libs/zint</pkg></flag>
+		<flag name="tools">Install ZXingReader and ZXingWriter binaries</flag>
 	</use>
 	<upstream>
 		<bugs-to>https://github.com/zxing-cpp/zxing-cpp/issues</bugs-to>
