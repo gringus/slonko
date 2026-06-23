@@ -7,6 +7,7 @@ CARGO_OPTIONAL=yes
 DISTUTILS_EXT=1
 DISTUTILS_USE_PEP517=maturin
 PYTHON_COMPAT=( python3_{10..14} )
+RUST_MIN_VER=1.95
 
 CRATES="
 	aes@0.8.4
@@ -229,6 +230,7 @@ DEPEND="
 
 BDEPEND="
 	${RUST_DEPEND}
+	<dev-util/maturin-1.14.0[${PYTHON_USEDEP}]
 	test? (
 		>=dev-python/httpx-0.28[${PYTHON_USEDEP}]
 		>=dev-python/sniffio-1.3[${PYTHON_USEDEP}]
