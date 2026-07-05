@@ -40,10 +40,6 @@ distutils_enable_sphinx docs/source \
 	dev-python/sphinx-rtd-theme \
 	dev-python/sphinxcontrib-programoutput
 
-EPYTEST_DESELECT=(
-	"tests/test_misc.py::test_const_converters[mapping11-True-items11]"
-)
-
 src_configure() {
 	export PDFIUM_PLATFORM="system-search"
 	distutils-r1_src_configure
