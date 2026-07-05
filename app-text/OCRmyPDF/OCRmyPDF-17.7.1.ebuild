@@ -25,7 +25,7 @@ IUSE="bash-completion fish-completion"
 
 RDEPEND="
 	>=app-text/ghostscript-gpl-9.54
-	>=app-text/pdfminer-20220319[${PYTHON_USEDEP}]
+	>=app-text/pdfminer-20260107[${PYTHON_USEDEP}]
 	>=app-text/tesseract-4.1.1[jpeg,tiff,png,webp]
 	>=dev-python/deprecation-2.1.0[${PYTHON_USEDEP}]
 	>=dev-python/fpdf2-2.8.0[${PYTHON_USEDEP}]
