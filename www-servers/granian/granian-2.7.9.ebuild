@@ -10,33 +10,43 @@ PYTHON_COMPAT=( python3_{10..14} )
 RUST_MIN_VER=1.95
 
 CRATES="
-	aes@0.8.4
-	anyhow@1.0.102
-	arc-swap@1.9.1
+	aead@0.6.1
+	aes-gcm@0.11.0
+	aes@0.9.1
+	anyhow@1.0.103
+	arc-swap@1.9.2
 	atomic-waker@1.1.2
 	autocfg@1.5.1
 	base64@0.22.1
 	base64ct@1.8.3
 	bitflags@2.13.0
 	block-buffer@0.10.4
-	block-padding@0.3.3
-	bytes@1.11.1
-	cbc@0.1.2
-	cc@1.2.63
+	block-buffer@0.12.1
+	block-padding@0.4.2
+	bytes@1.12.0
+	cbc@0.2.1
+	cc@1.2.65
 	cfg-if@1.0.4
 	ciborium-io@0.2.2
 	ciborium-ll@0.2.2
 	ciborium@0.2.2
-	cipher@0.4.4
-	const-oid@0.9.6
+	cipher@0.5.2
+	cmov@0.5.4
+	const-oid@0.10.2
+	cpubits@0.1.1
 	cpufeatures@0.2.17
+	cpufeatures@0.3.0
 	crossbeam-channel@0.5.15
 	crossbeam-utils@0.8.21
 	crunchy@0.2.4
 	crypto-common@0.1.7
+	crypto-common@0.2.2
+	ctr@0.10.1
+	ctutils@0.4.2
 	data-encoding@2.11.0
-	der@0.7.10
+	der@0.8.0
 	digest@0.10.7
+	digest@0.11.3
 	dispatch2@0.3.1
 	doctest-file@1.1.1
 	either@1.16.0
@@ -57,28 +67,30 @@ CRATES="
 	generic-array@0.14.7
 	getrandom@0.2.17
 	getrandom@0.3.4
-	h2@0.4.14
+	ghash@0.6.0
+	h2@0.4.15
 	half@2.7.1
 	hashbrown@0.17.1
 	heck@0.5.0
-	hmac@0.12.1
+	hmac@0.13.0
 	http-body-util@0.1.3
 	http-body@1.0.1
 	http@1.4.2
 	httparse@1.10.1
 	httpdate@1.0.3
+	hybrid-array@0.4.13
 	hyper-util@0.1.20
 	hyper@1.10.1
 	indexmap@2.14.0
 	indoc@2.0.7
-	inout@0.1.4
-	itertools@0.14.0
+	inout@0.2.2
+	itertools@0.15.0
 	itoa@1.0.18
 	libc@0.2.186
 	libmimalloc-sys@0.1.49
 	lock_api@0.4.14
-	log@0.4.32
-	memchr@2.8.1
+	log@0.4.33
+	memchr@2.8.2
 	memoffset@0.9.1
 	mimalloc@0.1.52
 	mime@0.3.17
@@ -94,12 +106,13 @@ CRATES="
 	once_cell@1.21.4
 	parking_lot@0.12.5
 	parking_lot_core@0.9.12
-	pbkdf2@0.12.2
+	pbkdf2@0.13.0
 	pem@3.0.6
 	percent-encoding@2.3.2
 	pin-project-lite@0.2.17
-	pkcs5@0.7.1
-	pkcs8@0.10.2
+	pkcs5@0.8.1
+	pkcs8@0.11.0
+	polyval@0.7.1
 	portable-atomic@1.13.1
 	ppv-lite86@0.2.21
 	proc-macro2@1.0.106
@@ -109,37 +122,37 @@ CRATES="
 	pyo3-macros@0.27.2
 	pyo3@0.27.2
 	python3-dll-a@0.2.15
-	quote@1.0.45
+	quote@1.0.46
 	r-efi@5.3.0
 	rand@0.9.4
 	rand_chacha@0.9.0
-	rand_core@0.6.4
+	rand_core@0.10.1
 	rand_core@0.9.5
 	recvmsg@1.0.0
 	redox_syscall@0.5.18
 	ring@0.17.14
 	rustls-pemfile@2.2.0
-	rustls-pki-types@1.14.1
+	rustls-pki-types@1.15.0
 	rustls-webpki@0.103.13
-	rustls@0.23.40
+	rustls@0.23.41
 	rustversion@1.0.22
-	salsa20@0.10.2
+	salsa20@0.11.0
 	scopeguard@1.2.0
-	scrypt@0.11.0
+	scrypt@0.12.0
 	serde@1.0.228
 	serde_core@1.0.228
 	serde_derive@1.0.228
 	sha1@0.10.6
-	sha2@0.10.9
+	sha2@0.11.0
 	shlex@2.0.1
 	signal-hook-registry@1.4.8
 	slab@0.4.12
-	smallvec@1.15.1
+	smallvec@1.15.2
 	socket2@0.6.4
-	spki@0.7.3
+	spki@0.8.0
 	subtle@2.6.1
-	syn@2.0.117
-	sysinfo@0.39.3
+	syn@2.0.118
+	sysinfo@0.39.5
 	target-lexicon@0.13.5
 	thiserror-impl@2.0.18
 	thiserror@2.0.18
@@ -158,10 +171,11 @@ CRATES="
 	unicase@2.9.0
 	unicode-ident@1.0.24
 	unindent@0.2.4
+	universal-hash@0.6.1
 	untrusted@0.9.0
 	version_check@0.9.5
 	wasi@0.11.1+wasi-snapshot-preview1
-	wasip2@1.0.3+wasi-0.2.9
+	wasip2@1.0.4+wasi-0.2.12
 	widestring@1.2.1
 	winapi-i686-pc-windows-gnu@0.4.0
 	winapi-x86_64-pc-windows-gnu@0.4.0
@@ -191,7 +205,7 @@ CRATES="
 	wit-bindgen@0.57.1
 	zerocopy-derive@0.8.52
 	zerocopy@0.8.52
-	zeroize@1.8.2
+	zeroize@1.9.0
 "
 
 declare -A GIT_CRATES=(
