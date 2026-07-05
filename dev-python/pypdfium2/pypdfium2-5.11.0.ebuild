@@ -12,12 +12,12 @@ DESCRIPTION="pypdfium2 is an ABI-level Python 3 binding to PDFium"
 HOMEPAGE="https://github.com/pypdfium2-team/pypdfium2"
 SRC_URI="https://github.com/pypdfium2-team/${PN}/archive/${PV}.tar.gz -> ${P}.gh.tar.gz"
 
-LICENSE="Apache-2.0 BSD BSD-2 CC-BY-4.0 LGPL-3 MIT MPL-2.0"
+LICENSE="Apache-2.0 BSD CC-BY-4.0 LGPL-3 MIT MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
 
 RDEPEND="
-	=app-text/pdfium-7869
+	=app-text/pdfium-7920
 "
 BDEPEND="
 	test? (
@@ -25,8 +25,9 @@ BDEPEND="
 		dev-python/numpy[${PYTHON_USEDEP}]
 	)
 "
+
 PATCHES=(
-	"${FILESDIR}"/run_cmd.patch
+	"${FILESDIR}"/run_cmd2.patch
 )
 
 DOCS=( README.md )
