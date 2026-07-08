@@ -60,7 +60,6 @@ BDEPEND="
 		)
 	)
 	tools? (
-		media-libs/opencv
 		media-libs/libwebp
 	)
 "
