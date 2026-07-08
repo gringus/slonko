@@ -1,0 +1,279 @@
+# Copyright 2026 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+EAPI=8
+
+RUST_MIN_VER=1.88
+
+CRATES="
+	adler2@2.0.1
+	aes@0.8.4
+	aho-corasick@1.1.4
+	ambient-authority@0.0.2
+	anstream@0.6.21
+	anstyle-parse@0.2.7
+	anstyle-query@1.1.5
+	anstyle-wincon@3.0.11
+	anstyle@1.0.13
+	anyhow@1.0.101
+	atomic-waker@1.1.2
+	base64@0.22.1
+	bitflags@2.11.0
+	block-padding@0.3.3
+	bumpalo@3.20.2
+	bytes@1.11.1
+	cap-primitives@4.0.2
+	cap-std@4.0.2
+	cbc@0.1.2
+	cc@1.2.56
+	cesu8@1.1.0
+	cfg-if@1.0.4
+	cipher@0.4.4
+	clap@4.5.60
+	clap_builder@4.5.60
+	clap_derive@4.5.55
+	clap_lex@1.0.0
+	colorchoice@1.0.4
+	combine@4.6.7
+	console@0.16.2
+	core-foundation-sys@0.8.7
+	core-foundation@0.10.1
+	cpufeatures@0.2.17
+	crc32fast@1.5.0
+	crypto-common@0.1.7
+	displaydoc@0.2.5
+	encode_unicode@1.0.0
+	encoding_rs@0.8.35
+	equivalent@1.0.2
+	errno@0.3.14
+	find-msvc-tools@0.1.9
+	flate2@1.1.9
+	fnv@1.0.7
+	form_urlencoded@1.2.2
+	fs-set-times@0.20.3
+	futures-channel@0.3.32
+	futures-core@0.3.32
+	futures-io@0.3.32
+	futures-macro@0.3.32
+	futures-sink@0.3.32
+	futures-task@0.3.32
+	futures-util@0.3.32
+	generic-array@0.14.7
+	getrandom@0.2.17
+	h2@0.4.13
+	hashbrown@0.16.1
+	heck@0.5.0
+	hex-literal@1.1.0
+	http-body-util@0.1.3
+	http-body@1.0.1
+	http@1.4.0
+	httparse@1.10.1
+	hyper-rustls@0.27.7
+	hyper-util@0.1.20
+	hyper@1.8.1
+	icu_collections@2.1.1
+	icu_locale_core@2.1.1
+	icu_normalizer@2.1.1
+	icu_normalizer_data@2.1.1
+	icu_properties@2.1.2
+	icu_properties_data@2.1.2
+	icu_provider@2.1.1
+	idna@1.1.0
+	idna_adapter@1.2.1
+	indexmap@2.13.0
+	indicatif@0.18.4
+	inout@0.1.4
+	io-extras@0.19.0
+	io-lifetimes@2.0.4
+	io-lifetimes@3.0.1
+	ipnet@2.11.0
+	iri-string@0.7.10
+	is_terminal_polyfill@1.70.2
+	itoa@1.0.17
+	jiff-static@0.2.20
+	jiff-tzdb-platform@0.1.3
+	jiff-tzdb@0.1.5
+	jiff@0.2.20
+	jni-sys@0.3.0
+	jni@0.21.1
+	js-sys@0.3.85
+	lazy_static@1.5.0
+	libc@0.2.182
+	linux-raw-sys@0.11.0
+	litemap@0.8.1
+	lock_api@0.4.14
+	log@0.4.29
+	maybe-owned@0.3.4
+	memchr@2.8.0
+	mime@0.3.17
+	miniz_oxide@0.8.9
+	mio@1.1.1
+	nu-ansi-term@0.50.3
+	once_cell@1.21.3
+	once_cell_polyfill@1.70.2
+	openssl-probe@0.2.1
+	parking_lot@0.12.5
+	parking_lot_core@0.9.12
+	percent-encoding@2.3.2
+	pin-project-lite@0.2.16
+	pin-utils@0.1.0
+	portable-atomic-util@0.2.5
+	portable-atomic@1.13.1
+	potential_utf@0.1.4
+	proc-macro2@1.0.106
+	quote@1.0.44
+	redox_syscall@0.5.18
+	regex-automata@0.4.14
+	regex-syntax@0.8.10
+	regex@1.12.3
+	reqwest@0.13.2
+	ring@0.17.14
+	rustix-linux-procfs@0.1.1
+	rustix@1.1.3
+	rustls-native-certs@0.8.3
+	rustls-pki-types@1.14.0
+	rustls-platform-verifier-android@0.1.1
+	rustls-platform-verifier@0.6.2
+	rustls-webpki@0.103.9
+	rustls@0.23.36
+	rustversion@1.0.22
+	same-file@1.0.6
+	schannel@0.1.28
+	scopeguard@1.2.0
+	security-framework-sys@2.17.0
+	security-framework@3.7.0
+	serde@1.0.228
+	serde_core@1.0.228
+	serde_derive@1.0.228
+	serde_json@1.0.149
+	sharded-slab@0.1.7
+	shlex@1.3.0
+	signal-hook-registry@1.4.8
+	simd-adler32@0.3.8
+	slab@0.4.12
+	smallvec@1.15.1
+	socket2@0.6.2
+	stable_deref_trait@1.2.1
+	strsim@0.11.1
+	subtle@2.6.1
+	syn@2.0.116
+	sync_wrapper@1.0.2
+	synstructure@0.13.2
+	thiserror-impl@1.0.69
+	thiserror-impl@2.0.18
+	thiserror@1.0.69
+	thiserror@2.0.18
+	thread_local@1.1.9
+	tinystr@0.8.2
+	tokio-macros@2.6.0
+	tokio-rustls@0.26.4
+	tokio-stream@0.1.18
+	tokio-util@0.7.18
+	tokio@1.49.0
+	toml_datetime@1.0.0+spec-1.1.0
+	toml_edit@0.25.4+spec-1.1.0
+	toml_parser@1.0.9+spec-1.1.0
+	toml_writer@1.0.6+spec-1.1.0
+	tower-http@0.6.8
+	tower-layer@0.3.3
+	tower-service@0.3.3
+	tower@0.5.3
+	tracing-attributes@0.1.31
+	tracing-core@0.1.36
+	tracing-log@0.2.0
+	tracing-subscriber@0.3.22
+	tracing@0.1.44
+	try-lock@0.2.5
+	typenum@1.19.0
+	unicode-ident@1.0.24
+	unicode-width@0.2.2
+	unit-prefix@0.5.2
+	untrusted@0.9.0
+	url@2.5.8
+	urlencoding@2.1.3
+	utf8_iter@1.0.4
+	utf8parse@0.2.2
+	valuable@0.1.1
+	version_check@0.9.5
+	walkdir@2.5.0
+	want@0.3.1
+	wasi@0.11.1+wasi-snapshot-preview1
+	wasm-bindgen-futures@0.4.58
+	wasm-bindgen-macro-support@0.2.108
+	wasm-bindgen-macro@0.2.108
+	wasm-bindgen-shared@0.2.108
+	wasm-bindgen@0.2.108
+	wasm-streams@0.5.0
+	web-sys@0.3.85
+	web-time@1.1.0
+	webpki-root-certs@1.0.6
+	winapi-util@0.1.11
+	windows-link@0.2.1
+	windows-sys@0.45.0
+	windows-sys@0.52.0
+	windows-sys@0.59.0
+	windows-sys@0.60.2
+	windows-sys@0.61.2
+	windows-targets@0.42.2
+	windows-targets@0.52.6
+	windows-targets@0.53.5
+	windows_aarch64_gnullvm@0.42.2
+	windows_aarch64_gnullvm@0.52.6
+	windows_aarch64_gnullvm@0.53.1
+	windows_aarch64_msvc@0.42.2
+	windows_aarch64_msvc@0.52.6
+	windows_aarch64_msvc@0.53.1
+	windows_i686_gnu@0.42.2
+	windows_i686_gnu@0.52.6
+	windows_i686_gnu@0.53.1
+	windows_i686_gnullvm@0.52.6
+	windows_i686_gnullvm@0.53.1
+	windows_i686_msvc@0.42.2
+	windows_i686_msvc@0.52.6
+	windows_i686_msvc@0.53.1
+	windows_x86_64_gnu@0.42.2
+	windows_x86_64_gnu@0.52.6
+	windows_x86_64_gnu@0.53.1
+	windows_x86_64_gnullvm@0.42.2
+	windows_x86_64_gnullvm@0.52.6
+	windows_x86_64_gnullvm@0.53.1
+	windows_x86_64_msvc@0.42.2
+	windows_x86_64_msvc@0.52.6
+	windows_x86_64_msvc@0.53.1
+	winnow@0.7.15
+	winx@0.36.4
+	writeable@0.6.2
+	yoke-derive@0.8.1
+	yoke@0.8.1
+	zerofrom-derive@0.1.6
+	zerofrom@0.1.6
+	zeroize@1.8.2
+	zerotrie@0.2.3
+	zerovec-derive@0.11.2
+	zerovec@0.11.5
+	zlib-rs@0.6.2
+	zmij@1.0.21
+"
+
+declare -A GIT_CRATES=(
+	[rawzip]='https://github.com/nickbabcock/rawzip;fdc49ba50ca3c6d77712ba39e8c6159390ed2e4e;rawzip-%commit%'
+	[zipunsplitlib]='https://github.com/chenxiaolong/zipunsplit;f36f44c849d8d4af4d307a132a1e0f511ddf8c6a;zipunsplit-%commit%/zipunsplitlib'
+)
+
+inherit cargo
+
+DESCRIPTION="Navigation Update Downloader for HMG infotainment systems"
+HOMEPAGE="https://github.com/chenxiaolong/nudl"
+SRC_URI="
+	https://github.com/chenxiaolong/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
+	${CARGO_CRATE_URIS}
+"
+
+LICENSE="GPL-3"
+# Dependent crate licenses
+LICENSE+="
+	Apache-2.0 Apache-2.0-with-LLVM-exceptions BSD CDLA-Permissive-2.0
+	GPL-3 ISC MIT Unicode-3.0 ZLIB
+"
+SLOT="0"
+KEYWORDS="~amd64"
