@@ -46,18 +46,22 @@ BDEPEND="
 	python? (
 		${DISTUTILS_DEPS}
 		$(python_gen_cond_dep '
-			dev-python/pybind11[${PYTHON_USEDEP}]
 			>=dev-python/nanobind-2.11.0[${PYTHON_USEDEP}]
 		')
 	)
 	test? (
 		dev-cpp/gtest
 		dev-libs/libfmt
+		media-libs/libwebp
 		python? (
 			dev-python/numpy[${PYTHON_USEDEP}]
 			dev-python/pillow[${PYTHON_USEDEP}]
 			media-libs/opencv[python]
 		)
+	)
+	tools? (
+		media-libs/opencv
+		media-libs/libwebp
 	)
 "
 
@@ -73,6 +77,9 @@ src_prepare() {
 
 	# Disable remote fetch
 	sed -i -e '/FetchContent/,/FetchContent_GetProperties/d' docs/CMakeLists.txt || die
+	# Make use of system libwebp
+	sed -i -e 's/zxing_add_package(WebP .*/find_package(PkgConfig REQUIRED)\npkg_check_modules(WEBP REQUIRED IMPORTED_TARGET libwebp)\nadd_library(WebP::webp ALIAS PkgConfig::WEBP)/' \
+		test/blackbox/CMakeLists.txt example/CMakeLists.txt || die
 
 	if use python; then
 		pushd wrappers/python > /dev/null || die
@@ -86,6 +93,7 @@ src_configure() {
 		-DZXING_DEPENDENCIES=LOCAL # force find_package as REQUIRED
 		# Build and install ZXingReader and ZXingWriter
 		-DZXING_EXAMPLES=$(usex tools)
+		-DZXING_EXAMPLES_USE_WEBP=$(usex tools)
 		-DZXING_USE_BUNDLED_ZINT=OFF
 		-DZXING_WRITERS=BOTH # should be kept on until revdeps are ported away from OLD
 		-DZXING_BLACKBOX_TESTS=$(usex test)
