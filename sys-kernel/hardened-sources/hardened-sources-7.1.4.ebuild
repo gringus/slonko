@@ -3,32 +3,23 @@
 
 EAPI="8"
 ETYPE="sources"
-K_WANT_GENPATCHES="base extras experimental"
-K_GENPATCHES_VER="106"
+K_WANT_GENPATCHES="base extras"
+K_GENPATCHES_VER="7"
+K_NO_VERSION_CHECK="True"
 
-inherit check-reqs kernel-2
+inherit kernel-2
 detect_version
 detect_arch
 SUBREL="hardened1"
 HARDENED_URI="https://github.com/anthraxx/linux-hardened/releases/download/v${PV%.0}-${SUBREL}/linux-hardened-v${PV%.0}-${SUBREL}.patch"
 
 DESCRIPTION="Minimal supplement to upstream Kernel Self Protection Project"
-HOMEPAGE="https://dev.gentoo.org/~alicef/genpatches https://github.com/anthraxx/linux-hardened"
+HOMEPAGE="https://dev.gentoo.org/~mpagano/genpatches https://github.com/anthraxx/linux-hardened"
 SRC_URI="${KERNEL_URI} ${GENPATCHES_URI} ${HARDENED_URI} ${ARCH_URI}"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ~loong ~m68k ~mips ppc ppc64 ~riscv ~s390 ~sparc x86"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86"
 IUSE="experimental"
 UNIPATCH_LIST="${FILESDIR}/9999_revert-conflicts-v1.patch ${DISTDIR}/linux-hardened-v${PV%.0}-${SUBREL}.patch"
 UNIPATCH_EXCLUDE="1500 1510 2902"
-
-pkg_pretend() {
-	CHECKREQS_DISK_BUILD="4G"
-	check-reqs_pkg_pretend
-}
-
-src_prepare() {
-	kernel-2_src_prepare
-	rm "${S}/tools/testing/selftests/tc-testing/action-ebpf"
-}
 
 pkg_postinst() {
 	kernel-2_pkg_postinst
