@@ -17,7 +17,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 
 RDEPEND="
-	~app-text/pdfium-7891
+	~app-text/pdfium-7947
 "
 BDEPEND="
 	test? (
@@ -39,10 +39,6 @@ distutils_enable_sphinx docs/source \
 	dev-python/sphinx-issues \
 	dev-python/sphinx-rtd-theme \
 	dev-python/sphinxcontrib-programoutput
-
-EPYTEST_DESELECT=(
-	"tests/test_misc.py::test_const_converters[mapping11-True-items11]"
-)
 
 src_configure() {
 	export PDFIUM_PLATFORM="system-search"
