@@ -8,15 +8,16 @@ HOMEPAGE="https://pdfium.googlesource.com"
 
 inherit git-r3 ninja-utils
 
-CHROMIUM_VERSION="150.0.${PV}.0"
+# Latest chrium version
+CHROMIUM_VERSION="151.0.${PV}.0"
 TEST_FONT="cd96fc55dc243f6c6f4cb63ad117cad6cd48dceb"
 
 EGIT_REPO_URI="https://pdfium.googlesource.com/pdfium.git"
 EGIT_BRANCH="chromium/${PV}"
-EGIT_COMMIT="eee4375737f7647ce69053ae4fc3639c233f2b02"
+EGIT_COMMIT="d3e62278db7489af9e0b686835d1c8aca218c3d7"
 
 SRC_URI="
-	https://raw.githubusercontent.com/chromium/chromium/${CHROMIUM_VERSION}/tools/generate_shim_headers/generate_shim_headers.py
+	https://raw.githubusercontent.com/chromium/chromium/main/tools/generate_shim_headers/generate_shim_headers.py
 	test? ( https://chromium-fonts.storage.googleapis.com/${TEST_FONT} -> chromium-testfonts-${TEST_FONT}.tar.gz )"
 
 LICENSE="BSD"
@@ -61,9 +62,7 @@ src_unpack() {
 	# build
 	EGIT_REPO_URI="${CHROMIUM_REPO}"/chromium/src/build
 	EGIT_CHECKOUT_DIR="${S}"/build
-	#EGIT_COMMIT=$(awk -F\' '$2 == "build_revision" && NF == 5 {print $4}' "${S}"/DEPS)
-	# Force commit which contains the fix for 933b54f7b70357e4aca011d2fef4c258cd4e05d4
-	EGIT_COMMIT=14ad5643a291571dfddea0467961d33fdcb4f450
+	EGIT_COMMIT=$(awk -F\' '$2 == "build_revision" && NF == 5 {print $4}' "${S}"/DEPS)
 	git-r3_src_unpack
 
 	# abseil-cpp
@@ -123,7 +122,6 @@ src_configure() {
 
 	# Define GN build arguments
 	local gn_args=(
-		"clang_use_chrome_plugins=false"
 		"is_clang=false"
 		"use_lld=false"
 		"is_debug=false"
