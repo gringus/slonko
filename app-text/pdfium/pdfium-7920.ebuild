@@ -8,6 +8,7 @@ HOMEPAGE="https://pdfium.googlesource.com"
 
 inherit git-r3 ninja-utils
 
+# Latest chrium version
 CHROMIUM_VERSION="150.0.${PV}.0"
 TEST_FONT="cd96fc55dc243f6c6f4cb63ad117cad6cd48dceb"
 
@@ -16,7 +17,7 @@ EGIT_BRANCH="chromium/${PV}"
 EGIT_COMMIT="2bb2bde1426504e792c84894c6ebc28ca418f499"
 
 SRC_URI="
-	https://raw.githubusercontent.com/chromium/chromium/${CHROMIUM_VERSION}/tools/generate_shim_headers/generate_shim_headers.py
+	https://raw.githubusercontent.com/chromium/chromium/main/tools/generate_shim_headers/generate_shim_headers.py
 	test? ( https://chromium-fonts.storage.googleapis.com/${TEST_FONT} -> chromium-testfonts-${TEST_FONT}.tar.gz )"
 
 LICENSE="BSD"
