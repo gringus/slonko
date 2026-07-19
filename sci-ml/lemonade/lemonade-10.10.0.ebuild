@@ -237,7 +237,7 @@ SRC_URI="
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="systemd +webapp"
+IUSE="systemd +webui"
 RESTRICT="mirror"
 
 RDEPEND="
@@ -259,7 +259,7 @@ BDEPEND="
 	>=dev-cpp/nlohmann_json-3.11.3
 	x11-libs/libdrm
 	virtual/pkgconfig
-	webapp? (
+	webui? (
 		net-libs/nodejs[npm]
 	)
 "
@@ -267,7 +267,7 @@ BDEPEND="
 add_npm_modules() {
 	local module=${1}
 
-	SRC_URI+="webapp? (
+	SRC_URI+="webui? (
 		$(for module; do
 			echo "https://registry.npmjs.org/${module} -> npm-${module%%/*}-${module##*/}"
 		done)
@@ -289,7 +289,7 @@ src_unpack() {
 		--verbose
     )
 
-	if use webapp; then
+	if use webui; then
 		cd "${S}/src/web-app" || die
 		sed -e "s|https://registry.npmjs.org/\([^/]*\)/.*/\(.*\)$|file://${DISTDIR}/npm-\1-\2|" \
 			-i package-lock.json || die
@@ -309,7 +309,7 @@ src_prepare() {
 
 src_configure() {
 	local mycmakeargs=(
-		-DBUILD_WEB_APP=$(usex webapp ON OFF)
+		-DBUILD_WEB_APP=$(usex webui ON OFF)
 		-DBUILD_TAURI_APP=OFF
 		# Workaround for missing cpp-httplib pkgconfig support
 		-DUSE_SYSTEM_HTTPLIB=ON

@@ -10,7 +10,7 @@
 		<remote-id type="github">lemonade-sdk/lemonade</remote-id>
 	</upstream>
 	<use>
-		<flag name="webapp">Build the bundled web application frontend</flag>
+		<flag name="webui">Build the bundled web application frontend</flag>
 		<flag name="systemd">Link against libsystemd for journal log support and install the lemond.service unit file</flag>
 	</use>
 </pkgmetadata>
