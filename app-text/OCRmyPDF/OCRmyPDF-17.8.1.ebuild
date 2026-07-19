@@ -27,7 +27,6 @@ RDEPEND="
 	>=app-text/ghostscript-gpl-9.54
 	>=app-text/pdfminer-20260107[${PYTHON_USEDEP}]
 	>=app-text/tesseract-4.1.1[jpeg,tiff,png,webp]
-	>=dev-python/deprecation-2.1.0[${PYTHON_USEDEP}]
 	>=dev-python/fpdf2-2.8.0[${PYTHON_USEDEP}]
 	>=dev-python/packaging-20[${PYTHON_USEDEP}]
 	>=dev-python/pikepdf-10[${PYTHON_USEDEP}]
@@ -36,6 +35,7 @@ RDEPEND="
 	>=dev-python/pypdfium2-5.0.0[${PYTHON_USEDEP}]
 	>=dev-python/pydantic-2.12.5[${PYTHON_USEDEP}]
 	>=dev-python/rich-13[${PYTHON_USEDEP}]
+	>=dev-python/typing-extensions-4.12[${PYTHON_USEDEP}]
 	>=dev-python/uharfbuzz-0.53.2[${PYTHON_USEDEP}]
 	>=media-gfx/img2pdf-0.5[${PYTHON_USEDEP}]
 "
