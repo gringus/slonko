@@ -241,7 +241,7 @@ IUSE="systemd +webui"
 RESTRICT="mirror"
 
 RDEPEND="
-	>=app-arch/zstd-1.5.5
+	>=app-arch/zstd-1.5.7
 	>=dev-cpp/cpp-httplib-0.26.0
 	>=net-libs/libwebsockets-4.3.3
 	net-libs/mbedtls:3
@@ -316,6 +316,8 @@ src_configure() {
 		-DHTTPLIB_LINK_LIBRARIES=cpp-httplib
 		# We have mbedcrypto-3 instead of mbedcrypto
 		-DMBEDTLS_INCLUDE_DIR=/usr/include/mbedtls3
+		-DMBEDTLS_LIBRARY=/usr/lib64/libmbedtls-3.so
+		-DMBEDX509_LIBRARY=/usr/lib64/libmbedx509-3.so
 		-DMBEDCRYPTO_LIBRARY=/usr/lib64/libmbedcrypto-3.so
 	)
 	cmake_src_configure
