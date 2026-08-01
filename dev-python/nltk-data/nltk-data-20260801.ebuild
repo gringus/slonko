@@ -34,6 +34,7 @@ PACKAGES_ZIP=(
 	corpora/nombank.1.0
 	corpora/omw
 	corpora/omw-1.4
+	corpora/omw-2.0
 	corpora/panlex_swadesh
 	corpora/propbank
 	corpora/reuters
