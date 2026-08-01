@@ -17,7 +17,8 @@ SLOT="0"
 KEYWORDS="~amd64"
 
 DEPEND="
-	<dev-python/django-5.3[${PYTHON_USEDEP}]
+	>=dev-python/django-4.2[${PYTHON_USEDEP}]
+	<dev-python/django-6.1[${PYTHON_USEDEP}]
 "
 BDEPEND="
 	test? (
@@ -27,7 +28,8 @@ BDEPEND="
 
 distutils_enable_tests pytest
 distutils_enable_sphinx docs \
-	dev-python/furo
+	dev-python/furo \
+	dev-python/sphinx-copybutton
 
 pkg_postinst() {
 	optfeature "brotli compression" "app-arch/brotli[python]"
