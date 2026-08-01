@@ -105,6 +105,7 @@ DEPEND="
 		>=dev-python/setproctitle-1.3.4[${PYTHON_USEDEP}]
 		>=dev-python/tantivy-0.26.0[${PYTHON_USEDEP}]
 		>=dev-python/tika-client-0.11.0[${PYTHON_USEDEP}]
+		dev-python/uvloop[${PYTHON_USEDEP}]
 		>=dev-python/watchfiles-1.1.1[${PYTHON_USEDEP}]
 		>=dev-python/whitenoise-6.11[${PYTHON_USEDEP}]
 		>=media-libs/zxing-cpp-3.0.0[python,${PYTHON_USEDEP}]
@@ -123,10 +124,6 @@ DEPEND="
 "
 RDEPEND="${DEPEND}"
 
-PATCHES=(
-	"${FILESDIR}/channels-4.2.patch"
-)
-
 DOCS=( docker/rootfs/etc/ImageMagick-6/paperless-policy.xml )
 
 src_prepare() {
@@ -143,9 +140,9 @@ src_prepare() {
 	cat >> "paperless.conf" <<- EOF
 
 	# Custom
-	GRANIAN_HOST=127.0.0.1
-	GRANIAN_PORT=8000
-	GRANIAN_WORKERS=1
+	# PAPERLESS_BIND_ADDR=::
+	# PAPERLESS_PORT=8000
+	# PAPERLESS_WEBSERVER_WORKERS=1
 
 	PAPERLESS_AUDIT_LOG_ENABLED=$(use audit && echo true || echo false)
 	# See https://github.com/paperless-ngx/paperless-ngx/discussions/9920

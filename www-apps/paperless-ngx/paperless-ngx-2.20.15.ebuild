@@ -115,7 +115,6 @@ DEPEND="
 RDEPEND="${DEPEND}"
 
 PATCHES=(
-	"${FILESDIR}/channels-4.2.patch"
 	"${FILESDIR}/ocrmypdf-17.patch"
 )
 
@@ -133,12 +132,10 @@ src_prepare() {
 		-i "paperless.conf" || die "Cannot update paperless.conf"
 
 	cat >> "paperless.conf" <<- EOF
-
 	# Custom
-	GRANIAN_HOST=127.0.0.1
-	GRANIAN_PORT=8000
-
-	GRANIAN_WORKERS=1
+	# PAPERLESS_BIND_ADDR=::
+	# PAPERLESS_PORT=8000
+	# PAPERLESS_WEBSERVER_WORKERS=1
 
 	PAPERLESS_ENABLE_COMPRESSION=$(use compression && echo true || echo false)
 	PAPERLESS_AUDIT_LOG_ENABLED=$(use audit && echo true || echo false)

@@ -8,10 +8,22 @@ PartOf=paperless.target
 [Service]
 User=paperless
 Group=paperless
-Environment=PYTHONUNBUFFERED=1
 EnvironmentFile=/etc/paperless.conf
+Environment=PYTHONUNBUFFERED=1
+Environment=GRANIAN_HOST=::
+Environment=GRANIAN_PORT=8000
+Environment=GRANIAN_WORKERS=1
 WorkingDirectory=/usr/share/paperless/src
-ExecStart=granian --interface asginl --ws paperless.asgi:application
+ExecStart=/bin/sh -c '\
+  # Host: GRANIAN_HOST -> PAPERLESS_BIND_ADDR -> default \
+  [ -n "$PAPERLESS_BIND_ADDR" ] && export GRANIAN_HOST=$PAPERLESS_BIND_ADDR; \
+  # Port: GRANIAN_PORT -> PAPERLESS_PORT -> default \
+  [ -n "$PAPERLESS_PORT" ] && export GRANIAN_PORT=$PAPERLESS_PORT; \
+  # Workers: GRANIAN_WORKERS -> PAPERLESS_WEBSERVER_WORKERS -> default \
+  [ -n "$PAPERLESS_WEBSERVER_WORKERS" ] && export GRANIAN_WORKERS=$PAPERLESS_WEBSERVER_WORKERS; \
+  # URL path prefix: only set if PAPERLESS_FORCE_SCRIPT_NAME exists \
+  [ -n "$PAPERLESS_FORCE_SCRIPT_NAME" ] && export GRANIAN_URL_PATH_PREFIX=$PAPERLESS_FORCE_SCRIPT_NAME; \
+  exec granian --interface asginl --ws --loop uvloop "paperless.asgi:application"'
 Restart=on-abort
 
 [Install]
