@@ -19,8 +19,10 @@ SLOT="0"
 KEYWORDS="~amd64"
 
 RDEPEND="
-	>=dev-python/anyio-4.8[${PYTHON_USEDEP}]
-	>=dev-python/httpx-0.27[${PYTHON_USEDEP}]
+	>=dev-python/anyio-4.12[${PYTHON_USEDEP}]
+	<dev-python/anyio-5[${PYTHON_USEDEP}]
+	>=dev-python/httpx-0.28[${PYTHON_USEDEP}]
+	<dev-python/httpx-1.0[${PYTHON_USEDEP}]
 	dev-python/typing-extensions[${PYTHON_USEDEP}]
 "
 DEPEND="${RDEPEND}"
