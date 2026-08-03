@@ -1,0 +1,251 @@
+# Copyright 1999-2026 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+EAPI=8
+
+CARGO_OPTIONAL=yes
+DISTUTILS_EXT=1
+DISTUTILS_USE_PEP517=maturin
+PYTHON_COMPAT=( python3_{10..14} )
+RUST_MIN_VER=1.95
+
+CRATES="
+	aead@0.6.1
+	aes-gcm@0.11.0
+	aes@0.9.2
+	anyhow@1.0.104
+	arc-swap@1.9.2
+	atomic-waker@1.1.2
+	base64@0.22.1
+	base64ct@1.8.3
+	bitflags@2.13.1
+	block-buffer@0.12.1
+	block-padding@0.4.2
+	bytes@1.12.1
+	cbc@0.2.1
+	cc@1.4.0
+	cfg-if@1.0.4
+	chacha20@0.10.1
+	ciborium-io@0.2.2
+	ciborium-ll@0.2.2
+	ciborium@0.2.2
+	cipher@0.5.2
+	cmov@0.5.4
+	const-oid@0.10.2
+	cpubits@0.1.1
+	cpufeatures@0.3.0
+	crossbeam-channel@0.5.16
+	crossbeam-utils@0.8.22
+	crunchy@0.2.4
+	crypto-common@0.2.2
+	ctr@0.10.1
+	ctutils@0.4.2
+	data-encoding@2.11.0
+	der@0.8.1
+	digest@0.11.3
+	dispatch2@0.3.1
+	doctest-file@1.1.1
+	either@1.17.0
+	encoding_rs@0.8.35
+	equivalent@1.0.2
+	errno@0.3.14
+	find-msvc-tools@0.1.9
+	fnv@1.0.7
+	futures-channel@0.3.33
+	futures-core@0.3.33
+	futures-executor@0.3.33
+	futures-io@0.3.33
+	futures-macro@0.3.33
+	futures-sink@0.3.33
+	futures-task@0.3.33
+	futures-util@0.3.33
+	futures@0.3.33
+	getrandom@0.2.17
+	getrandom@0.4.3
+	ghash@0.6.0
+	h2@0.4.15
+	half@2.7.1
+	hashbrown@0.17.1
+	heck@0.5.0
+	hmac@0.13.0
+	http-body-util@0.1.4
+	http-body@1.1.0
+	http@1.5.0
+	httparse@1.10.1
+	httpdate@1.0.3
+	hybrid-array@0.4.14
+	hyper-util@0.1.20
+	hyper@1.11.0
+	indexmap@2.14.0
+	inout@0.2.2
+	itertools@0.15.0
+	itoa@1.0.18
+	libc@0.2.189
+	libmimalloc-sys@0.1.49
+	lock_api@0.4.14
+	log@0.4.33
+	memchr@2.8.3
+	mimalloc@0.1.52
+	mime@0.3.17
+	mime_guess@2.0.5
+	mio@1.2.2
+	ntapi@0.4.3
+	objc2-core-foundation@0.3.2
+	objc2-encode@4.1.0
+	objc2-foundation@0.3.2
+	objc2-io-kit@0.3.2
+	objc2-open-directory@0.3.2
+	objc2@0.6.4
+	once_cell@1.21.4
+	parking_lot@0.12.5
+	parking_lot_core@0.9.12
+	pbkdf2@0.13.0
+	pem@3.0.6
+	percent-encoding@2.3.2
+	pin-project-lite@0.2.17
+	pkcs5@0.8.1
+	pkcs8@0.11.0
+	polyval@0.7.3
+	portable-atomic@1.14.0
+	proc-macro2@1.0.107
+	pyo3-build-config@0.29.0
+	pyo3-ffi@0.29.0
+	pyo3-log@0.13.4
+	pyo3-macros-backend@0.29.0
+	pyo3-macros@0.29.0
+	pyo3@0.29.0
+	quote@1.0.47
+	r-efi@6.0.0
+	rand@0.10.2
+	rand_core@0.10.1
+	recvmsg@1.0.0
+	redox_syscall@0.5.18
+	ring@0.17.14
+	rustls-pemfile@2.2.0
+	rustls-pki-types@1.15.1
+	rustls-webpki@0.103.13
+	rustls@0.23.43
+	rustversion@1.0.23
+	salsa20@0.11.0
+	scopeguard@1.2.0
+	scrypt@0.12.0
+	serde@1.0.229
+	serde_core@1.0.229
+	serde_derive@1.0.229
+	sha1@0.11.0
+	sha2@0.11.0
+	shlex@2.0.1
+	signal-hook-registry@1.4.8
+	slab@0.4.12
+	smallvec@1.15.2
+	socket2@0.6.5
+	spki@0.8.0
+	subtle@2.6.1
+	syn@2.0.119
+	syn@3.0.3
+	sysinfo@0.39.6
+	target-lexicon@0.13.5
+	thiserror-impl@2.0.19
+	thiserror@2.0.19
+	tikv-jemalloc-sys@0.7.1+5.3.1-0-g81034ce1f1373e37dc865038e1bc8eeecf559ce8
+	tikv-jemallocator@0.7.0
+	tokio-macros@2.7.2
+	tokio-rustls@0.26.4
+	tokio-stream@0.1.19
+	tokio-tungstenite@0.30.0
+	tokio-util@0.7.19
+	tokio@1.53.1
+	tracing-core@0.1.36
+	tracing@0.1.44
+	tungstenite@0.30.0
+	typenum@1.20.1
+	unicase@2.9.0
+	unicode-ident@1.0.24
+	universal-hash@0.6.1
+	untrusted@0.9.0
+	wasi@0.11.1+wasi-snapshot-preview1
+	widestring@1.2.1
+	winapi-i686-pc-windows-gnu@0.4.0
+	winapi-x86_64-pc-windows-gnu@0.4.0
+	winapi@0.3.9
+	windows-collections@0.3.2
+	windows-core@0.62.2
+	windows-future@0.3.2
+	windows-implement@0.60.2
+	windows-interface@0.59.3
+	windows-link@0.2.1
+	windows-numerics@0.3.1
+	windows-result@0.4.1
+	windows-strings@0.5.1
+	windows-sys@0.52.0
+	windows-sys@0.61.2
+	windows-targets@0.52.6
+	windows-threading@0.2.1
+	windows@0.62.2
+	windows_aarch64_gnullvm@0.52.6
+	windows_aarch64_msvc@0.52.6
+	windows_i686_gnu@0.52.6
+	windows_i686_gnullvm@0.52.6
+	windows_i686_msvc@0.52.6
+	windows_x86_64_gnu@0.52.6
+	windows_x86_64_gnullvm@0.52.6
+	windows_x86_64_msvc@0.52.6
+	zerocopy-derive@0.8.55
+	zerocopy@0.8.55
+	zeroize@1.9.0
+"
+
+declare -A GIT_CRATES=(
+	[interprocess]='https://github.com/kotauskas/interprocess;44351c4fe88c72ead4f3b0b762c4cf45beb90841;interprocess-%commit%'
+	[tls-listener]='https://github.com/gi0baro/tls-listener;28d8a48209466324343d133414ea9af218faebb3;tls-listener-%commit%'
+)
+
+inherit cargo distutils-r1 pypi
+
+DESCRIPTION="A Rust HTTP server for Python applications"
+HOMEPAGE="
+	https://github.com/emmett-framework/granian
+	https://pypi.org/project/granian/
+"
+SRC_URI+="
+	${CARGO_CRATE_URIS}
+"
+LICENSE="BSD"
+# Dependent crate licenses
+LICENSE+="
+	0BSD Apache-2.0 Apache-2.0-with-LLVM-exceptions BSD ISC MIT
+	Unicode-3.0
+"
+SLOT="0"
+KEYWORDS="~amd64"
+
+DOCS=( README.md )
+
+RDEPEND="
+	>=dev-python/click-8.1.0[${PYTHON_USEDEP}]
+"
+DEPEND="
+	${RDEPEND}
+"
+
+BDEPEND="
+	${RUST_DEPEND}
+	>=dev-util/maturin-1.14.0[${PYTHON_USEDEP}]
+	test? (
+		>=dev-python/httpx-0.28[${PYTHON_USEDEP}]
+		>=dev-python/sniffio-1.3[${PYTHON_USEDEP}]
+		>=dev-python/websockets-16.0[${PYTHON_USEDEP}]
+	)
+"
+
+EPYTEST_PLUGINS=( pytest-asyncio )
+distutils_enable_tests pytest
+
+src_unpack() {
+	cargo_src_unpack
+}
+
+python_test() {
+	rm -rf granian || die
+	epytest
+}
