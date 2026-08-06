@@ -311,9 +311,6 @@ src_configure() {
 	local mycmakeargs=(
 		-DBUILD_WEB_APP=$(usex webui ON OFF)
 		-DBUILD_TAURI_APP=OFF
-		# Workaround for missing cpp-httplib pkgconfig support
-		-DUSE_SYSTEM_HTTPLIB=ON
-		-DHTTPLIB_LINK_LIBRARIES=cpp-httplib
 		# We have mbedcrypto-3 instead of mbedcrypto
 		-DMBEDTLS_INCLUDE_DIR=/usr/include/mbedtls3
 		-DMBEDTLS_LIBRARY=/usr/lib64/libmbedtls-3.so
