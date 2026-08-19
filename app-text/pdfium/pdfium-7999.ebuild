@@ -9,12 +9,12 @@ HOMEPAGE="https://pdfium.googlesource.com"
 inherit git-r3 ninja-utils
 
 # Latest chrium version
-CHROMIUM_VERSION="150.0.${PV}.0"
+CHROMIUM_VERSION="151.0.${PV}.0"
 TEST_FONT="cd96fc55dc243f6c6f4cb63ad117cad6cd48dceb"
 
 EGIT_REPO_URI="https://pdfium.googlesource.com/pdfium.git"
 EGIT_BRANCH="chromium/${PV}"
-EGIT_COMMIT="2bb2bde1426504e792c84894c6ebc28ca418f499"
+EGIT_COMMIT="e9fc01804a0c5224ea780ad782abb8cfede628ef"
 
 SRC_URI="
 	https://raw.githubusercontent.com/chromium/chromium/main/tools/generate_shim_headers/generate_shim_headers.py
@@ -62,9 +62,7 @@ src_unpack() {
 	# build
 	EGIT_REPO_URI="${CHROMIUM_REPO}"/chromium/src/build
 	EGIT_CHECKOUT_DIR="${S}"/build
-	#EGIT_COMMIT=$(awk -F\' '$2 == "build_revision" && NF == 5 {print $4}' "${S}"/DEPS)
-	# Force commit which contains the fix for 933b54f7b70357e4aca011d2fef4c258cd4e05d4
-	EGIT_COMMIT=14ad5643a291571dfddea0467961d33fdcb4f450
+	EGIT_COMMIT=$(awk -F\' '$2 == "build_revision" && NF == 5 {print $4}' "${S}"/DEPS)
 	git-r3_src_unpack
 
 	# abseil-cpp
