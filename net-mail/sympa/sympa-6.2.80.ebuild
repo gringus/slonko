@@ -37,9 +37,9 @@ ACCT_DEPEND="
 "
 RDEPEND="
 	${ACCT_DEPEND}
-	>=dev-lang/perl-5.8
+	>=dev-lang/perl-5.26
 	>=dev-perl/CGI-3.51
-	>=dev-perl/Archive-Zip-1.05
+	>=dev-perl/Archive-Zip-SimpleZip-0.024
 	>=dev-perl/Class-Singleton-1.03
 	>=dev-perl/Data-Password-1.07
 	>=dev-perl/DateTime-Format-Mail-0.28
@@ -62,7 +62,9 @@ RDEPEND="
 	>=dev-perl/Term-ProgressBar-2.09
 	>=dev-perl/Unicode-LineBreak-2011.05
 	>=dev-perl/Unicode-CaseFold-0.02
+	>=dev-perl/Unicode-UTF8-0.60
 	>=dev-perl/URI-1.35
+	>=dev-perl/URI-Find-20160806
 	>=dev-perl/XML-LibXML-1.70
 	>=dev-perl/libintl-perl-1.20
 	dev-perl/libwww-perl
