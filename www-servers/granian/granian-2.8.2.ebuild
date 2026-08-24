@@ -11,7 +11,7 @@ RUST_MIN_VER=1.95
 
 CRATES="
 	aead@0.6.1
-	aes-gcm@0.11.0
+	aes-gcm@0.11.1
 	aes@0.9.2
 	anyhow@1.0.104
 	arc-swap@1.9.2
@@ -23,7 +23,7 @@ CRATES="
 	block-padding@0.4.2
 	bytes@1.12.1
 	cbc@0.2.1
-	cc@1.4.0
+	cc@1.4.4
 	cfg-if@1.0.4
 	chacha20@0.10.1
 	ciborium-io@0.2.2
@@ -40,35 +40,35 @@ CRATES="
 	crypto-common@0.2.2
 	ctr@0.10.1
 	ctutils@0.4.2
-	data-encoding@2.11.0
+	data-encoding@2.11.1
 	der@0.8.1
 	digest@0.11.3
 	dispatch2@0.3.1
 	doctest-file@1.1.1
-	either@1.17.0
+	either@1.18.0
 	encoding_rs@0.8.35
 	equivalent@1.0.2
 	errno@0.3.14
-	find-msvc-tools@0.1.9
+	find-msvc-tools@0.1.11
 	fnv@1.0.7
-	futures-channel@0.3.33
-	futures-core@0.3.33
-	futures-executor@0.3.33
-	futures-io@0.3.33
-	futures-macro@0.3.33
-	futures-sink@0.3.33
-	futures-task@0.3.33
-	futures-util@0.3.33
-	futures@0.3.33
+	futures-channel@0.3.34
+	futures-core@0.3.34
+	futures-executor@0.3.34
+	futures-io@0.3.34
+	futures-macro@0.3.34
+	futures-sink@0.3.34
+	futures-task@0.3.34
+	futures-util@0.3.34
+	futures@0.3.34
 	getrandom@0.2.17
 	getrandom@0.4.3
 	ghash@0.6.0
-	h2@0.4.15
+	h2@0.4.18
 	half@2.7.1
 	hashbrown@0.17.1
 	heck@0.5.0
 	hmac@0.13.0
-	http-body-util@0.1.4
+	http-body-util@0.1.5
 	http-body@1.1.0
 	http@1.5.0
 	httparse@1.10.1
@@ -83,7 +83,7 @@ CRATES="
 	libc@0.2.189
 	libmimalloc-sys@0.1.49
 	lock_api@0.4.14
-	log@0.4.33
+	log@0.4.34
 	memchr@2.8.3
 	mimalloc@0.1.52
 	mime@0.3.17
@@ -106,14 +106,14 @@ CRATES="
 	pkcs5@0.8.1
 	pkcs8@0.11.0
 	polyval@0.7.3
-	portable-atomic@1.14.0
+	portable-atomic@1.15.0
 	proc-macro2@1.0.107
-	pyo3-build-config@0.29.0
-	pyo3-ffi@0.29.0
+	pyo3-build-config@0.29.2
+	pyo3-ffi@0.29.2
 	pyo3-log@0.13.4
-	pyo3-macros-backend@0.29.0
-	pyo3-macros@0.29.0
-	pyo3@0.29.0
+	pyo3-macros-backend@0.29.2
+	pyo3-macros@0.29.2
+	pyo3@0.29.2
 	quote@1.0.47
 	r-efi@6.0.0
 	rand@0.10.2
@@ -123,7 +123,7 @@ CRATES="
 	ring@0.17.14
 	rustls-pemfile@2.2.0
 	rustls-pki-types@1.15.1
-	rustls-webpki@0.103.13
+	rustls-webpki@0.103.15
 	rustls@0.23.43
 	rustversion@1.0.23
 	salsa20@0.11.0
@@ -145,8 +145,8 @@ CRATES="
 	syn@3.0.3
 	sysinfo@0.39.6
 	target-lexicon@0.13.5
-	thiserror-impl@2.0.19
-	thiserror@2.0.19
+	thiserror-impl@2.0.20
+	thiserror@2.0.20
 	tikv-jemalloc-sys@0.7.1+5.3.1-0-g81034ce1f1373e37dc865038e1bc8eeecf559ce8
 	tikv-jemallocator@0.7.0
 	tokio-macros@2.7.2
@@ -190,8 +190,8 @@ CRATES="
 	windows_x86_64_gnu@0.52.6
 	windows_x86_64_gnullvm@0.52.6
 	windows_x86_64_msvc@0.52.6
-	zerocopy-derive@0.8.55
-	zerocopy@0.8.55
+	zerocopy-derive@0.8.56
+	zerocopy@0.8.56
 	zeroize@1.9.0
 "
 
