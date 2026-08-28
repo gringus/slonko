@@ -1,0 +1,6 @@
+# Username
+TAPO_EMAIL=""
+# Password
+TAPO_PASSWORD=""
+# Config location
+TAPO_CONFIG_LOCATION="/etc/go-tapo-exporter/config.json"
