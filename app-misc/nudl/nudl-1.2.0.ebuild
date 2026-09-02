@@ -7,113 +7,114 @@ RUST_MIN_VER=1.88
 
 CRATES="
 	adler2@2.0.1
-	aes@0.9.1
-	aho-corasick@1.1.4
+	aes@0.9.3
+	aho-corasick@1.1.5
 	ambient-authority@0.0.2
 	anstream@1.0.0
 	anstyle-parse@1.0.0
+	anstyle-progress@0.1.4
 	anstyle-query@1.1.5
 	anstyle-wincon@3.0.11
 	anstyle@1.0.14
 	anyhow@1.0.104
 	atomic-waker@1.1.2
 	base64@0.22.1
-	base64@0.23.0
+	base64@0.23.1
 	bitflags@1.3.2
 	bitflags@2.13.1
 	block-padding@0.4.2
 	bumpalo@3.20.3
 	bytes@1.12.1
-	cap-primitives@4.0.2
-	cap-std@4.0.2
+	cap-primitives@4.0.3
+	cap-std@4.0.3
 	cbc@0.2.1
-	cc@1.4.0
+	cc@1.4.4
 	cfg-if@1.0.4
 	cipher@0.5.2
-	clap@4.6.4
-	clap_builder@4.6.2
+	clap@4.6.6
+	clap_builder@4.6.6
 	clap_derive@4.6.4
 	clap_lex@1.1.0
 	colorchoice@1.0.5
-	combine@4.6.7
+	combine@4.6.8
 	console@0.16.4
 	core-foundation-sys@0.8.7
 	core-foundation@0.10.1
 	cpubits@0.1.1
-	cpufeatures@0.3.0
-	crc32fast@1.5.0
+	cpufeatures@0.3.1
+	crc32fast@1.5.1
 	crypto-common@0.2.2
 	defmt-macros@1.1.1
 	defmt-parser@1.0.0
 	defmt@1.1.1
-	displaydoc@0.2.6
+	displaydoc@0.2.7
 	encode_unicode@1.0.0
 	encoding_rs@0.8.35
 	equivalent@1.0.2
 	errno@0.3.14
-	find-msvc-tools@0.1.9
-	flate2@1.1.9
+	find-msvc-tools@0.1.11
+	flate2@1.1.10
 	fnv@1.0.7
 	form_urlencoded@1.2.2
 	fs-set-times@0.20.3
-	futures-channel@0.3.33
-	futures-core@0.3.33
-	futures-io@0.3.33
-	futures-macro@0.3.33
-	futures-sink@0.3.33
-	futures-task@0.3.33
-	futures-util@0.3.33
+	futures-channel@0.3.34
+	futures-core@0.3.34
+	futures-io@0.3.34
+	futures-macro@0.3.34
+	futures-sink@0.3.34
+	futures-task@0.3.34
+	futures-util@0.3.34
 	getrandom@0.2.17
-	h2@0.4.15
+	h2@0.4.19
 	hashbrown@0.17.1
 	heck@0.5.0
 	hex-literal@1.1.0
-	http-body-util@0.1.4
+	http-body-util@0.1.5
 	http-body@1.1.0
-	http@1.4.2
+	http@1.5.0
 	httparse@1.10.1
-	hybrid-array@0.4.13
+	hybrid-array@0.4.14
 	hyper-rustls@0.27.9
 	hyper-util@0.1.20
-	hyper@1.11.0
-	icu_collections@2.2.0
-	icu_locale_core@2.2.0
-	icu_normalizer@2.2.0
-	icu_normalizer_data@2.2.0
-	icu_properties@2.2.0
-	icu_properties_data@2.2.0
-	icu_provider@2.2.0
+	hyper@1.11.1
+	icu_collections@2.3.0
+	icu_locale_core@2.3.0
+	icu_normalizer@2.3.0
+	icu_normalizer_data@2.3.0
+	icu_properties@2.3.0
+	icu_properties_data@2.3.0
+	icu_provider@2.3.1
 	idna@1.1.0
 	idna_adapter@1.2.2
-	indexmap@2.14.0
+	indexmap@2.14.1
 	indicatif@0.18.6
 	inout@0.2.2
 	io-extras@0.19.0
 	io-lifetimes@2.0.4
 	io-lifetimes@3.0.1
-	ipnet@2.12.0
+	ipnet@2.12.1
 	is_terminal_polyfill@1.70.2
 	itoa@1.0.18
 	jiff-core@0.1.0
-	jiff-static@0.2.34
+	jiff-static@0.2.35
 	jiff-tzdb-platform@0.1.3
 	jiff-tzdb@0.1.8
-	jiff@0.2.34
+	jiff@0.2.35
 	jni-macros@0.22.4
 	jni-sys-macros@0.4.1
 	jni-sys@0.4.1
 	jni@0.22.4
-	js-sys@0.3.103
+	js-sys@0.3.104
 	lazy_static@1.5.0
 	libc@0.2.189
 	linux-raw-sys@0.12.1
-	litemap@0.8.2
+	litemap@0.8.3
 	lock_api@0.4.14
-	log@0.4.33
+	log@0.4.34
 	maybe-owned@0.3.4
 	memchr@2.8.3
 	mime@0.3.17
-	miniz_oxide@0.8.9
+	miniz_oxide@0.9.1
 	mio@1.2.2
 	nu-ansi-term@0.50.3
 	once_cell@1.21.4
@@ -124,13 +125,13 @@ CRATES="
 	percent-encoding@2.3.2
 	pin-project-lite@0.2.17
 	portable-atomic-util@0.2.7
-	portable-atomic@1.14.0
-	potential_utf@0.1.5
+	portable-atomic@1.15.0
+	potential_utf@0.1.6
 	proc-macro2@1.0.107
 	quote@1.0.47
 	rawzip@0.5.1
 	redox_syscall@0.5.18
-	regex-automata@0.4.16
+	regex-automata@0.4.18
 	regex-syntax@0.8.11
 	regex@1.13.1
 	reqwest@0.13.4
@@ -142,8 +143,8 @@ CRATES="
 	rustls-pki-types@1.15.1
 	rustls-platform-verifier-android@0.1.1
 	rustls-platform-verifier@0.7.0
-	rustls-webpki@0.103.13
-	rustls@0.23.42
+	rustls-webpki@0.103.15
+	rustls@0.23.43
 	rustversion@1.0.23
 	same-file@1.0.6
 	schannel@0.1.29
@@ -162,27 +163,27 @@ CRATES="
 	simd_cesu8@1.2.0
 	simdutf8@0.1.5
 	slab@0.4.12
-	smallvec@1.15.2
+	smallvec@1.16.0
 	socket2@0.6.5
 	stable_deref_trait@1.2.1
 	strsim@0.11.1
 	subtle@2.6.1
 	syn@2.0.119
-	syn@3.0.3
+	syn@3.0.4
 	sync_wrapper@1.0.2
 	synstructure@0.13.2
-	thiserror-impl@2.0.19
-	thiserror@2.0.19
+	thiserror-impl@2.0.20
+	thiserror@2.0.20
 	thread_local@1.1.10
-	tinystr@0.8.3
-	tokio-macros@2.7.1
+	tinystr@0.8.4
+	tokio-macros@2.7.2
 	tokio-rustls@0.26.4
 	tokio-stream@0.1.19
 	tokio-util@0.7.19
 	tokio@1.53.1
 	toml_datetime@1.1.1+spec-1.1.0
 	toml_edit@0.25.13+spec-1.1.0
-	toml_parser@1.1.2+spec-1.1.0
+	toml_parser@1.1.3+spec-1.1.0
 	toml_writer@1.1.2+spec-1.1.0
 	tower-http@0.6.11
 	tower-layer@0.3.3
@@ -207,13 +208,13 @@ CRATES="
 	walkdir@2.5.0
 	want@0.3.1
 	wasi@0.11.1+wasi-snapshot-preview1
-	wasm-bindgen-futures@0.4.76
-	wasm-bindgen-macro-support@0.2.126
-	wasm-bindgen-macro@0.2.126
-	wasm-bindgen-shared@0.2.126
-	wasm-bindgen@0.2.126
+	wasm-bindgen-futures@0.4.77
+	wasm-bindgen-macro-support@0.2.127
+	wasm-bindgen-macro@0.2.127
+	wasm-bindgen-shared@0.2.127
+	wasm-bindgen@0.2.127
 	wasm-streams@0.5.0
-	web-sys@0.3.103
+	web-sys@0.3.104
 	web-time@1.1.0
 	webpki-root-certs@1.0.9
 	winapi-util@0.1.11
@@ -242,16 +243,16 @@ CRATES="
 	windows_x86_64_msvc@0.53.1
 	winnow@1.0.4
 	winx@0.36.4
-	writeable@0.6.3
+	writeable@0.6.4
 	yoke-derive@0.8.2
 	yoke@0.8.3
 	zerofrom-derive@0.1.7
 	zerofrom@0.1.8
 	zeroize@1.9.0
-	zerotrie@0.2.4
-	zerovec-derive@0.11.3
-	zerovec@0.11.6
-	zlib-rs@0.6.6
+	zerotrie@0.2.5
+	zerovec-derive@0.11.6
+	zerovec@0.11.8
+	zlib-rs@0.6.7
 	zmij@1.0.23
 "
 
