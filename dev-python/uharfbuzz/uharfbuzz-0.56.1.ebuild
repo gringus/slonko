@@ -27,6 +27,9 @@ BDEPEND="
 
 EPYTEST_PLUGINS=( )
 distutils_enable_tests pytest
+distutils_enable_sphinx docs/source \
+	dev-python/myst-parser \
+	dev-python/sphinx-rtd-theme
 
 python_prepare_all() {
 	distutils-r1_python_prepare_all
