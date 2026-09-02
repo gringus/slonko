@@ -8,7 +8,7 @@ DISTUTILS_USE_PEP517=setuptools
 DISTUTILS_EXT=1
 inherit distutils-r1
 
-MY_HB="harfbuzz-14.3.0"
+MY_HB="harfbuzz-14.4.0"
 DESCRIPTION="Streamlined Cython bindings for the HarfBuzz shaping engine"
 HOMEPAGE="https://github.com/harfbuzz/uharfbuzz"
 SRC_URI="
