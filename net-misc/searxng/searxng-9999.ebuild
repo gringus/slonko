@@ -70,6 +70,20 @@ src_prepare() {
 		tests/unit/test_utils.py || die
 }
 
+src_compile() {
+	# importing searx at build time runs init_settings(), which would read the
+	# live /etc/searxng/settings.yml and fail when portage can't; use a stub
+	export SEARXNG_SETTINGS_PATH="${T}/settings.yml"
+	echo "use_default_settings: true" > "${SEARXNG_SETTINGS_PATH}" || die
+	distutils-r1_src_compile
+}
+
+src_test() {
+	export SEARXNG_SETTINGS_PATH="${T}/settings.yml"
+	[[ -e ${SEARXNG_SETTINGS_PATH} ]] || echo "use_default_settings: true" > "${SEARXNG_SETTINGS_PATH}" || die
+	distutils-r1_src_test
+}
+
 src_install() {
 	distutils-r1_src_install
 
