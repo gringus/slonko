@@ -1,0 +1,6 @@
+# SearXNG service configuration (sourced by the systemd unit)
+
+#SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml
+GRANIAN_HOST=::
+GRANIAN_PORT=8888
+GRANIAN_WORKERS=1

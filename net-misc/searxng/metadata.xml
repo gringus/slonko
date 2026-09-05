@@ -5,6 +5,9 @@
 		<email>marcin.deranek@slonko.net</email>
 		<name>Marcin Deranek</name>
 	</maintainer>
+	<use>
+		<flag name="granian">Serve via <pkg>www-servers/granian</pkg> instead of searxng-run</flag>
+	</use>
 	<upstream>
 		<bugs-to>https://github.com/searxng/searxng/issues</bugs-to>
 		<remote-id type="github">searxng/searxng</remote-id>

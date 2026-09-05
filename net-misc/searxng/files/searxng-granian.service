@@ -1,0 +1,16 @@
+[Unit]
+Description=SearXNG metasearch engine (granian)
+After=network.target
+
+[Service]
+Type=simple
+User=searxng
+Group=searxng
+WorkingDirectory=/var/lib/searxng
+EnvironmentFile=-/etc/conf.d/searxng
+ExecStart=/usr/bin/granian --interface wsgi searx.webapp:app
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

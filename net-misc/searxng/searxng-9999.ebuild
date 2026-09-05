@@ -16,10 +16,12 @@ HOMEPAGE="https://docs.searxng.org/"
 
 LICENSE="AGPL-3+"
 SLOT="0"
+IUSE="granian"
 
 RDEPEND="
 	acct-group/searxng
 	acct-user/searxng
+	granian? ( $(python_gen_cond_dep 'www-servers/granian[${PYTHON_USEDEP}]') )
 
 	$(python_gen_cond_dep '
 		dev-python/certifi[${PYTHON_USEDEP}]
@@ -71,5 +73,10 @@ src_prepare() {
 src_install() {
 	distutils-r1_src_install
 
-	systemd_dounit "${FILESDIR}/searxng.service"
+	if use granian; then
+		newconfd "${FILESDIR}/searxng.confd" searxng
+		systemd_newunit "${FILESDIR}/searxng-granian.service" searxng.service
+	else
+		systemd_dounit "${FILESDIR}/searxng.service"
+	fi
 }
