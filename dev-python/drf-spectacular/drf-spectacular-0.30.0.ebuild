@@ -20,7 +20,7 @@ RESTRICT="!test? ( test )"
 
 RDEPEND="
 	>=dev-python/django-2.2[${PYTHON_USEDEP}]
-	<dev-python/django-6.0[${PYTHON_USEDEP}]
+	<dev-python/django-6.1[${PYTHON_USEDEP}]
 	>=dev-python/djangorestframework-3.10.3[${PYTHON_USEDEP}]
 	>=dev-python/inflection-0.3.1[${PYTHON_USEDEP}]
 	>=dev-python/jsonschema-2.6.0[${PYTHON_USEDEP}]
@@ -49,8 +49,6 @@ EPYTEST_IGNORE=(
 	tests/contrib/test_oauth_toolkit.py
 	# Requires django-rest-knox
 	tests/contrib/test_knox_auth_token.py
-	# Requires django-rest-polymorphic
-	tests/contrib/test_rest_polymorphic.py
 	# Requires djangorestframework-simplejwt
 	tests/contrib/test_simplejwt.py
 	# Requires djangorestframework-camel-case
@@ -61,8 +59,6 @@ EPYTEST_IGNORE=(
 	tests/contrib/test_rest_framework_gis.py
 	# Requires djangorestframework-recursive
 	tests/contrib/test_rest_framework_recursive.py
-	# Requires drf-jwt
-	tests/contrib/test_drf_jwt.py
 	# Requires drf-nested-routers
 	tests/contrib/test_drf_nested_routers.py
 )
