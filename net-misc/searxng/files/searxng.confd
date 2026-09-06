@@ -1,6 +1,8 @@
 # SearXNG service configuration (sourced by the systemd unit)
 
 #SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml
-GRANIAN_HOST=::
+
+# granian options (picked up automatically via the GRANIAN_ prefix)
+GRANIAN_HOST=127.0.0.1
 GRANIAN_PORT=8888
 GRANIAN_WORKERS=1

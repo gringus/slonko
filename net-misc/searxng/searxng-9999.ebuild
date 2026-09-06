@@ -87,10 +87,26 @@ src_test() {
 src_install() {
 	distutils-r1_src_install
 
+	insinto /etc/searxng
+	newins "${FILESDIR}/settings.yml" settings.yml
+	fowners root:searxng /etc/searxng/settings.yml
+	fperms 0640 /etc/searxng/settings.yml
+
 	if use granian; then
 		newconfd "${FILESDIR}/searxng.confd" searxng
 		systemd_newunit "${FILESDIR}/searxng-granian.service" searxng.service
 	else
 		systemd_dounit "${FILESDIR}/searxng.service"
+	fi
+}
+
+pkg_postinst() {
+	# searxng refuses to start with the shipped placeholder secret key
+	local f="/etc/searxng/settings.yml"
+	if grep -q '^  secret_key: ultrasecretkey' "${f}" 2>/dev/null; then
+		local secret="$(tr -dc A-Za-z0-9 </dev/urandom | head -c 16)"
+		sed -i "s|^  secret_key: ultrasecretkey.*|  secret_key: \"${secret}\"|" "${f}" || die
+		chown root:searxng "${f}"  # sed -i creates a fresh file
+		chmod 0640 "${f}"
 	fi
 }
