@@ -16,9 +16,7 @@ EGIT_REPO_URI="https://pdfium.googlesource.com/pdfium.git"
 EGIT_BRANCH="chromium/${PV}"
 EGIT_COMMIT="e9fc01804a0c5224ea780ad782abb8cfede628ef"
 
-SRC_URI="
-	https://raw.githubusercontent.com/chromium/chromium/main/tools/generate_shim_headers/generate_shim_headers.py
-	test? ( https://chromium-fonts.storage.googleapis.com/${TEST_FONT} -> chromium-testfonts-${TEST_FONT}.tar.gz )"
+SRC_URI="test? ( https://chromium-fonts.storage.googleapis.com/${TEST_FONT} -> chromium-testfonts-${TEST_FONT}.tar.gz )"
 
 LICENSE="BSD"
 SLOT="0"
@@ -95,7 +93,7 @@ src_unpack() {
 
 	# generate_shim_headers
 	mkdir -p "${S}"/tools/generate_shim_headers || die
-	cp "${DISTDIR}"/generate_shim_headers.py "${S}"/tools/generate_shim_headers || die
+	cp "${FILESDIR}"/generate_shim_headers.py "${S}"/tools/generate_shim_headers || die
 }
 
 src_prepare() {
