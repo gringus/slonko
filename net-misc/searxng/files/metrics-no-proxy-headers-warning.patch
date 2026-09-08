@@ -1,0 +1,15 @@
+diff --git a/searx/botdetection/trusted_proxies.py b/searx/botdetection/trusted_proxies.py
+index 1e4c68837..0ac6df69b 100644
+--- a/searx/botdetection/trusted_proxies.py
++++ b/searx/botdetection/trusted_proxies.py
+@@ -146,7 +146,9 @@ class ProxyFix:
+ 
+         # log questionable WSGI environments
+ 
+-        if not x_forwarded_for and not x_real_ip:
++        # a direct /metrics scrape (e.g. Prometheus on localhost) has no proxy
++        # headers by design; REMOTE_ADDR falls back to the real peer IP anyway
++        if not x_forwarded_for and not x_real_ip and environ.get("PATH_INFO") != "/metrics":
+             log_error_only_once("X-Forwarded-For nor X-Real-IP header is set!")
+ 
+         if x_forwarded_for or x_real_ip:
