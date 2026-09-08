@@ -52,9 +52,6 @@ BDEPEND="
 		')
 	)
 "
-PATCHES=(
-	"${FILESDIR}/metrics-no-proxy-headers-warning.patch"
-)
 
 EPYTEST_DESELECT=(
 	# Requires pytest-playwright
