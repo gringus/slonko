@@ -75,6 +75,14 @@ src_compile() {
 	# live /etc/searxng/settings.yml and fail when portage can't; use a stub
 	export SEARXNG_SETTINGS_PATH="${T}/settings.yml"
 	echo "use_default_settings: true" > "${SEARXNG_SETTINGS_PATH}" || die
+
+	# ${S} is the git-r3 checkout: freeze the version info into
+	# searx/version_frozen.py so the installed package never shells out to git
+	# at runtime (see searx/version.py). The sed in src_prepare makes the tree
+	# look dirty, so the frozen version gets a "+dirty" suffix.
+	python_setup
+	"${PYTHON}" -m searx.version freeze || die
+
 	distutils-r1_src_compile
 }
 
@@ -91,6 +99,12 @@ src_install() {
 	newins "${FILESDIR}/settings.yml" settings.yml
 	fowners root:searxng /etc/searxng/settings.yml
 	fperms 0640 /etc/searxng/settings.yml
+
+	# botdetection always loads /etc/searxng/limiter.toml at startup (even
+	# with server.limiter: false) and warns when it is missing
+	newins "${S}/searx/limiter.toml" limiter.toml
+	fowners root:searxng /etc/searxng/limiter.toml
+	fperms 0640 /etc/searxng/limiter.toml
 
 	if use granian; then
 		newconfd "${FILESDIR}/searxng.confd" searxng
