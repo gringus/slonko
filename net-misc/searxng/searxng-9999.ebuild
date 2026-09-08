@@ -80,8 +80,13 @@ src_compile() {
 	# searx/version_frozen.py so the installed package never shells out to git
 	# at runtime (see searx/version.py). The sed in src_prepare makes the tree
 	# look dirty, so the frozen version gets a "+dirty" suffix.
-	python_setup
-	"${PYTHON}" -m searx.version freeze || die
+	# the git-r3 checkout has no upstream tracking and the eclass exports
+	# nothing after fetch, so version.py cannot derive URL/branch from git;
+	# it takes them from these GitHub CI variables instead (see
+	# get_git_url_and_branch). EGIT_BRANCH is unset by default (upstream
+	# HEAD = master) but carries *_LIVE_BRANCH/EGIT_OVERRIDE_* overrides.
+	GITHUB_REPOSITORY="searxng/searxng" GITHUB_REF_NAME="${EGIT_BRANCH:-master}" \
+		"${PYTHON}" -m searx.version freeze || die
 
 	distutils-r1_src_compile
 }
