@@ -159,8 +159,13 @@ src_install() {
 	systemd_newunit "${FILESDIR}"/paperless-consumer.service paperless-consumer.service
 	systemd_newunit "${FILESDIR}"/paperless-task-queue.service paperless-task-queue.service
 	systemd_newunit "${FILESDIR}"/paperless.target paperless.target
+
+	# OpenRC manages the same four daemons in a single script (like paperless.target)
+	newinitd "${FILESDIR}"/paperless.initd paperless
+
 	if use remote-redis; then
 		sed -e '/redis\.service/d' -i *.service "${D}$(systemd_get_systemunitdir)"/*.service
+		sed -e '/need redis/d' -i "${ED}"/etc/init.d/paperless
 	fi
 
 	# Install paperless files
@@ -203,6 +208,8 @@ pkg_postinst() {
 	elog " "
 	elog "Paperless services can be (re)started together with"
 	elog "  sudo systemctl (re)start paperless.target"
+	elog "on OpenRC (add with rc-update add paperless default)"
+	elog "  sudo rc-service paperless restart"
 	elog " "
 	elog "If you are upgrading from <paperless-ngx-3.0 check below docs"
 	elog "https://docs.paperless-ngx.com/migration-v3/"
