@@ -1,0 +1,79 @@
+#!/sbin/openrc-run
+# Copyright 1999-2025 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+description="Paperless-ngx document management system (webserver, task queue, scheduler, consumer)"
+
+pidpath="/run/paperless"
+logpath="/var/log/paperless"
+appdir="/usr/share/paperless/src"
+conf="/etc/paperless.conf"
+
+depend() {
+	need net
+	need redis
+}
+
+# Read a PAPERLESS_* value from /etc/paperless.conf (last definition wins,
+# same as systemd's EnvironmentFile). The daemons load the file themselves
+# via python-dotenv; this is only needed to configure granian which is
+# started before Django loads.
+get_conf() {
+	sed -n "s/^${1}=//p" "${conf}" 2>/dev/null | tail -n 1 | tr -d '"\r'
+}
+
+start_one() {
+	local name="$1"; shift
+	ebegin "Starting paperless ${name}"
+	start-stop-daemon --start --quiet --background --make-pidfile \
+		--pidfile "${pidpath}/${name}.pid" \
+		--user paperless --group paperless \
+		--chdir "${appdir}" \
+		--stdout "${logpath}/${name}.log" --stderr "${logpath}/${name}.log" \
+		--env PYTHONUNBUFFERED=1 \
+		-- "$@"
+	eend $?
+}
+
+stop_one() {
+	ebegin "Stopping paperless $1"
+	start-stop-daemon --stop --quiet --retry 30 \
+		--pidfile "${pidpath}/$1.pid"
+	eend $?
+}
+
+start_webserver() {
+	# Mirror the GRANIAN_* mapping of paperless-webserver.service
+	set -- --env GRANIAN_HOST=:: --env GRANIAN_PORT=8000 --env GRANIAN_WORKERS=1
+	local v
+	v="$(get_conf PAPERLESS_BIND_ADDR)";          [ -n "${v}" ] && set -- "$@" --env "GRANIAN_HOST=${v}"
+	v="$(get_conf PAPERLESS_PORT)";               [ -n "${v}" ] && set -- "$@" --env "GRANIAN_PORT=${v}"
+	v="$(get_conf PAPERLESS_WEBSERVER_WORKERS)";  [ -n "${v}" ] && set -- "$@" --env "GRANIAN_WORKERS=${v}"
+	v="$(get_conf PAPERLESS_FORCE_SCRIPT_NAME)";  [ -n "${v}" ] && set -- "$@" --env "GRANIAN_URL_PATH_PREFIX=${v}"
+
+	ebegin "Starting paperless webserver"
+	start-stop-daemon --start --quiet --background --make-pidfile \
+		--pidfile "${pidpath}/webserver.pid" \
+		--user paperless --group paperless \
+		--chdir "${appdir}" \
+		--stdout "${logpath}/webserver.log" --stderr "${logpath}/webserver.log" \
+		--env PYTHONUNBUFFERED=1 \
+		"$@" -- /usr/bin/granian --interface asginl --ws --loop uvloop paperless.asgi:application
+	eend $?
+}
+
+start() {
+	checkpath -d -m 0770 -o paperless:paperless "${pidpath}" "${logpath}"
+
+	start_one task-queue /usr/bin/celery --app paperless worker --loglevel INFO || return 1
+	start_one scheduler  /usr/bin/celery --app paperless beat --loglevel INFO || return 1
+	start_one consumer   /usr/bin/paperless-manage document_consumer || return 1
+	start_webserver
+}
+
+stop() {
+	stop_one webserver
+	stop_one consumer
+	stop_one scheduler
+	stop_one task-queue
+}
