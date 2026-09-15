@@ -12,44 +12,45 @@ RUST_MIN_VER=1.95
 CRATES="
 	aead@0.6.1
 	aes-gcm@0.11.1
-	aes@0.9.2
+	aes@0.9.3
 	anyhow@1.0.104
 	arc-swap@1.9.2
 	atomic-waker@1.1.2
 	base64@0.22.1
 	base64ct@1.8.3
-	bitflags@2.13.1
+	bitflags@2.13.2
 	block-buffer@0.12.1
 	block-padding@0.4.2
 	bytes@1.12.1
 	cbc@0.2.1
-	cc@1.4.4
+	cc@1.4.6
 	cfg-if@1.0.4
-	chacha20@0.10.1
+	chacha20@0.10.2
 	ciborium-io@0.2.2
 	ciborium-ll@0.2.2
 	ciborium@0.2.2
 	cipher@0.5.2
 	cmov@0.5.4
 	const-oid@0.10.2
+	core_detect@1.0.0
 	cpubits@0.1.1
-	cpufeatures@0.3.0
-	crossbeam-channel@0.5.16
-	crossbeam-utils@0.8.22
+	cpufeatures@0.3.1
+	crossbeam-channel@0.5.17
+	crossbeam-utils@0.8.23
 	crunchy@0.2.4
 	crypto-common@0.2.2
 	ctr@0.10.1
 	ctutils@0.4.2
 	data-encoding@2.11.1
-	der@0.8.1
+	der@0.8.2
 	digest@0.11.3
 	dispatch2@0.3.1
 	doctest-file@1.1.1
 	either@1.18.0
-	encoding_rs@0.8.35
+	encoding_rs@0.8.41
 	equivalent@1.0.2
 	errno@0.3.14
-	find-msvc-tools@0.1.11
+	find-msvc-tools@0.1.12
 	fnv@1.0.7
 	futures-channel@0.3.34
 	futures-core@0.3.34
@@ -63,7 +64,7 @@ CRATES="
 	getrandom@0.2.17
 	getrandom@0.4.3
 	ghash@0.6.0
-	h2@0.4.18
+	h2@0.4.19
 	half@2.7.1
 	hashbrown@0.17.1
 	heck@0.5.0
@@ -73,10 +74,10 @@ CRATES="
 	http@1.5.0
 	httparse@1.10.1
 	httpdate@1.0.3
-	hybrid-array@0.4.14
+	hybrid-array@0.4.15
 	hyper-util@0.1.20
-	hyper@1.11.0
-	indexmap@2.14.0
+	hyper@1.11.1
+	indexmap@2.14.2
 	inout@0.2.2
 	itertools@0.15.0
 	itoa@1.0.18
@@ -88,7 +89,10 @@ CRATES="
 	mimalloc@0.1.52
 	mime@0.3.17
 	mime_guess@2.0.5
-	mio@1.2.2
+	mio@1.2.3
+	multiversion-macros@0.9.0
+	multiversion@0.9.0
+	multiversion_no_op@1.0.0
 	ntapi@0.4.3
 	objc2-core-foundation@0.3.2
 	objc2-encode@4.1.0
@@ -124,7 +128,7 @@ CRATES="
 	rustls-pemfile@2.2.0
 	rustls-pki-types@1.15.1
 	rustls-webpki@0.103.15
-	rustls@0.23.43
+	rustls@0.23.44
 	rustversion@1.0.23
 	salsa20@0.11.0
 	scopeguard@1.2.0
@@ -136,13 +140,14 @@ CRATES="
 	sha2@0.11.0
 	shlex@2.0.1
 	signal-hook-registry@1.4.8
+	simdutf8@0.1.5
 	slab@0.4.12
-	smallvec@1.15.2
+	smallvec@1.16.1
 	socket2@0.6.5
 	spki@0.8.0
 	subtle@2.6.1
 	syn@2.0.119
-	syn@3.0.3
+	syn@3.0.5
 	sysinfo@0.39.6
 	target-lexicon@0.13.5
 	thiserror-impl@2.0.20
@@ -150,7 +155,7 @@ CRATES="
 	tikv-jemalloc-sys@0.7.1+5.3.1-0-g81034ce1f1373e37dc865038e1bc8eeecf559ce8
 	tikv-jemallocator@0.7.0
 	tokio-macros@2.7.2
-	tokio-rustls@0.26.4
+	tokio-rustls@0.26.5
 	tokio-stream@0.1.19
 	tokio-tungstenite@0.30.0
 	tokio-util@0.7.19
@@ -190,8 +195,8 @@ CRATES="
 	windows_x86_64_gnu@0.52.6
 	windows_x86_64_gnullvm@0.52.6
 	windows_x86_64_msvc@0.52.6
-	zerocopy-derive@0.8.56
-	zerocopy@0.8.56
+	zerocopy-derive@0.8.57
+	zerocopy@0.8.57
 	zeroize@1.9.0
 "
 
