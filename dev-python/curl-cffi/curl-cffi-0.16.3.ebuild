@@ -18,6 +18,7 @@ HOMEPAGE="
 LICENSE="BSD-2"
 SLOT="0"
 KEYWORDS="~amd64"
+#PROPERTIES="test_network"
 
 # yt-dlp hardcodes the range of curl_cffi versions it will import and silently
 # disables --impersonate when the installed version is outside it. Support for
@@ -41,23 +42,21 @@ EPYTEST_IGNORE=(
 	# proxy module required
 	tests/unittest
 )
-EPYTEST_DESELECT=(
-	# Network required
-	tests/integration/test_fingerprints.py::test_not_impersonate
-	tests/integration/test_fingerprints.py::test_impersonate
-	tests/integration/test_fingerprints.py::test_impersonate_edge
-	tests/integration/test_fingerprints.py::test_impersonate_safari
-	tests/integration/test_httpbin.py::test_gzip
-	tests/integration/test_httpbin.py::test_brotli
-	tests/integration/test_httpbin.py::test_redirect_n
-	tests/integration/test_httpbin.py::test_relative_redirect_n
-	tests/integration/test_httpbin.py::test_imperonsate_default_headers
-	tests/integration/test_httpbin.py::test_curl_options
-	tests/integration/test_httpbin.py::test_http_version
-	tests/integration/test_real_world.py::test_post_with_no_body
-	tests/integration/test_response_class.py::test_default_response
-	tests/integration/test_response_class.py::test_custom_response
-)
+src_prepare() {
+	# Upstream still asserts the JA3 hashes curl-cffi's README advertised in
+	# 0.2.1 (2023, lwthiker-era lib): a macOS Chrome 101 capture and a Safari
+	# 16.x one. The lexiforest curl-impersonate fork linked here targets
+	# Windows 10 for chrome101/edge101 and ships a corrected Safari
+	# 15.5-on-macOS-12.4 signature (tests/signatures/*.yaml), which our lib
+	# reproduces byte-exact. Upstream CI never runs these tests (cibuildwheel
+	# runs tests/unittest only), so the expectations went stale. Re-check the
+	# hashes against curl-impersonate's signature DB on every bump.
+	sed -i \
+		-e 's|53ff64ddf993ca882b70e1c82af5da49|cd08e31494f9531f560d64c695473da9|g' \
+		-e 's|8468a1ef6cb71b13e1eef8eadf786f7d|773906b0efdefa24a7f2b8eb6985bf37|g' \
+		tests/integration/test_fingerprints.py || die
+	distutils-r1_src_prepare
+}
 
 python_test() {
 	rm -rf curl_cffi || die
