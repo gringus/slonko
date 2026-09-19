@@ -11,5 +11,13 @@
 	</upstream>
 	<use>
 		<flag name="clients">Install the curl wrapper scripts</flag>
+		<flag name="gopher">Enable Gopher protocol support</flag>
+		<flag name="idn">Enable internationalized domain names via net-dns/libidn2</flag>
+		<flag name="kerberos">Enable HTTP GSS-API/Negotiate authentication</flag>
+		<flag name="pop3">Enable Post Office Protocol 3 support</flag>
+		<flag name="sasl-scram">Enable SCRAM-SHA-1/-256 authentication via net-misc/gsasl</flag>
+		<flag name="smtp">Enable Simple Mail Transfer Protocol support</flag>
+		<flag name="telnet">Enable Telnet protocol support</flag>
+		<flag name="tftp">Enable TFTP support</flag>
 	</use>
 </pkgmetadata>
