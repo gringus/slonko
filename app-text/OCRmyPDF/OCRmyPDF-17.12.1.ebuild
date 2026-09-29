@@ -24,18 +24,18 @@ KEYWORDS="~amd64"
 IUSE="bash-completion fish-completion"
 
 RDEPEND="
-	>=app-text/ghostscript-gpl-9.54
+	>=app-text/ghostscript-gpl-10.07.0
 	>=app-text/pdfminer-20260107[${PYTHON_USEDEP}]
 	>=app-text/tesseract-4.1.1[jpeg,tiff,png,webp]
-	>=dev-python/deprecation-2.1.0[${PYTHON_USEDEP}]
 	>=dev-python/fpdf2-2.8.0[${PYTHON_USEDEP}]
 	>=dev-python/packaging-20[${PYTHON_USEDEP}]
-	>=dev-python/pikepdf-10[${PYTHON_USEDEP}]
-	>=dev-python/pillow-10.0.1[jpeg,jpeg2k,lcms,tiff,webp,zlib,${PYTHON_USEDEP}]
+	>=dev-python/pikepdf-10.2[${PYTHON_USEDEP}]
+	>=dev-python/pillow-12[jpeg,jpeg2k,lcms,tiff,webp,zlib,${PYTHON_USEDEP}]
 	>=dev-python/pluggy-1[${PYTHON_USEDEP}]
 	>=dev-python/pypdfium2-5.0.0[${PYTHON_USEDEP}]
 	>=dev-python/pydantic-2.12.5[${PYTHON_USEDEP}]
 	>=dev-python/rich-13[${PYTHON_USEDEP}]
+	>=dev-python/typing-extensions-4.12[${PYTHON_USEDEP}]
 	>=dev-python/uharfbuzz-0.53.2[${PYTHON_USEDEP}]
 	>=media-gfx/img2pdf-0.5[${PYTHON_USEDEP}]
 "
@@ -70,6 +70,13 @@ distutils_enable_sphinx docs \
 	dev-python/sphinx-issues \
 	dev-python/sphinx-rtd-theme \
 	dev-python/sphinxcontrib-mermaid
+
+# Ghostscript >= 10.08 writes the placeholder XMP title as 'Untitled' (with
+# quotes); recognize both forms so it is removed as before. Upstream fix:
+# https://github.com/ocrmypdf/OCRmyPDF/commit/ba6de6832e637aa5e29d2f80cbd1f9999b5cb72b
+PATCHES=(
+	"${FILESDIR}/${P}-gs10.08-quoted-untitled.patch"
+)
 
 python_test() {
 	epytest --runslow
