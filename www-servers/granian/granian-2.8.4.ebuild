@@ -23,8 +23,8 @@ CRATES="
 	block-padding@0.4.2
 	bytes@1.12.1
 	cbc@0.2.1
-	cc@1.4.6
-	cfg-if@1.0.4
+	cc@1.5.1
+	cfg-if@1.0.5
 	chacha20@0.10.2
 	ciborium-io@0.2.2
 	ciborium-ll@0.2.2
@@ -47,10 +47,10 @@ CRATES="
 	dispatch2@0.3.1
 	doctest-file@1.1.1
 	either@1.18.0
-	encoding_rs@0.8.41
+	encoding_rs@0.8.42
 	equivalent@1.0.2
 	errno@0.3.14
-	find-msvc-tools@0.1.12
+	find-msvc-tools@0.1.14
 	fnv@1.0.7
 	futures-channel@0.3.34
 	futures-core@0.3.34
@@ -75,7 +75,7 @@ CRATES="
 	httparse@1.10.1
 	httpdate@1.0.3
 	hybrid-array@0.4.15
-	hyper-util@0.1.20
+	hyper-util@0.1.21
 	hyper@1.11.1
 	indexmap@2.14.2
 	inout@0.2.2
@@ -90,8 +90,6 @@ CRATES="
 	mime@0.3.17
 	mime_guess@2.0.5
 	mio@1.2.3
-	multiversion-macros@0.9.0
-	multiversion@0.9.0
 	multiversion_no_op@1.0.0
 	ntapi@0.4.3
 	objc2-core-foundation@0.3.2
@@ -120,7 +118,7 @@ CRATES="
 	pyo3@0.29.2
 	quote@1.0.47
 	r-efi@6.0.0
-	rand@0.10.2
+	rand@0.10.3
 	rand_core@0.10.1
 	recvmsg@1.0.0
 	redox_syscall@0.5.18
@@ -128,7 +126,7 @@ CRATES="
 	rustls-pemfile@2.2.0
 	rustls-pki-types@1.15.1
 	rustls-webpki@0.103.15
-	rustls@0.23.44
+	rustls@0.23.45
 	rustversion@1.0.23
 	salsa20@0.11.0
 	scopeguard@1.2.0
@@ -142,20 +140,20 @@ CRATES="
 	signal-hook-registry@1.4.8
 	simdutf8@0.1.5
 	slab@0.4.12
-	smallvec@1.16.1
+	smallvec@1.16.2
 	socket2@0.6.5
 	spki@0.8.0
 	subtle@2.6.1
 	syn@2.0.119
-	syn@3.0.5
+	syn@3.0.6
 	sysinfo@0.39.6
 	target-lexicon@0.13.5
-	thiserror-impl@2.0.20
-	thiserror@2.0.20
+	thiserror-impl@2.0.21
+	thiserror@2.0.21
 	tikv-jemalloc-sys@0.7.1+5.3.1-0-g81034ce1f1373e37dc865038e1bc8eeecf559ce8
 	tikv-jemallocator@0.7.0
 	tokio-macros@2.7.2
-	tokio-rustls@0.26.5
+	tokio-rustls@0.26.6
 	tokio-stream@0.1.19
 	tokio-tungstenite@0.30.0
 	tokio-util@0.7.19
@@ -165,7 +163,7 @@ CRATES="
 	tungstenite@0.30.0
 	typenum@1.20.1
 	unicase@2.9.0
-	unicode-ident@1.0.24
+	unicode-ident@1.0.26
 	universal-hash@0.6.1
 	untrusted@0.9.0
 	wasi@0.11.1+wasi-snapshot-preview1
@@ -195,8 +193,8 @@ CRATES="
 	windows_x86_64_gnu@0.52.6
 	windows_x86_64_gnullvm@0.52.6
 	windows_x86_64_msvc@0.52.6
-	zerocopy-derive@0.8.57
-	zerocopy@0.8.57
+	zerocopy-derive@0.8.59
+	zerocopy@0.8.59
 	zeroize@1.9.0
 "
 
