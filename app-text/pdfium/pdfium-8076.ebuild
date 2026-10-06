@@ -14,7 +14,7 @@ TEST_FONT="cd96fc55dc243f6c6f4cb63ad117cad6cd48dceb"
 
 EGIT_REPO_URI="https://pdfium.googlesource.com/pdfium.git"
 EGIT_BRANCH="chromium/${PV}"
-EGIT_COMMIT="d3e62278db7489af9e0b686835d1c8aca218c3d7"
+EGIT_COMMIT="8ca5b735df4263f43c830479b78213854a392c22"
 
 SRC_URI="test? ( https://chromium-fonts.storage.googleapis.com/${TEST_FONT} -> chromium-testfonts-${TEST_FONT}.tar.gz )"
 
@@ -51,44 +51,36 @@ PATCHES=(
 
 CHROMIUM_REPO="https://chromium.googlesource.com"
 
+fetch() {
+	local url="${1}"
+	local path="${2}"
+	local name="${3}"
+
+	local EGIT_BRANCH=""
+	local EGIT_REPO_URI="${url}"
+	local EGIT_CHECKOUT_DIR="${S}/${path}"
+	local EGIT_COMMIT=$(awk -F\' "\$2 == \"${name}_revision\" && NF == 5 {print \$4}" "${S}"/DEPS)
+
+	git-r3_src_unpack
+}
+
 src_unpack() {
 	# pdfium
 	git-r3_src_unpack
-
-	EGIT_BRANCH=""
-
 	# build
-	EGIT_REPO_URI="${CHROMIUM_REPO}"/chromium/src/build
-	EGIT_CHECKOUT_DIR="${S}"/build
-	EGIT_COMMIT=$(awk -F\' '$2 == "build_revision" && NF == 5 {print $4}' "${S}"/DEPS)
-	git-r3_src_unpack
-
+	fetch "${CHROMIUM_REPO}/chromium/src/build" build build
 	# abseil-cpp
-	EGIT_REPO_URI="${CHROMIUM_REPO}"/chromium/src/third_party/abseil-cpp
-	EGIT_CHECKOUT_DIR="${S}"/third_party/abseil-cpp
-	EGIT_COMMIT=$(awk -F\' '$2 == "abseil_revision" && NF == 5 {print $4}' "${S}"/DEPS)
-	git-r3_src_unpack
+	fetch "${CHROMIUM_REPO}/chromium/src/third_party/abseil-cpp" third_party/abseil-cpp abseil
+	# dragonbox
+	fetch "${CHROMIUM_REPO}/external/github.com/jk-jeon/dragonbox" third_party/dragonbox/src dragonbox
 
 	if use test; then
 		# gtest
-		EGIT_REPO_URI="${CHROMIUM_REPO}"/external/github.com/google/googletest
-		EGIT_CHECKOUT_DIR="${S}"/third_party/googletest/src
-		EGIT_COMMIT=$(awk -F\' '$2 == "gtest_revision" && NF == 5 {print $4}' "${S}"/DEPS)
-		git-r3_src_unpack
+		fetch "${CHROMIUM_REPO}/external/github.com/google/googletest" third_party/googletest/src gtest
 
 		# test_fonts
-		EGIT_REPO_URI="${CHROMIUM_REPO}"/chromium/src/third_party/test_fonts
-		EGIT_CHECKOUT_DIR="${S}"/third_party/test_fonts
-		EGIT_COMMIT=$(awk -F\' '$2 == "test_fonts_revision" && NF == 5 {print $4}' "${S}"/DEPS)
-		git-r3_src_unpack
-
+		fetch "${CHROMIUM_REPO}/chromium/src/third_party/test_fonts" third_party/test_fonts test_fonts
 		tar xf "${DISTDIR}"/chromium-testfonts-${TEST_FONT}.tar.gz -C "${S}"/third_party/test_fonts || die
-	else
-		# Remove test dependencies
-		sed -i \
-			-e '/\/\/third_party\/test_fonts/d' \
-			-e '/\/\/third_party\/simdutf/d' \
-			"${S}"/testing/BUILD.gn || die
 	fi
 
 	# generate_shim_headers
@@ -113,6 +105,18 @@ src_prepare() {
 	# Use system fast_float
 	mkdir -p third_party/fast_float/src/include/
 	ln -sf /usr/include/fast_float third_party/fast_float/src/include/
+
+	# https://pdfium.googlesource.com/pdfium/+/2ca2e91deab056540c3e05049b4a6029c262ec90
+	sed -ri \
+		-e 's/(script_executable) = "(.+)"/\1 = "python3"/' "${S}/.gn" || die
+
+	# Remove test dependencies
+	if ! use test; then
+		sed -i \
+			-e '/\/\/third_party\/test_fonts/d' \
+			-e '/\/\/third_party\/simdutf/d' \
+			"${S}"/testing/BUILD.gn || die
+	fi
 }
 
 src_configure() {
