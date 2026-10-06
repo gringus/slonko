@@ -6,7 +6,7 @@ EAPI=8
 DISTUTILS_USE_PEP517=setuptools
 PYTHON_COMPAT=( python3_{10..14} )
 
-inherit distutils-r1
+inherit distutils-r1 git-r3
 
 DESCRIPTION="pypdfium2 is an ABI-level Python 3 binding to PDFium"
 HOMEPAGE="https://github.com/pypdfium2-team/pypdfium2"
@@ -17,7 +17,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 
 RDEPEND="
-	~app-text/pdfium-7947
+	~app-text/pdfium-8076
 "
 BDEPEND="
 	test? (
@@ -39,6 +39,18 @@ distutils_enable_sphinx docs/source \
 	dev-python/sphinx-issues \
 	dev-python/sphinx-rtd-theme \
 	dev-python/sphinxcontrib-programoutput
+
+src_unpack() {
+	default
+
+	# ctypesgen
+	EGIT_BRANCH="pypdfium2"
+	EGIT_REPO_URI="https://github.com/pypdfium2-team/ctypesgen"
+	EGIT_CHECKOUT_DIR="${S}/deps/ctypesgen"
+	git-r3_src_unpack
+	# remove ctypesges tests
+	rm -rf "${S}/deps/ctypesgen/tests" || die
+}
 
 src_configure() {
 	export PDFIUM_PLATFORM="system-search"
