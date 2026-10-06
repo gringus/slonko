@@ -23,14 +23,22 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="bash-completion fish-completion"
 
+# dev-python/pikepdf[pdfa]
+PIKEPDF_DEPS="
+	>=dev-python/fonttools-4.40[${PYTHON_USEDEP}]
+	>=dev-python/jsonschema-4.18[${PYTHON_USEDEP}]
+	>=dev-python/pikepdf-10.15[${PYTHON_USEDEP}]
+	dev-python/referencing[${PYTHON_USEDEP}]
+"
+
 RDEPEND="
-	>=app-text/ghostscript-gpl-9.54
+	${PIKEPDF_DEPS}
+	>=app-text/ghostscript-gpl-10.07.0
 	>=app-text/pdfminer-20260107[${PYTHON_USEDEP}]
 	>=app-text/tesseract-4.1.1[jpeg,tiff,png,webp]
 	>=dev-python/fpdf2-2.8.0[${PYTHON_USEDEP}]
 	>=dev-python/packaging-20[${PYTHON_USEDEP}]
-	>=dev-python/pikepdf-10[${PYTHON_USEDEP}]
-	>=dev-python/pillow-10.0.1[jpeg,jpeg2k,lcms,tiff,webp,zlib,${PYTHON_USEDEP}]
+	>=dev-python/pillow-12[jpeg,jpeg2k,lcms,tiff,webp,zlib,${PYTHON_USEDEP}]
 	>=dev-python/pluggy-1[${PYTHON_USEDEP}]
 	>=dev-python/pypdfium2-5.0.0[${PYTHON_USEDEP}]
 	>=dev-python/pydantic-2.12.5[${PYTHON_USEDEP}]
@@ -44,7 +52,6 @@ BDEPEND="
 		app-text/poppler
 		>=app-text/unpaper-6.1
 		>=dev-python/hypothesis-6.36.0[${PYTHON_USEDEP}]
-		>=dev-python/pytest-xdist-2.5.0[${PYTHON_USEDEP}]
 		dev-python/python-dotenv[${PYTHON_USEDEP}]
 		dev-python/python-xmp-toolkit[${PYTHON_USEDEP}]
 		>=dev-python/reportlab-3.6.8[${PYTHON_USEDEP}]
@@ -56,7 +63,7 @@ BDEPEND="
 	)
 "
 
-EPYTEST_PLUGINS=()
+EPYTEST_PLUGINS=( pytest-xdist )
 EPYTEST_XDIST=1
 EPYTEST_DESELECT=(
 	# Recompressing/Deflating JPEGs
