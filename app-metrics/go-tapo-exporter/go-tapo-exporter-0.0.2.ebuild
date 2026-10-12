@@ -52,6 +52,13 @@ DEPEND="
 BDEPEND=">=dev-lang/go-1.23.1"
 RDEPEND="${DEPEND}"
 
+src_prepare() {
+	default
+
+	# No need to pollute logs with every fetch
+	sed -i -e '/Successfully received metrics/d' smart_plugs.go || die
+}
+
 src_compile() {
 	ego build
 }
