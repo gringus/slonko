@@ -1,7 +1,7 @@
 # Copyright 2019-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 inherit go-module systemd
 
 DESCRIPTION="Monitor your power usage and costs with Prometheus and Grafana"
@@ -63,7 +63,7 @@ DEPEND="
 	acct-group/tibber-exporter
 	acct-user/tibber-exporter
 "
-BDEPEND=">=dev-lang/go-1.25"
+BDEPEND=">=dev-lang/go-1.27:="
 RDEPEND="${DEPEND}"
 
 src_compile() {
