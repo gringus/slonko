@@ -85,6 +85,7 @@ RDEPEND="
 		<dev-python/drf-spectacular-sidecar-2026.10[${PYTHON_USEDEP}]
 		>=dev-python/drf-writable-nested-0.7.1[${PYTHON_USEDEP}]
 		>=dev-python/filelock-3.32.0[${PYTHON_USEDEP}]
+		<dev-python/filelock-4.1[${PYTHON_USEDEP}]
 		>=dev-python/gotenberg-client-1.0[${PYTHON_USEDEP}]
 		>=dev-python/httpx-oauth-0.17[${PYTHON_USEDEP}]
 		dev-python/humanize[${PYTHON_USEDEP}]
