@@ -14,7 +14,7 @@ CRATES="
 	aes-gcm@0.11.1
 	aes@0.9.3
 	anyhow@1.0.104
-	arc-swap@1.9.2
+	arc-swap@1.9.3
 	atomic-waker@1.1.2
 	base64@0.22.1
 	base64ct@1.8.3
@@ -23,7 +23,7 @@ CRATES="
 	block-padding@0.4.2
 	bytes@1.12.1
 	cbc@0.2.1
-	cc@1.5.1
+	cc@1.9.0
 	cfg-if@1.0.5
 	chacha20@0.10.2
 	ciborium-io@0.2.2
@@ -40,17 +40,17 @@ CRATES="
 	crunchy@0.2.4
 	crypto-common@0.2.2
 	ctr@0.10.1
-	ctutils@0.4.2
+	ctutils@0.4.3
 	data-encoding@2.11.1
 	der@0.8.2
 	digest@0.11.3
 	dispatch2@0.3.1
 	doctest-file@1.1.1
-	either@1.18.0
+	either@1.19.0
 	encoding_rs@0.8.42
-	equivalent@1.0.2
+	equivalent@1.0.3
 	errno@0.3.14
-	find-msvc-tools@0.1.14
+	find-msvc-tools@0.1.15
 	fnv@1.0.7
 	futures-channel@0.3.34
 	futures-core@0.3.34
@@ -64,7 +64,7 @@ CRATES="
 	getrandom@0.2.17
 	getrandom@0.4.3
 	ghash@0.6.0
-	h2@0.4.19
+	h2@0.4.20
 	half@2.7.1
 	hashbrown@0.17.1
 	heck@0.5.0
@@ -76,12 +76,12 @@ CRATES="
 	httpdate@1.0.3
 	hybrid-array@0.4.15
 	hyper-util@0.1.21
-	hyper@1.11.1
+	hyper@1.12.0
 	indexmap@2.14.2
-	inout@0.2.2
+	inout@0.2.5
 	itertools@0.15.0
 	itoa@1.0.18
-	libc@0.2.189
+	libc@0.2.191
 	libmimalloc-sys@0.1.49
 	lock_api@0.4.14
 	log@0.4.34
@@ -89,7 +89,7 @@ CRATES="
 	mimalloc@0.1.52
 	mime@0.3.17
 	mime_guess@2.0.5
-	mio@1.2.3
+	mio@1.2.4
 	multiversion_no_op@1.0.0
 	ntapi@0.4.3
 	objc2-core-foundation@0.3.2
@@ -97,7 +97,7 @@ CRATES="
 	objc2-foundation@0.3.2
 	objc2-io-kit@0.3.2
 	objc2-open-directory@0.3.2
-	objc2@0.6.4
+	objc2@0.6.5
 	once_cell@1.21.4
 	parking_lot@0.12.5
 	parking_lot_core@0.9.12
@@ -110,12 +110,11 @@ CRATES="
 	polyval@0.7.3
 	portable-atomic@1.15.0
 	proc-macro2@1.0.107
-	pyo3-build-config@0.29.2
-	pyo3-ffi@0.29.2
-	pyo3-log@0.13.4
-	pyo3-macros-backend@0.29.2
-	pyo3-macros@0.29.2
-	pyo3@0.29.2
+	pyo3-build-config@0.30.1
+	pyo3-ffi@0.30.1
+	pyo3-macros-backend@0.30.1
+	pyo3-macros@0.30.1
+	pyo3@0.30.1
 	quote@1.0.47
 	r-efi@6.0.0
 	rand@0.10.3
@@ -126,7 +125,7 @@ CRATES="
 	rustls-pemfile@2.2.0
 	rustls-pki-types@1.15.1
 	rustls-webpki@0.103.15
-	rustls@0.23.45
+	rustls@0.23.46
 	rustversion@1.0.23
 	salsa20@0.11.0
 	scopeguard@1.2.0
@@ -135,17 +134,17 @@ CRATES="
 	serde_core@1.0.229
 	serde_derive@1.0.229
 	sha1@0.11.0
-	sha2@0.11.0
+	sha2@0.11.1
 	shlex@2.0.1
 	signal-hook-registry@1.4.8
 	simdutf8@0.1.5
 	slab@0.4.12
-	smallvec@1.16.2
+	smallvec@1.16.3
 	socket2@0.6.5
-	spki@0.8.0
+	spki@0.8.1
 	subtle@2.6.1
 	syn@2.0.119
-	syn@3.0.6
+	syn@3.0.9
 	sysinfo@0.39.6
 	target-lexicon@0.13.5
 	thiserror-impl@2.0.21
@@ -156,14 +155,14 @@ CRATES="
 	tokio-rustls@0.26.6
 	tokio-stream@0.1.19
 	tokio-tungstenite@0.30.0
-	tokio-util@0.7.19
-	tokio@1.53.1
+	tokio-util@0.7.20
+	tokio@1.53.3
 	tracing-core@0.1.36
 	tracing@0.1.44
 	tungstenite@0.30.0
 	typenum@1.20.1
-	unicase@2.9.0
-	unicode-ident@1.0.26
+	unicase@2.10.0
+	unicode-ident@1.0.27
 	universal-hash@0.6.1
 	untrusted@0.9.0
 	wasi@0.11.1+wasi-snapshot-preview1
@@ -193,13 +192,14 @@ CRATES="
 	windows_x86_64_gnu@0.52.6
 	windows_x86_64_gnullvm@0.52.6
 	windows_x86_64_msvc@0.52.6
-	zerocopy-derive@0.8.59
-	zerocopy@0.8.59
-	zeroize@1.9.0
+	zerocopy-derive@0.8.63
+	zerocopy@0.8.63
+	zeroize@1.9.1
 "
 
 declare -A GIT_CRATES=(
 	[interprocess]='https://github.com/kotauskas/interprocess;44351c4fe88c72ead4f3b0b762c4cf45beb90841;interprocess-%commit%'
+	[pyo3-log]='https://github.com/gi0baro/pyo3-log;398e91fde35980054b420d405c865e7defe39a63;pyo3-log-%commit%'
 	[tls-listener]='https://github.com/gi0baro/tls-listener;28d8a48209466324343d133414ea9af218faebb3;tls-listener-%commit%'
 )
 
