@@ -15,10 +15,10 @@ LICENSE="GPL-3+"
 SLOT="0"
 KEYWORDS=""
 
-IUSE="dbus debug gstreamer gnome indicator +gtk mate pulseaudio qt test wayland xfce"
+IUSE="dbus debug gstreamer gnome indicator +gtk mate pulseaudio qt6 test wayland xfce"
 RESTRICT="!test? ( test )"
 REQUIRED_USE="
-	^^ ( gtk qt )
+	^^ ( gtk qt6 )
 	gnome? ( dbus )
 	indicator? ( dbus )
 	mate? ( dbus )
@@ -36,7 +36,7 @@ RDEPEND="
 		>=x11-libs/gtk+-3.22.0:3
 		>=dev-cpp/gtkmm-3.22.0:3.0
 	)
-	qt? (
+	qt6? (
 		dev-qt/qtbase:6[dbus?]
 		dev-qt/qtsvg:6
 		dev-qt/qttools:6[linguist]
@@ -93,7 +93,7 @@ src_configure() {
 		-DWITH_TESTS=$(usex test)
 		-DWITH_TRACING=$(usex debug)
 		# WITH_UI only accepts "Qt" or "Gtk+3" (no "None")
-		-DWITH_UI=$(usex qt Qt Gtk+3)
+		-DWITH_UI=$(usex qt6 Qt Gtk+3)
 		-DWITH_WAYLAND=$(usex wayland)
 		-DWITH_XFCE4=$(usex xfce)
 	)
