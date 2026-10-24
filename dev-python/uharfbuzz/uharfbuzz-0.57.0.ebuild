@@ -3,12 +3,12 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..14} )
+PYTHON_COMPAT=( python3_{11..14} )
 DISTUTILS_USE_PEP517=setuptools
 DISTUTILS_EXT=1
 inherit distutils-r1
 
-MY_HB="harfbuzz-14.2.1"
+MY_HB="harfbuzz-15.0.0"
 DESCRIPTION="Streamlined Cython bindings for the HarfBuzz shaping engine"
 HOMEPAGE="https://github.com/harfbuzz/uharfbuzz"
 SRC_URI="
@@ -27,6 +27,9 @@ BDEPEND="
 
 EPYTEST_PLUGINS=( )
 distutils_enable_tests pytest
+distutils_enable_sphinx docs/source \
+	dev-python/myst-parser \
+	dev-python/sphinx-rtd-theme
 
 python_prepare_all() {
 	distutils-r1_python_prepare_all
