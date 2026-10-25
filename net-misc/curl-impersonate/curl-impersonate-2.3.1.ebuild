@@ -29,7 +29,7 @@ CURL_VERSION="curl-8_23_0"
 NGHTTP3_PV="1.15.0"
 NGTCP2_PV="1.20.0"
 # brotli is fork-patched (patches/brotli.patch), so it cannot be a system dep.
-BROTLI_PV="1.2.0"
+BROTLI_PV="1.2.1"
 SRC_URI="https://github.com/lexiforest/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
 	https://github.com/google/boringssl/archive/${BORINGSSL_SHA}.tar.gz -> boringssl-${BORINGSSL_SHA}.tar.gz
 	https://github.com/curl/curl/archive/${CURL_VERSION}.tar.gz -> ${CURL_VERSION//_/.}.tar.gz
