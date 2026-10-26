@@ -25,10 +25,10 @@ KEYWORDS="amd64 x86"
 IUSE="examples"
 
 RDEPEND="
-	dev-lang/swig
 	dev-python/asn1crypto[${PYTHON_USEDEP}]
 "
 BDEPEND="
+	dev-lang/swig
 	test? (
 		dev-libs/softhsm
 	)
