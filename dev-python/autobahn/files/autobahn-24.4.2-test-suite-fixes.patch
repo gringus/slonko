@@ -1,0 +1,41 @@
+--- a/autobahn/wamp/test/test_wamp_serializer.py	2024-04-13 20:34:22.000000000 +0200
++++ b/autobahn/wamp/test/test_wamp_serializer.py	2026-10-26 22:51:48.655578300 +0100
+@@ -176,9 +176,10 @@
+         _serializers.append(serializer.MsgPackSerializer())
+         _serializers.append(serializer.MsgPackSerializer(batched=True))
+ 
+-        # roundtrip error
+-        _serializers.append(serializer.UBJSONSerializer())
+-        _serializers.append(serializer.UBJSONSerializer(batched=True))
++        # roundtrip error; optional backend, may be absent
++        if hasattr(serializer, "UBJSONSerializer"):
++            _serializers.append(serializer.UBJSONSerializer())
++            _serializers.append(serializer.UBJSONSerializer(batched=True))
+ 
+     # FIXME: implement full FlatBuffers serializer for WAMP
+     # WAMP-FlatBuffers currently only supports Python 3
+--- a/autobahn/twisted/test/test_tx_choosereactor.py	2024-04-13 20:34:22.000000000 +0200
++++ b/autobahn/twisted/test/test_tx_choosereactor.py	2026-10-26 22:51:48.655611213 +0100
+@@ -52,16 +52,17 @@
+         Patch ``sys.modules`` so that Twisted believes there is no
+         installed reactor.
+         """
+-        old_modules = dict(sys.modules)
++        old_reactor = sys.modules["twisted.internet.reactor"]
+ 
+-        new_modules = dict(sys.modules)
+-        del new_modules["twisted.internet.reactor"]
++        # NOTE: mutate sys.modules in place instead of rebinding it; a
++        # wholesale rebind leaves stale references behind (e.g. in cbor2's
++        # encoder, breaking its module-based type hooks with KeyError).
++        del sys.modules["twisted.internet.reactor"]
+ 
+         def _cleanup():
+-            sys.modules = old_modules
++            sys.modules.setdefault("twisted.internet.reactor", old_reactor)
+ 
+         self.addCleanup(_cleanup)
+-        sys.modules = new_modules
+ 
+     def test_unknown(self):
+         """
