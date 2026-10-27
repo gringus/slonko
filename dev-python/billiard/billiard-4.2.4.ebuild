@@ -20,5 +20,6 @@ BDEPEND="
 		>=dev-python/psutil-5.9.0[${PYTHON_USEDEP}]
 	)"
 
+EPYTEST_PLUGINS=( )
 distutils_enable_tests pytest
 distutils_enable_sphinx Doc
