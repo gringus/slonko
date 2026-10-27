@@ -26,4 +26,5 @@ RDEPEND="
 	>=dev-python/click-7[${PYTHON_USEDEP}]
 "
 
+EPYTEST_PLUGINS=( )
 distutils_enable_tests pytest
