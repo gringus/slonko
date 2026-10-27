@@ -1,0 +1,40 @@
+--- a/ninja/conf.py
++++ b/ninja/conf.py
+@@ -2,9 +2,10 @@
+ from typing import Any, Dict, Optional, Set, Tuple
+ 
+ from django.conf import settings as django_settings
++from django.core.exceptions import ImproperlyConfigured
+ from django.dispatch import receiver
+ from django.test.signals import setting_changed
+-from pydantic import BaseModel, ConfigDict, Field
++from pydantic import BaseModel, ConfigDict, Field, ValidationError
+ 
+ 
+ class Settings(BaseModel):
+@@ -37,7 +38,15 @@
+     )
+ 
+ 
+-settings = Settings.model_validate(django_settings)
++try:
++    settings = Settings.model_validate(django_settings)
++except (ImproperlyConfigured, ValidationError):
++    # Django settings not configured (e.g. import-time tooling such as
++    # scikit-build-core probing for the ninja build tool, Sphinx, static
++    # analysis): fall back to the documented defaults instead of crashing
++    # the import. Real runtime use always has settings configured before
++    # ninja is imported.
++    settings = Settings()
+ 
+ 
+ @receiver(setting_changed)
+@@ -50,7 +59,7 @@
+         setattr(settings, field_name, getattr(updated_settings, field_name))
+ 
+ 
+-if hasattr(django_settings, "NINJA_DOCS_VIEW"):
++if django_settings.configured and hasattr(django_settings, "NINJA_DOCS_VIEW"):
+     raise Exception(
+         "NINJA_DOCS_VIEW is removed. Use NinjaAPI(docs=...) instead"
+     )  # pragma: no cover

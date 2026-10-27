@@ -33,10 +33,16 @@ BDEPEND="
 	)
 "
 
-# tests: decimal JSON schema has no pattern since pydantic 2.14
-# https://github.com/vitalik/django-ninja/commit/722b28bce, #1797
 PATCHES=(
-	"${FILESDIR}/${P}-pydantic-2.14-test.patch"
+	# tests: decimal JSON schema has no pattern since pydantic 2.14
+	# https://github.com/vitalik/django-ninja/commit/722b28bce, #1797
+	"${FILESDIR}/${PN}-1.7.1-pydantic-2.14-test.patch"
+	# Make "import ninja" safe without configured django settings: the
+	# package name collides with the PyPI ninja build-tool wrapper, and
+	# scikit-build-core does "from ninja import BIN_DIR" under
+	# suppress(ImportError) -- django-ninja's import-time ValidationError
+	# escaped it and broke cmake-based builds (pybind11). Upstream #1395.
+	"${FILESDIR}/${PN}-1.7.1-import-safety.patch"
 )
 
 EPYTEST_PLUGINS=( pytest-{asyncio,django} )
