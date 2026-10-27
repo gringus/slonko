@@ -1,0 +1,25 @@
+From 722b28bce8629f948f58f5b43771892c7c3e58e7 Mon Sep 17 00:00:00 2001
+From: Vitaliy Kucheryaviy <ppr.vitaly@gmail.com>
+Date: Tue, 13 Oct 2026 15:38:48 +0300
+Subject: [PATCH] tests: decimal JSON schema has no pattern since pydantic 2.14
+ (#1797)
+
+---
+ tests/test_orm_schemas.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tests/test_orm_schemas.py b/tests/test_orm_schemas.py
+index 9ccd9c57e..01f09d9fb 100644
+--- a/tests/test_orm_schemas.py
++++ b/tests/test_orm_schemas.py
+@@ -204,8 +204,8 @@ class Meta:
+     pydantic_version = tuple(map(int, pydantic.VERSION.split(".")[:2]))
+     if pydantic_version >= (2, 11):
+         expected_schema["properties"]["hstorefield"]["additionalProperties"] = True
+-    if pydantic_version >= (2, 12):
+-        # Pydantic 2.12 added pattern validation for decimal strings
++    if (2, 12) <= pydantic_version < (2, 14):
++        # Pydantic 2.12 added pattern validation for decimal strings, 2.14 dropped it
+         expected_schema["properties"]["decimalfield"]["anyOf"][1]["pattern"] = (
+             r"^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$"
+         )
