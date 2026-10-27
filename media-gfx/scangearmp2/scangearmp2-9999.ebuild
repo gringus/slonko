@@ -7,7 +7,7 @@ CMAKE_MAKEFILE_GENERATOR="emake"
 
 inherit cmake desktop git-r3 udev
 
-DESCRIPTION="Canon InkJet Scanner Driver and ScanGear MP for Linux (Pixus/Pixma-Series)."
+DESCRIPTION="Canon InkJet Scanner Driver and ScanGear MP for Linux (Pixus/Pixma-Series)"
 HOMEPAGE="https://github.com/Ordissimo/scangearmp2"
 EGIT_REPO_URI="https://github.com/Ordissimo/${PN}.git"
 LICENSE="GPL-2"

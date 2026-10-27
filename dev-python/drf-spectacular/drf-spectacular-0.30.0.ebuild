@@ -8,7 +8,7 @@ PYTHON_COMPAT=( python3_{10..14} )
 
 inherit distutils-r1
 
-DESCRIPTION="Sane and flexible OpenAPI schema generation for Django REST framework."
+DESCRIPTION="Sane and flexible OpenAPI schema generation for Django REST framework"
 HOMEPAGE="https://github.com/tfranzel/drf-spectacular"
 SRC_URI="https://github.com/tfranzel/${PN}/archive/${PV}.tar.gz -> ${P}.gh.tar.gz"
 

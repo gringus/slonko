@@ -9,7 +9,7 @@ DISTUTILS_EXT=1
 
 inherit distutils-r1 pypi
 
-DESCRIPTION="Python binding for curl-impersonate fork via cffi."
+DESCRIPTION="Python binding for curl-impersonate fork via cffi"
 HOMEPAGE="
 	https://pypi.org/project/curl-cffi/
 	https://github.com/lexiforest/curl_cffi

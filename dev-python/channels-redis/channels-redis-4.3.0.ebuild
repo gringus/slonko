@@ -9,7 +9,7 @@ PYTHON_COMPAT=( python3_{10..14} )
 inherit distutils-r1 optfeature
 
 MY_P=${P/-/_}
-DESCRIPTION="Provides Django Channels channel layers that use Redis as a backing store."
+DESCRIPTION="Provides Django Channels channel layers that use Redis as a backing store"
 HOMEPAGE="https://github.com/django/channels_redis"
 SRC_URI="https://github.com/django/${PN/-/_}/archive/${PV}.tar.gz -> ${P}.gh.tar.gz"
 S="${WORKDIR}/${MY_P}"

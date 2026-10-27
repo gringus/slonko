@@ -7,7 +7,7 @@ PYTHON_COMPAT=( python3_{10..14} )
 DISTUTILS_USE_PEP517=setuptools
 inherit distutils-r1
 
-DESCRIPTION="Converts between Gregorian dates and other calendar systems."
+DESCRIPTION="Converts between Gregorian dates and other calendar systems"
 HOMEPAGE="https://github.com/fitnr/convertdate https://pypi.org/project/convertdate/"
 SRC_URI="https://github.com/fitnr/${PN}/archive/v${PV}.tar.gz -> ${P}.gh.tar.gz"
 

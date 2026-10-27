@@ -9,7 +9,7 @@ PYPI_PN="Whoosh-Reloaded"
 PYTHON_COMPAT=( python3_{10..14} )
 inherit distutils-r1 pypi
 
-DESCRIPTION="Fast, pure-Python full text indexing, search, and spell checking library."
+DESCRIPTION="Fast, pure-Python full text indexing, search, and spell checking library"
 HOMEPAGE="
 	https://pypi.org/project/Whoosh-Reloaded/
 	https://github.com/Sygil-Dev/whoosh-reloaded

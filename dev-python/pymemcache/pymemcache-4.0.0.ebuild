@@ -7,7 +7,7 @@ DISTUTILS_USE_PEP517=setuptools
 PYTHON_COMPAT=( pypy3 python3_{10..14} python3_13t )
 inherit distutils-r1
 
-DESCRIPTION="A comprehensive, fast, pure-Python memcached client."
+DESCRIPTION="A comprehensive, fast, pure-Python memcached client"
 HOMEPAGE="https://github.com/pinterest/pymemcache"
 SRC_URI="https://github.com/pinterest/${PN}/archive/v${PV}.tar.gz -> ${P}.gh.tar.gz"
 

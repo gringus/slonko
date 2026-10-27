@@ -9,7 +9,7 @@ PYTHON_COMPAT=( python3_{10..14} )
 inherit distutils-r1 pypi
 
 MY_P=${PN//-/_}-${PV}
-DESCRIPTION="Celery Result Backends using the Django ORM/Cache framework."
+DESCRIPTION="Celery Result Backends using the Django ORM/Cache framework"
 HOMEPAGE="https://github.com/celery/django-celery-results"
 S="${WORKDIR}/${MY_P}"
 

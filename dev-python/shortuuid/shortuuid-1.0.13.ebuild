@@ -8,7 +8,7 @@ PYTHON_COMPAT=( python3_{10..14} )
 
 inherit distutils-r1 pypi
 
-DESCRIPTION="A generator library for concise, unambiguous and URL-safe UUIDs."
+DESCRIPTION="A generator library for concise, unambiguous and URL-safe UUIDs"
 HOMEPAGE="https://github.com/skorokithakis/shortuuid"
 
 LICENSE="BSD"

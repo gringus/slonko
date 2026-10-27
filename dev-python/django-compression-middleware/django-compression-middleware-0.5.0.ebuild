@@ -9,7 +9,7 @@ PYPI_NO_NORMALIZE=1
 
 inherit distutils-r1 pypi
 
-DESCRIPTION="Django middleware to compress responses using several algorithms."
+DESCRIPTION="Django middleware to compress responses using several algorithms"
 HOMEPAGE="https://github.com/friedelwolff/django-compression-middleware"
 
 LICENSE="MIT"
