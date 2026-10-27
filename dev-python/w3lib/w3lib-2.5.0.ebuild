@@ -24,6 +24,8 @@ BDEPEND="
 	)
 "
 
+# pytest-codspeed benchmarks are importorskip-guarded
+EPYTEST_PLUGINS=( hypothesis )
 distutils_enable_tests pytest
 distutils_enable_sphinx docs \
 	dev-python/sphinx-notfound-page \
