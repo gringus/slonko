@@ -33,6 +33,7 @@ EPYTEST_IGNORE=(
 	tests/sample_project/tests/test_selenium.py
 )
 
+EPYTEST_PLUGINS=( pytest-django pytest-asyncio )
 distutils_enable_tests pytest
 distutils_enable_sphinx docs \
 	dev-python/sphinx-rtd-theme
