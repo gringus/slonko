@@ -56,7 +56,6 @@ BDEPEND="
 		dev-python/pytest-click[${PYTHON_USEDEP}]
 		>=dev-python/pytest-order-1.2.1[${PYTHON_USEDEP}]
 		>=dev-python/pytest-rerunfailures-15.0[${PYTHON_USEDEP}]
-		>=dev-python/pytest-subtests-0.14.1[${PYTHON_USEDEP}]
 		>=dev-python/pytest-timeout-2.4.0[${PYTHON_USEDEP}]
 		>=dev-python/pyyaml-3.10[${PYTHON_USEDEP}]
 		dev-python/redis[${PYTHON_USEDEP}]
@@ -71,6 +70,7 @@ BDEPEND="
 	)
 "
 
+EPYTEST_PLUGINS=( pytest-click )
 distutils_enable_tests pytest
 distutils_enable_sphinx docs \
 	'>=dev-python/sphinx-celery-2.1.1' \
@@ -82,9 +82,20 @@ EPYTEST_IGNORE=(
 	t/unit/backends/test_azureblockblob.py
 )
 EPYTEST_DESELECT=(
-	# Requires dev-python/pyramid-celery 
+	# Requires dev-python/pyramid-celery
 	t/unit/app/test_preload_cli.py::test_preload_options
+	# Expects the old billiard close_open_fds() implementation based on
+	# os.closerange(); billiard>=4.2 lists /proc/self/fd and calls os.close
+	# per-fd in ascending order instead. Rewritten upstream.
+	t/unit/utils/test_platforms.py::test_close_open_fds
 )
+
+python_test() {
+	# celery's own pytest plugin is not exposed via a distribution entry
+	# point (pytest-celery squats the "celery" name), so load it directly.
+	local -x PYTEST_PLUGINS=celery.contrib.pytest
+	epytest
+}
 
 python_install_all() {
 	# Main celeryd init.d and conf.d
