@@ -44,6 +44,7 @@ EPYTEST_DESELECT=(
 	docs/usage.rst::line:1282,column:1
 )
 
+EPYTEST_PLUGINS=( )
 distutils_enable_tests pytest
 distutils_enable_sphinx docs \
 	dev-python/sphinx-notfound-page \
