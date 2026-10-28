@@ -38,6 +38,7 @@ BDEPEND="
 	)
 "
 
+EPYTEST_PLUGINS=( pytest-django )
 distutils_enable_tests pytest
 distutils_enable_sphinx docs \
 	dev-python/furo
@@ -66,4 +67,16 @@ EPYTEST_IGNORE=(
 EPYTEST_DESELECT=(
 	# Requires django-oauth-toolkit
 	tests/test_specification_extensions.py::test_security_spec_extensions
+
+	# Schema-fixture drift with current deps:
+	# - test_fields* : DRF >=3.18 now propagates GenericIPAddressField.protocol
+	#   to the auto-generated serializer field (the "DRF bug" the TODO in
+	#   openapi.py relies on), so 'format: ipv6' appears where the fixture
+	#   expects none.
+	# - test_pydantic_decoration : pydantic 2.14 dropped the decimal string
+	#   'pattern' (same change as django-ninja #1797).
+	# Drop these once upstream refreshes the fixtures for the new deps.
+	tests/test_fields.py::test_fields
+	tests/test_fields.py::test_fields_oas_3_1
+	tests/contrib/test_pydantic.py::test_pydantic_decoration
 )
