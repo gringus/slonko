@@ -41,6 +41,7 @@ EPYTEST_DESELECT=(
 	tests/test_language_detect.py::CustomLangDetectParserTest::test_custom_language_detect_fast_text_{0,1}
 )
 
+EPYTEST_PLUGINS=( )
 distutils_enable_tests pytest
 distutils_enable_sphinx docs \
 	dev-python/sphinx-rtd-theme
