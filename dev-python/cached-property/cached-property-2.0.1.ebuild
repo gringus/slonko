@@ -19,4 +19,5 @@ BDEPEND="test? ( dev-python/freezegun[${PYTHON_USEDEP}] )"
 
 DOCS=( {HISTORY,README}.md )
 
+EPYTEST_PLUGINS=( )
 distutils_enable_tests pytest
