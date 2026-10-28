@@ -21,4 +21,5 @@ KEYWORDS="~amd64"
 
 DOCS=( README.md )
 
+EPYTEST_PLUGINS=( )
 distutils_enable_tests pytest
