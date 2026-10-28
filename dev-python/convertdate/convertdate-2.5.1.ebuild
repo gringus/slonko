@@ -21,6 +21,7 @@ RDEPEND="
 	>=dev-python/pymeeus-0.3.13[${PYTHON_USEDEP}]
 "
 
+EPYTEST_PLUGINS=( )
 distutils_enable_tests pytest
 distutils_enable_sphinx docs \
 	dev-python/myst-parser \
