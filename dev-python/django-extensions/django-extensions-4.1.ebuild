@@ -30,6 +30,7 @@ BDEPEND="
 "
 DOCS=( README.rst CHANGELOG.md )
 
+EPYTEST_PLUGINS=( pytest-django )
 distutils_enable_tests pytest
 distutils_enable_sphinx docs \
 	dev-python/sphinx-rtd-theme
