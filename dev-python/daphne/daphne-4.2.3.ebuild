@@ -26,17 +26,12 @@ DEPEND="
 BDEPEND="
 	test? (
 		dev-python/hypothesis[${PYTHON_USEDEP}]
-		dev-python/pytest-asyncio[${PYTHON_USEDEP}]
 	)
 "
 
 DOCS=( README.rst )
 
-EPYTEST_DESELECT=(
-	# https://github.com/django/daphne/issues/535
-	tests/test_http_request.py::TestHTTPRequest::test_bad_requests
-	tests/test_http_request.py::TestHTTPRequest::test_invalid_header_name
-)
+EPYTEST_PLUGINS=( )
 distutils_enable_tests pytest
 
 src_test() {
