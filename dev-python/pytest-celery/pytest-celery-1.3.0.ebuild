@@ -41,6 +41,7 @@ EPYTEST_DESELECT=(
 	"tests/smoke"
 )
 
+EPYTEST_PLUGINS=( pytest-celery )
 distutils_enable_tests pytest
 distutils_enable_sphinx docs --no-autodoc
 
