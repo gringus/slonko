@@ -36,6 +36,7 @@ BDEPEND="
 
 DOCS=( README.rst )
 
+EPYTEST_PLUGINS=( pytest-asyncio )
 distutils_enable_tests pytest
 
 EPYTEST_IGNORE=(
@@ -43,13 +44,6 @@ EPYTEST_IGNORE=(
 	tests/test_pubsub_sentinel.py
 	tests/test_sentinel.py
 )
-
-#python_prepare_all() {
-#	# Remove sentinel tests
-#	#rm tests/test{_pubsub,}_sentinel.py
-#
-#	distutils-r1_python_prepare_all
-#}
 
 src_test() {
 	local redis_pid="${T}"/redis.pid
