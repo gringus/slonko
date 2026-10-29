@@ -29,4 +29,5 @@ BDEPEND="
 	)
 "
 
+EPYTEST_PLUGINS=( pytest-django )
 distutils_enable_tests pytest
