@@ -18,14 +18,19 @@ SLOT="0"
 KEYWORDS="~amd64"
 
 DEPEND=">=dev-python/python-dateutil-2.8[${PYTHON_USEDEP}]"
+
+# tantivy-0.27 changed JSON-field query semantics (phrase slop/prefix now
+# honored, Term::get_json_path fix); the 0.3.0 emitter and its tests encode
+# tantivy-0.26 behavior. Revisit on the next whoosh-compat bump.
 BDEPEND="
 	test? (
 		dev-python/hypothesis[${PYTHON_USEDEP}]
-		dev-python/tantivy[${PYTHON_USEDEP}]
+		<dev-python/tantivy-0.27[${PYTHON_USEDEP}]
 		dev-python/whoosh[${PYTHON_USEDEP}]
 	)
 	"
 
+EPYTEST_PLUGINS=( )
 distutils_enable_tests pytest
 
 pkg_postinst() {
