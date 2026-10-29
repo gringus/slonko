@@ -30,6 +30,7 @@ BDEPEND="
 
 DOCS=( README.md )
 
+EPYTEST_PLUGINS=( pytest-asyncio pytest-mock )
 distutils_enable_tests pytest
 
 python_prepare_all() {
