@@ -63,6 +63,7 @@ export SETUPTOOLS_SCM_PRETEND_VERSION=${PV}
 
 DOCS=( README.rst AUTHORS ChangeLog.rst )
 
+EPYTEST_PLUGINS=( pytest-asyncio pytest-django )
 distutils_enable_tests pytest
 distutils_enable_sphinx docs \
 	dev-python/sphinx-rtd-theme
