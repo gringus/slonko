@@ -34,9 +34,16 @@ BDEPEND="
 
 DOCS=( README.md )
 
-EPYTEST_PLUGINS=( )
-distutils_enable_tests pytest
+# test/svg/test_svg.py parametrizes over a set, whose iteration order is
+# hash-randomized per process -- pytest-xdist then aborts with "Different
+# tests were collected between gw0 and gwN". Sort it; also worth an upstream
+# report (blocks xdist for all fpdf2 users).
+PATCHES=(
+	"${FILESDIR}/${P}-xdist-param-order.patch"
+)
 
+EPYTEST_PLUGINS=( )
+EPYTEST_XDIST=1
 EPYTEST_IGNORE=(
 	# Requires dev-python/camelot-py
 	test/table/test_table_extraction.py
@@ -46,6 +53,7 @@ EPYTEST_DESELECT=(
 	test/image/test_url_images.py::test_png_url
 	test/layout/test_page_background.py::test_page_background
 )
+distutils_enable_tests pytest
 
 python_test() {
 	epytest -o addopts=
