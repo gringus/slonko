@@ -25,39 +25,27 @@ DEPEND="${RDEPEND}"
 BDEPEND="
 	test? (
 		>=dev-python/httpx-0.27[${PYTHON_USEDEP}]
+		dev-python/httpx2[${PYTHON_USEDEP}]
+		dev-python/pikepdf[${PYTHON_USEDEP}]
+		dev-python/pypdf[${PYTHON_USEDEP}]
+		dev-python/requests[${PYTHON_USEDEP}]
 	)
 "
 
 DOCS=( README.md )
 
-EPYTEST_PLUGINS=( )
+EPYTEST_PLUGINS=( flaky pytest-{asyncio,httpx,mock} )
+EPYTEST_IGNORE=(
+	# requires niquests (tests the niquests backend selection)
+	tests/test_backend_auto.py
+)
 distutils_enable_tests pytest
 
-EPYTEST_IGNORE=(
-	tests/test_backend_auto.py
-	tests/test_backend_niquests.py
-	tests/test_backend_requests.py
-	tests/test_bookmarks.py
-	tests/test_common_mixins.py
-	tests/test_convert_chromium_html.py
-	tests/test_convert_chromium_markdown.py
-	tests/test_convert_chromium_screenshots.py
-	tests/test_convert_chromium_url.py
-	tests/test_convert_libre_office.py
-	tests/test_convert_pdf_a.py
-	tests/test_embed.py
-	tests/test_encrypt.py
-	tests/test_flatten.py
-	tests/test_health.py
-	tests/test_merge.py
-	tests/test_metadata.py
-	tests/test_misc_stuff.py
-	tests/test_rotate.py
-	tests/test_split.py
-	tests/test_stamp.py
-	tests/test_version.py
-	tests/test_watermark.py
-)
+python_test() {
+	# 'live' tests require a running Gotenberg server (Docker); the niquests
+	# backend is unpackaged. Everything else runs against pytest-httpx mocks.
+	epytest -m 'not live and not niquests' tests
+}
 
 pkg_postinst() {
 	optfeature "httpx support" dev-python/httpx
