@@ -27,8 +27,8 @@ RDEPEND="
 	>=dev-python/django-4.2.16[${PYTHON_USEDEP}]
 	>=dev-python/pyjwt-2.0[${PYTHON_USEDEP}]
 	<dev-python/pyjwt-3[${PYTHON_USEDEP}]
-	>=dev-python/oauthlib-3.3.0[${PYTHON_USEDEP}]
-	<dev-python/oauthlib-4[${PYTHON_USEDEP}]
+	>=dev-python/oauthlib-4.0.0[${PYTHON_USEDEP}]
+	<dev-python/oauthlib-5[${PYTHON_USEDEP}]
 	>=dev-python/requests-2.0.0[${PYTHON_USEDEP}]
 	<dev-python/requests-3[${PYTHON_USEDEP}]
 "
