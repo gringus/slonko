@@ -49,6 +49,9 @@ ALLAUTH_MFA_DEPEND="
 # - sentence-transformers>=5.6.1
 # - sqlite-vec>=0.1.9
 # - torch>=2.13.0 <2.15
+# tantivy-0.27 breaks whoosh-compat-0.3.0's emitter semantics (json/phrase
+# query behavior changed); keep the search stack on 0.26 until whoosh-compat
+# adapts
 RDEPEND="
 	${ACCT_DEPEND}
 	${ALLAUTH_MFA_DEPEND}
@@ -107,7 +110,8 @@ RDEPEND="
 		>=dev-python/regex-2026.7.19[${PYTHON_USEDEP}]
 		>=dev-python/scikit-learn-1.9.0[${PYTHON_USEDEP}]
 		>=dev-python/setproctitle-1.3.4[${PYTHON_USEDEP}]
-		>=dev-python/tantivy-0.26.0[${PYTHON_USEDEP}]
+		>=dev-python/tantivy-0.26.2[${PYTHON_USEDEP}]
+		<dev-python/tantivy-0.27[${PYTHON_USEDEP}]
 		>=dev-python/tika-client-1.0[${PYTHON_USEDEP}]
 		>=dev-python/turbohtml-1.10.0[${PYTHON_USEDEP}]
 		dev-python/uvloop[${PYTHON_USEDEP}]
@@ -120,7 +124,6 @@ RDEPEND="
 	>=app-text/OCRmyPDF-17.12
 	<app-text/OCRmyPDF-17.13
 	app-text/poppler[utils]
-	media-gfx/imagemagick[xml]
 	media-gfx/optipng
 	media-libs/jbig2enc
 	audit? ( $(python_gen_cond_dep '
@@ -151,8 +154,6 @@ BDEPEND="test? (
 		>=dev-python/time-machine-2.13[${PYTHON_USEDEP}]
 	')
 )"
-
-DOCS=( docker/rootfs/etc/ImageMagick-6/paperless-policy.xml )
 
 EPYTEST_PLUGINS=(
 	pytest-django
