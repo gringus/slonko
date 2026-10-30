@@ -23,7 +23,7 @@ CRATES="
 	block-padding@0.4.2
 	bytes@1.12.1
 	cbc@0.2.1
-	cc@1.9.0
+	cc@1.10.0
 	cfg-if@1.0.5
 	chacha20@0.10.2
 	ciborium-io@0.2.2
@@ -40,9 +40,9 @@ CRATES="
 	crunchy@0.2.4
 	crypto-common@0.2.2
 	ctr@0.10.1
-	ctutils@0.4.3
+	ctutils@0.4.6
 	data-encoding@2.11.1
-	der@0.8.2
+	der@0.8.3
 	digest@0.11.3
 	dispatch2@0.3.1
 	doctest-file@1.1.1
@@ -124,7 +124,7 @@ CRATES="
 	ring@0.17.14
 	rustls-pemfile@2.2.0
 	rustls-pki-types@1.15.1
-	rustls-webpki@0.103.15
+	rustls-webpki@0.103.16
 	rustls@0.23.46
 	rustversion@1.0.23
 	salsa20@0.11.0
@@ -139,7 +139,7 @@ CRATES="
 	signal-hook-registry@1.4.8
 	simdutf8@0.1.5
 	slab@0.4.12
-	smallvec@1.16.3
+	smallvec@1.16.4
 	socket2@0.6.5
 	spki@0.8.1
 	subtle@2.6.1
@@ -156,7 +156,7 @@ CRATES="
 	tokio-stream@0.1.19
 	tokio-tungstenite@0.30.0
 	tokio-util@0.7.20
-	tokio@1.53.3
+	tokio@1.54.1
 	tracing-core@0.1.36
 	tracing@0.1.44
 	tungstenite@0.30.0
