@@ -26,7 +26,7 @@ CRATES="
 	cc@1.2.36
 	census@0.4.2
 	cfg-if@1.0.3
-	chrono@0.4.44
+	chrono@0.4.45
 	core-foundation-sys@0.8.7
 	crc32fast@1.5.0
 	crossbeam-channel@0.5.15
@@ -50,15 +50,15 @@ CRATES="
 	fnv@1.0.7
 	foldhash@0.2.0
 	fs4@0.13.1
-	futures-channel@0.3.32
-	futures-core@0.3.32
-	futures-executor@0.3.32
-	futures-io@0.3.32
-	futures-macro@0.3.32
-	futures-sink@0.3.32
-	futures-task@0.3.32
-	futures-util@0.3.32
-	futures@0.3.32
+	futures-channel@0.3.34
+	futures-core@0.3.34
+	futures-executor@0.3.34
+	futures-io@0.3.34
+	futures-macro@0.3.34
+	futures-sink@0.3.34
+	futures-task@0.3.34
+	futures-util@0.3.34
+	futures@0.3.34
 	getrandom@0.3.3
 	hashbrown@0.16.1
 	heck@0.5.0
@@ -69,6 +69,7 @@ CRATES="
 	indoc@2.0.6
 	inventory@0.3.24
 	itertools@0.14.0
+	itertools@0.15.0
 	itoa@1.0.15
 	jobserver@0.1.34
 	js-sys@0.3.78
@@ -98,7 +99,7 @@ CRATES="
 	prettyplease@0.2.37
 	proc-macro2@1.0.101
 	pyo3-build-config@0.26.0
-	pyo3-build-config@0.28.3
+	pyo3-build-config@0.29.2
 	pyo3-ffi@0.26.0
 	pyo3-macros-backend@0.26.0
 	pyo3-macros@0.26.0
@@ -115,10 +116,10 @@ CRATES="
 	rustc-hash@2.1.1
 	rustix@1.0.8
 	rustversion@1.0.22
-	serde@1.0.228
-	serde_core@1.0.228
-	serde_derive@1.0.228
-	serde_json@1.0.149
+	serde@1.0.229
+	serde_core@1.0.229
+	serde_derive@1.0.229
+	serde_json@1.0.151
 	shlex@1.3.0
 	sketches-ddsketch@0.4.0
 	slab@0.4.11
@@ -126,6 +127,7 @@ CRATES="
 	stable_deref_trait@1.2.0
 	strsim@0.11.1
 	syn@2.0.106
+	syn@3.0.2
 	tantivy-bitpacker@0.10.0
 	tantivy-columnar@0.7.0
 	tantivy-common@0.11.0
@@ -134,7 +136,7 @@ CRATES="
 	tantivy-sstable@0.7.0
 	tantivy-stacker@0.7.0
 	tantivy-tokenizer-api@0.7.0
-	tantivy@0.26.0
+	tantivy@0.26.2
 	target-lexicon@0.13.4
 	tempfile@3.21.0
 	thiserror-impl@2.0.16
