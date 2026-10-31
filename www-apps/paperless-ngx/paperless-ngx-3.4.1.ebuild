@@ -35,6 +35,10 @@ ALLAUTH_MFA_DEPEND="
 		>=dev-python/fido2-1.1.2[${PYTHON_USEDEP}]
 		>=dev-python/qrcode-7.0.0[${PYTHON_USEDEP}]')
 "
+PATCHES=(
+	# make django-compression-middleware optional for USE=-compression
+	"${FILESDIR}/${PN}-optional-compression-middleware.patch"
+)
 # Microsoft's Azure "Document Intelligence (REMOTE_OCR_ENGINE="azureai")
 # - azure-ai-documentintelligence>=1.0.2
 # PAPERLESS_AI_ENABLED=true
@@ -67,7 +71,6 @@ RDEPEND="
 		<dev-python/django-6.0[${PYTHON_USEDEP}]
 		>=dev-python/django-allauth-65.20.0[${PYTHON_USEDEP}]
 		>=dev-python/django-cachalot-2.9.0[${PYTHON_USEDEP}]
-		>=dev-python/django-compression-middleware-0.5.0[${PYTHON_USEDEP}]
 		>=dev-python/django-cors-headers-4.9.0[${PYTHON_USEDEP}]
 		>=dev-python/django-extensions-4.1[${PYTHON_USEDEP}]
 		>=dev-python/django-filter-25.1[${PYTHON_USEDEP}]
@@ -126,6 +129,8 @@ RDEPEND="
 	media-libs/jbig2enc
 	audit? ( $(python_gen_cond_dep '
 		>=dev-python/django-auditlog-3.4.1[${PYTHON_USEDEP}]') )
+	compression? ( $(python_gen_cond_dep '
+		>=dev-python/django-compression-middleware-0.5.0[${PYTHON_USEDEP}]') )
 	mysql? ( >=dev-python/mysqlclient-2.2.7 )
 	postgres? ( $(python_gen_cond_dep '
 		>=dev-python/psycopg-3.3.4[native-extensions,${PYTHON_USEDEP}]') )
@@ -136,6 +141,7 @@ BDEPEND="test? (
 	app-text/tessdata_fast[l10n_en(+)]
 	$(python_gen_cond_dep '
 		>=dev-python/django-auditlog-3.4.1[${PYTHON_USEDEP}]
+		>=dev-python/django-compression-middleware-0.5.0[${PYTHON_USEDEP}]
 		>=dev-python/factory-boy-3.3.1[${PYTHON_USEDEP}]
 		>=dev-python/faker-40.36[${PYTHON_USEDEP}]
 		dev-python/imagehash[${PYTHON_USEDEP}]
