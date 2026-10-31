@@ -15,7 +15,7 @@ S="${WORKDIR}/${PN}"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="audit mysql postgres remote-redis +sqlite test zxing"
+IUSE="audit compression mysql postgres remote-redis +sqlite test"
 REQUIRED_USE="
 	${PYTHON_REQUIRED_USE}
 	|| ( mysql postgres sqlite )
@@ -28,8 +28,7 @@ ACCT_DEPEND="
 EXTRA_DEPEND="
 	app-text/unpaper
 	$(python_gen_cond_dep '
-		dev-python/hiredis[${PYTHON_USEDEP}]
-		dev-python/websockets[${PYTHON_USEDEP}]')
+		dev-python/hiredis[${PYTHON_USEDEP}]')
 "
 ALLAUTH_MFA_DEPEND="
 	$(python_gen_cond_dep '
@@ -63,12 +62,11 @@ RDEPEND="
 		>=dev-python/channels-4.2[${PYTHON_USEDEP}]
 		>=dev-python/channels-redis-4.2[${PYTHON_USEDEP}]
 		>=dev-python/concurrent-log-handler-0.9.25[${PYTHON_USEDEP}]
-		>=dev-python/dateparser-1.2[${PYTHON_USEDEP}]
+		>=dev-python/dateparser-1.4[${PYTHON_USEDEP}]
 		>=dev-python/django-5.2.13[${PYTHON_USEDEP}]
 		<dev-python/django-6.0[${PYTHON_USEDEP}]
-		>=dev-python/django-allauth-65.16.0[${PYTHON_USEDEP}]
+		>=dev-python/django-allauth-65.20.0[${PYTHON_USEDEP}]
 		>=dev-python/django-cachalot-2.9.0[${PYTHON_USEDEP}]
-		>=dev-python/django-compression-middleware-0.5.0[${PYTHON_USEDEP}]
 		>=dev-python/django-cors-headers-4.9.0[${PYTHON_USEDEP}]
 		>=dev-python/django-extensions-4.1[${PYTHON_USEDEP}]
 		>=dev-python/django-filter-25.1[${PYTHON_USEDEP}]
@@ -82,7 +80,6 @@ RDEPEND="
 		<dev-python/django-soft-delete-1.1[${PYTHON_USEDEP}]
 		>=dev-python/django-treenode-0.24[${PYTHON_USEDEP}]
 		>=dev-python/djangorestframework-3.16.0[${PYTHON_USEDEP}]
-		>=dev-python/djangorestframework-guardian-0.4.0[${PYTHON_USEDEP}]
 		>=dev-python/drf-spectacular-0.30[${PYTHON_USEDEP}]
 		>=dev-python/drf-spectacular-sidecar-2026.7.1[${PYTHON_USEDEP}]
 		<dev-python/drf-spectacular-sidecar-2026.10[${PYTHON_USEDEP}]
@@ -124,22 +121,23 @@ RDEPEND="
 	>=app-text/OCRmyPDF-17.12
 	<app-text/OCRmyPDF-17.13
 	app-text/poppler[utils]
-	media-gfx/optipng
+	media-fonts/liberation-fonts
 	media-libs/jbig2enc
 	audit? ( $(python_gen_cond_dep '
 		>=dev-python/django-auditlog-3.4.1[${PYTHON_USEDEP}]') )
+	compression? ( $(python_gen_cond_dep '
+		>=dev-python/django-compression-middleware-0.5.0[${PYTHON_USEDEP}]') )
 	mysql? ( >=dev-python/mysqlclient-2.2.7 )
 	postgres? ( $(python_gen_cond_dep '
 		>=dev-python/psycopg-3.3.4[native-extensions,${PYTHON_USEDEP}]') )
 	!remote-redis? ( dev-db/redis )
 "
 DEPEND="${RDEPEND}"
-# Upstream testing dependency-group (pyproject.toml); live tests needing
-# Gotenberg/Tika/GreenMail/nginx self-skip without PAPERLESS_CI_TEST set.
 BDEPEND="test? (
 	app-text/tessdata_fast[l10n_en(+)]
 	$(python_gen_cond_dep '
 		>=dev-python/django-auditlog-3.4.1[${PYTHON_USEDEP}]
+		>=dev-python/django-compression-middleware-0.5.0[${PYTHON_USEDEP}]
 		>=dev-python/factory-boy-3.3.1[${PYTHON_USEDEP}]
 		>=dev-python/faker-40.36[${PYTHON_USEDEP}]
 		dev-python/imagehash[${PYTHON_USEDEP}]
@@ -228,6 +226,7 @@ src_prepare() {
 	# PAPERLESS_PORT=8000
 	# PAPERLESS_WEBSERVER_WORKERS=1
 
+	PAPERLESS_ENABLE_COMPRESSION=$(use compression && echo true || echo false)
 	PAPERLESS_AUDIT_LOG_ENABLED=$(use audit && echo true || echo false)
 	# See https://github.com/paperless-ngx/paperless-ngx/discussions/9920
 	OMP_NUM_THREADS=1
