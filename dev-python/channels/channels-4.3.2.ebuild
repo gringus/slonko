@@ -23,13 +23,19 @@ DEPEND="
 BDEPEND="
 	test? (
 		dev-python/async-timeout[${PYTHON_USEDEP}]
-		>=dev-python/daphne-4.0.0[${PYTHON_USEDEP}]
 		dev-python/pytest-asyncio[${PYTHON_USEDEP}]
 		dev-python/pytest-django[${PYTHON_USEDEP}]
 	)
 "
 
+PATCHES=(
+	# stub out channels.testing.live so that channels.testing (imported by
+	# most test modules) does not pull in daphne; no test actually uses it
+	"${FILESDIR}/${P}-mock-live-tests.patch"
+)
+
 EPYTEST_IGNORE=(
+	# selenium browser tests, need a webdriver we do not install
 	tests/sample_project/tests/test_selenium.py
 )
 
@@ -37,6 +43,14 @@ EPYTEST_PLUGINS=( pytest-django pytest-asyncio )
 distutils_enable_tests pytest
 distutils_enable_sphinx docs \
 	dev-python/sphinx-rtd-theme
+
+src_prepare() {
+	default
+
+	# drop daphne from the sample project INSTALLED_APPS; the file is only
+	# used by the tests and Django setup would fail without daphne installed
+	sed -i '/\s*"daphne",\s*$/d' tests/sample_project/config/settings.py || die
+}
 
 python_install() {
 	distutils-r1_python_install
