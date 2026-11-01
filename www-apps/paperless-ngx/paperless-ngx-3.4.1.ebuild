@@ -200,6 +200,11 @@ src_test() {
 	# Tests exercise audit history regardless of the runtime audit USE flag;
 	# django-auditlog is provided by TEST_DEPEND.
 	local -x PAPERLESS_AUDIT_LOG_ENABLED=true
+	# test_compression_middleware.py imports StreamAwareCompressionMiddleware
+	# directly; the optional-compression patch only defines it when compression
+	# is enabled (like upstream CI, which runs on defaults). The conf's
+	# use-flag value would leave the class undefined with USE=-compression.
+	local -x PAPERLESS_ENABLE_COMPRESSION=true
 
 	epytest
 }

@@ -1,18 +1,13 @@
 --- a/src/paperless/middleware.py
 +++ b/src/paperless/middleware.py
-@@ -1,21 +1,28 @@
+@@ -1,21 +1,26 @@
 -from compression_middleware.middleware import CompressionMiddleware
-+try:
-+    from compression_middleware.middleware import CompressionMiddleware
-+except ImportError:
-+    # compression_middleware is optional (PAPERLESS_ENABLE_COMPRESSION);
-+    # StreamAwareCompressionMiddleware is only defined when it is installed
-+    CompressionMiddleware = None
  from django.conf import settings
  
  from paperless import version
++from paperless.settings.parsers import get_bool_from_env
  
- 
+-
 -class StreamAwareCompressionMiddleware(CompressionMiddleware):
 -    """
 -    Bypasses compression for server-sent streams (text/event-stream).
@@ -25,7 +20,11 @@
 -        if content_type.startswith("text/event-stream"):
 -            return response
 -        return super().process_response(request, response)
-+if CompressionMiddleware is not None:
++# compression_middleware is an optional dependency (Gentoo USE=compression);
++# StreamAwareCompressionMiddleware is only defined when PAPERLESS_ENABLE_COMPRESSION
++# is set, matching the MIDDLEWARE insertion in paperless.settings
++if get_bool_from_env("PAPERLESS_ENABLE_COMPRESSION", "yes"):
++    from compression_middleware.middleware import CompressionMiddleware
 +
 +    class StreamAwareCompressionMiddleware(CompressionMiddleware):
 +        """
