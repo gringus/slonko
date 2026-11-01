@@ -38,6 +38,8 @@ ALLAUTH_MFA_DEPEND="
 PATCHES=(
 	# make django-compression-middleware optional for USE=-compression
 	"${FILESDIR}/${PN}-optional-compression-middleware.patch"
+	# stub channels.testing.live so test_websockets.py can run without daphne
+	"${FILESDIR}/${PN}-channels-live-stub.patch"
 )
 # Microsoft's Azure "Document Intelligence (REMOTE_OCR_ENGINE="azureai")
 # - azure-ai-documentintelligence>=1.0.2
@@ -140,6 +142,7 @@ DEPEND="${RDEPEND}"
 BDEPEND="test? (
 	app-text/tessdata_fast[l10n_en(+)]
 	$(python_gen_cond_dep '
+		dev-python/anyio[${PYTHON_USEDEP}]
 		>=dev-python/django-auditlog-3.4.1[${PYTHON_USEDEP}]
 		>=dev-python/django-compression-middleware-0.5.0[${PYTHON_USEDEP}]
 		>=dev-python/factory-boy-3.3.1[${PYTHON_USEDEP}]
@@ -158,6 +161,7 @@ BDEPEND="test? (
 )"
 
 EPYTEST_PLUGINS=(
+	anyio
 	pytest-django
 	pytest-env
 	pytest-xdist
@@ -166,9 +170,6 @@ EPYTEST_PLUGINS=(
 	pytest-rerunfailures
 )
 EPYTEST_IGNORE=(
-	# channels.testing pulls in daphne (unpackageable: dev-python/autobahn
-	# missing in gentoo)
-	src/paperless/tests/test_websockets.py
 	# needs azure-ai-documentintelligence (Azure OCR, not packaged)
 	src/paperless/tests/parsers/test_remote_parser.py
 )

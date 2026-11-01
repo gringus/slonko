@@ -1,0 +1,19 @@
+--- a/src/paperless/tests/conftest.py
++++ b/src/paperless/tests/conftest.py
+@@ -63,3 +63,16 @@
+     reset_parser_registry()
+     yield
+     reset_parser_registry()
++
++
++# channels.testing imports daphne at package level (channels.testing.live ->
++# daphne.testing), but daphne is not installed for tests (its autobahn dep
++# was removed from gentoo and is overlay-only). Stub the live-server module
++# so that WebsocketCommunicator -- the only channels.testing symbol used by
++# the tests -- stays importable. ChannelsLiveServerTestCase, the only thing
++# living in that module, has no users here; any future use fails loudly at
++# collection (a MagicMock is not a valid class base).
++import sys
++from unittest.mock import MagicMock
++
++sys.modules["channels.testing.live"] = MagicMock()
