@@ -79,11 +79,11 @@ Path vars never end in `/`. EAPI 9: not env-exported (see EAPI table).
 | SRC_URI | see below; USE-conditionals; rename via `url -> ${P}.tar.gz` (spaces around `->`) |
 | LICENSE | mandatory; exact ids from `/usr/portage/licenses/`; multiple ids space-sep; `use? ( ... )` allowed; bare `GPL`/`LGPL` invalid |
 | SLOT | mandatory; `"0"` or real slot; never empty; subslot `0/3` (EAPI≥5) |
-| KEYWORDS | space list; `arch` stable `~arch` testing `-*` all-testing; never `*`/`~*`; `""` = needs package.accept_keywords (`**/cat/pn`) — normal for live/overlay-only |
+| KEYWORDS | space list; `arch` stable `~arch` testing `-*` all-testing `-arch` known-broken exclusion; never `*`/`~*`; `""` = needs package.accept_keywords (`**/cat/pn`) — normal for live/overlay-only |
 | IUSE | every flag referenced anywhere incl. in REQUIRED_USE/eclass adds (don't redeclare inherited ones); omit if empty |
 | REQUIRED_USE | DEPEND-syntax constraints; operators below |
-| PROPERTIES | `interactive` `live` `test_network`; USE-conditional ok |
-| RESTRICT | `fetch` `mirror` `strip` `test` `userpriv` `bindist`; use per-URI `fetch+`/`mirror+` (EAPI 8) instead of blanket |
+| PROPERTIES | `interactive` `live` `test_network` `test_privileged`; USE-conditional ok |
+| RESTRICT | `fetch` `mirror` `strip` `test` `userpriv` `bindist` `primaryuri` `installsources` `splitdebug` `network-sandbox` (escape hatch, not for the main tree); use per-URI `fetch+`/`mirror+` (EAPI 8) instead of blanket |
 | DEPEND / BDEPEND / RDEPEND / PDEPEND / IDEPEND | class table below |
 | S | default `${WORKDIR}/${P}` — set only when different (e.g. `S="${WORKDIR}/${MY_P}"`) |
 | DOCS / HTML_DOCS | default `einstalldocs` inputs |
@@ -97,7 +97,8 @@ Good constants: `${P}` `${PV}` `MY_P` in SRC_URI/S/`--docdir=${PF}`; bad:
 ### SRC_URI details
 - USE-conditional: `x86? ( https://.../${P}-sse.tar.bz2 )`.
 - Rename `-> ${P}.tar.gz` controls distfile/mirror name — always use for
-  GitHub archive URLs (`.../archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz`).
+  VCS archive URLs: GitHub `-> ${P}.gh.tar.gz`, GitLab `-> ${P}.gl.tar.gz`
+  (tree-dominant convention).
 - `mirror://<group>/...` only for multi-location / mirror-network upstreams
   or fetch-restricted fallbacks; otherwise the primary HTTPS URL.
 - Big patches/distfiles too big for `files/`: devspace upload to
@@ -122,7 +123,14 @@ Good constants: `${P}` `${PV}` `MY_P` in SRC_URI/S/`--docdir=${PF}`; bad:
   linked libs); `:slot=` = exact slot + subslot rebuild.
 - `|| ( a b )` alternatives — EAPI 7+: empty grouping / unconditionally-false
   member = error. USE deps: `flag? ( cat/pkg )`. One atom per line.
-- Version atoms: `>=cat/pkg-2`, `=cat/pkg-1.2*`; GTK1 is `=x11-libs/gtk+-1.2*`.
+- Version atoms: `>=cat/pkg-2`, `=cat/pkg-1.2*`; `~cat/pkg-1.2` = any
+  revision of 1.2; blockers: `!cat/pkg` / `!!cat/pkg` (strong — also
+  bans temporary co-install during upgrades); globs `=cat/pkg-2*` /
+  `!=cat/pkg-2*`. GTK1 is `=x11-libs/gtk+-1.2*`.
+- USE deps: `cat/pkg[ssl,-nls]`; conditional compact forms `ssl?` /
+  `!ssl?` (force on/off only when the flag exists) and `ssl=` /
+  `!ssl=` (mirror the flag); missing-flag defaults `threads(+)` /
+  `threads(-)` (assume enabled/disabled if absent from IUSE).
 - Accumulation: IUSE/REQUIRED_USE/*DEPEND/PROPERTIES/RESTRICT accumulate
   across eclasses since EAPI 8 (`+=` not needed); EAPI/HOMEPAGE/SRC_URI/
   LICENSE/KEYWORDS do not.
@@ -159,11 +167,22 @@ guarantees — checks only. Define phases in call order.
 | src_prepare | `eapply -- "${PATCHES[@]}"` then `eapply_user` | extra patching/sed — **must still call `eapply_user`** (directly or via `default`) |
 | src_configure | `econf` | extra switches |
 | src_compile | `emake` | custom build |
-| src_test | `emake check` (parallel ≥5) | nonstandard tests |
+| src_test | `emake check` then `emake test` (parallel since EAPI 5) | nonstandard tests |
 | src_install | `emake DESTDIR="${D}" install` if Makefile + `einstalldocs` | manual installs |
 
 `default` = phase-specific default. `einstall` banned since EAPI 6 —
 `emake DESTDIR="${D}" install`.
+
+- `pkg_nofetch`: define when `RESTRICT=fetch` — print *how* to obtain
+  the files; never die inside it.
+- Messaging: `einfo` (chatter), `elog` (recorded + shown at the end —
+  use in pkg_postinst for user instructions), `ewarn`/`eqawarn`/
+  `eerror`; `ebegin`/`eend` for progress lines. `nonfatal <helper>`
+  downgrades a helper error to a plain return — pair with explicit
+  `|| die` for custom handling (e.g. `virtx` in python.md).
+- Empty install dirs need `keepdir`; docs that must stay uncompressed:
+  `docompress -x /path`. Relative symlinks: `dosym -r`. `dosed` is
+  gone since EAPI 4 — plain `sed -i`.
 
 ## Patching (eapply)
 
@@ -240,11 +259,21 @@ build invokes them.
   `ver_rs [range] char|''`; `ver_test` (EAPI≥7). No sed/awk/cut on versions.
 - Suffix order: `_alpha < _beta < _pre < _rc < plain < _pN`
   (1.0_p1 > 1.0_rc2 > 1.0). `-rN` filename revision (PR=r0, PVR, PF).
+- `-rN` discipline: new upstream versions never carry one. Portage
+  identifies installed packages by version+revision string only — it
+  never diffs content — so an edit to an already-published
+  version+revision is invisible to users: bump `-rN` when installed
+  users need the change (different files/runtime/dep fix); pure
+  build-time fixes don't need one. `-9999` is edited in place.
 - SLOT: mandatory; sub-slot `SLOT="0/3"` (EAPI≥5): consumers with `:=`/
   `:slot=` rebuild on subslot change; document in metadata.xml
   `<slots>/<subslots>`.
 - QA_* vars (QA_PREBUILT, QA_TEXTRELS, QA_FLAGS_IGNORED, …) = last-resort
   QA suppression for closed binaries; only with QA-team agreement.
+  Also: `QA_CONFIGURE_OPTIONS` (unrecognized-configure-option
+  warnings), `QA_CONFIG_IMPL_DECL_SKIP` (false
+  -Wimplicit-function-declaration positives), `QA_DESKTOP_FILE`,
+  `QA_MULTILIB_PATHS`.
 
 ## Eclasses
 
@@ -265,7 +294,9 @@ cargo-r1), `go-module` (mature EAPI 7–9; `GO_OPTIONAL`,
 gentoo-golang-dist), `git-r3` (`EGIT_REPO_URI`, `EGIT_BRANCH`, `EGIT_COMMIT`,
 `EGIT_SUBMODULES`), `toolchain-funcs`, `flag-o-matic`, `systemd`
 (`systemd_dounit`/`systemd_newunit`/`systemd_enable_service`), `tmpfiles`,
-`desktop`+`xdg` (`domenu`, .desktop validation), `bash-completion-r1`
+`desktop`+`xdg` (`domenu`, .desktop validation), `shell-completion`
+(EAPI 8: `dobashcomp`/`dozshcomp`/`dofishcomp`; supersedes
+`bash-completion-r1`)
 (`dobashcomp`), `acct-user`/`acct-group` (`ACCT_USER_ID=-1` auto,
 `ACCT_USER_GROUPS`, `acct-user_add_deps`; pkgcheck flags acct IDs `-1`
 static via InvalidAccountIdentifier), `multilib`/`multilib-minimal`
@@ -308,9 +339,26 @@ this; today's machine-readable bump hint).
   `CrossSlotRangeDep`, `RequiredUseUnsatisfiable`, `RedundantPypiPN`,
   `PythonPackageNameCheck` (lowercase-hyphen PyPI), `TooManyCrates`,
   `EclassManualDepsCheck` (rust eclass). Landlock-sandboxed scans; `--net`
-  for network checks. `pkgcheck scan --commits` in CI.
+  for network checks. `pkgcheck scan --commits` in CI. Advisory-only
+  classes — don't chase unless asked: `PythonCompatUpdate`,
+  `DeprecatedDep`, `RequiredUseDefaults`, `ExcessiveLineLength`,
+  `TarballAvailable`, `NonexistentBlocker`. Fatal ones to always fix:
+  `NonsolvableDeps*`, `UnknownLicense`, `UnusedInherits`,
+  `VariableOrderWrong` (skel.ebuild order: DESCRIPTION HOMEPAGE SRC_URI
+  S LICENSE SLOT KEYWORDS IUSE RESTRICT; custom vars like `MY_P` go
+  right before the first variable they feed).
 - GitHub release SRC_URI convention:
-  `SRC_URI="https://github.com/OWNER/REPO/archive/v${PV}.tar.gz -> ${P}.tar.gz"`
+  `SRC_URI="https://github.com/OWNER/REPO/archive/v${PV}.tar.gz -> ${P}.gh.tar.gz"`
   + `<remote-id type="github">` in metadata.xml as the bump identity.
+- Per-remote-id release checks (for bumps; `metadata.xml <remote-id>` is
+  the authoritative hook): github → `gh api repos/O/R/releases/latest
+  --jq .tag_name` (tags-only: `.../tags --jq '.[0].name'`); gitlab →
+  `curl -s "https://gitlab.com/api/v4/projects/O%2FR/releases?per_page=1"`
+  (%2F = encoded path; freedesktop-gitlab likewise); pypi →
+  `curl -s https://pypi.org/pypi/N/json | jq -r .info.version`;
+  sourceforge → no clean endpoint, check the files listing by hand.
+- `-bin` packages: suffix `-bin` when a source version exists,
+  `QA_PREBUILT="path/…"` on the prebuilt files,
+  `RESTRICT="strip mirror"` as appropriate.
 - Gentoo migrating GitHub→Codeberg (mirror codeberg.org/gentoo/gentoo);
   GitHub PR flow still canonical for contributions for now.

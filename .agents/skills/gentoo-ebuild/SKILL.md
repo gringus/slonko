@@ -15,9 +15,24 @@ description: >
 
 # Gentoo ebuild authoring
 
-Reference material: `reference.md` in this directory (variable semantics, phase
-functions, common-mistakes catalogue, eclass table). Read the section you need
-before writing anything non-trivial. Do not guess variable semantics.
+Reference material in this directory — read what applies before writing
+anything non-trivial; do not guess variable semantics:
+
+- **Generic (always relevant):** `reference.md` — variable semantics,
+  phase functions, common-mistakes catalogue, eclass table.
+- **Language-specific — read ONLY when the ebuild is in that language;
+  skip otherwise (python content is irrelevant for a rust package):**
+  `python.md` — Python ebuilds: eclass choice, distutils-r1, pypi,
+  PYTHON_USEDEP dependencies, pytest/EPYTEST, python QA.
+  `rust.md` — Rust/cargo ebuilds: eclass choice (cargo vs rust),
+  CRATES / gentoo-crate-dist vendor tarballs, GIT_CRATES, crate
+  updates/overrides, live ebuilds, -sys unbundling.
+  `go.md` — Go/go-module ebuilds: deps/vendor tarballs, ego build,
+  goproxy distfile poisoning, build tags, unbundling, go-licenses.
+  Same pattern for future languages — create the file, add one line
+  here.
+- **Overlay-specific (this repo):** `slonko.md` — digest workflow, repo
+  id, metadata.xml conventions.
 
 ## Prime directives
 
@@ -69,17 +84,10 @@ Pick the build-system eclass, that's 90% of the work:
 | CMake | `cmake` | `cmake_src_*` (just inherit) |
 | Meson/Ninja | `meson` | inherit only |
 | Plain Makefile | none | `emake` / `emake DESTDIR="${D}" install` or manual `insinto`+`doins` |
-| Python (setup.py/pyproject) | `distutils-r1` + `pypi` | `DISTUTILS_USE_PEP517=...`, `PYTHON_COMPAT`, `distutils_enable_tests` |
-| Rust/Cargo | `cargo` (vendored `CRATES`) or new `rust.eclass` (EAPI 8, builds against slotted rust) | inherit + `cargo_src_*` / rust defaults |
-| Go modules | `go-module` | inherit; deps from `-deps.tar.xz` (gentoo-golang-dist) or `go-module_live_vendor` |
+| Python (setup.py/pyproject) | `distutils-r1` + `pypi` | `DISTUTILS_USE_PEP517=...`, `PYTHON_COMPAT`, `distutils_enable_tests` — details: `python.md` |
+| Rust/Cargo | `cargo` (vendored `CRATES`) or new `rust.eclass` (EAPI 8, builds against slotted rust) | inherit + `cargo_src_*` / rust defaults — details: `rust.md` |
+| Go modules | `go-module` | inherit; deps from `-deps.tar.xz` (gentoo-golang-dist) or `go-module_live_vendor` — details: `go.md` |
 | Ruby gem / cpan / etc. | `ruby-single`/`perl-module`… | check devmanual eclass list |
-
-`pypi` eclass: set `PYPI_PN` when the project name/casing differs from PN
-(`ImageHash`) **and** `PYPI_NO_NORMALIZE=1` when the sdist filename isn't
-lowercase-normalized — both before `inherit`; the filename is lowercased even
-with `PYPI_PN` alone. Inspect the sdist (`tar -tzf`) — if it ships a broken
-test suite (missing `__init__.py`/helpers the git repo has), fetch the GitHub
-tarball instead.
 
 For VCS/live ebuilds (`-9999`): `git-r3` (`EGIT_REPO_URI`), `cmake`/autotools
 variants; `KEYWORDS=""` always, and pin tags via `EGIT_COMMIT`/`tag` when
@@ -103,6 +111,15 @@ possible. Real examples: `grep -rl EGIT_REPO_URI /usr/portage/*/*/*.ebuild`.
   package when possible (`media-libs/libglvnd` etc. — check tree conventions).
 - Services daemons: run-as user/group via `acct-user/<x>` + `acct-group/<x>`
   packages (see `reference.md`), not manual `enewuser`.
+- When to add a USE flag: optional features with external deps,
+  significant build cost, or materially changed install. NOT for small
+  always-useful files (bash completions, systemd units, man pages —
+  install unconditionally), compiler flags, or runtime-only deps that
+  don't change compiled output.
+- Suspect an upstream dep isn't in the tree? Add it anyway and let
+  `emerge -p` / pkgcheck `NonexistentDeps` be the judge — silently
+  dropping it hides the gap. Then correct the atom (the package may
+  exist under another name) or report it as missing.
 
 ## Hard rules (non-exhaustive; full catalogue in reference.md)
 
@@ -122,78 +139,14 @@ possible. Real examples: `grep -rl EGIT_REPO_URI /usr/portage/*/*/*.ebuild`.
   OpenRC: `newinitd`/`newconfd` + `need_user` or acct deps. No manual .service
   copying.
 - `LICENSE` must exist in `licenses/` (tree or overlay) — check
-  `/usr/portage/licenses/` before inventing a name.
+  `/usr/portage/licenses/` before inventing a name. The var lists the
+  licenses of the *installed content*; dodoc upstream `COPYING`/`LICENSE`
+  text only when attribution or component-to-license mapping matters.
+- A helper name seen in an old ebuild is not proof it's available —
+  verify the providing eclass is inherited (and supports the EAPI)
+  before calling it.
 - Ebuilds inherit at most a handful of eclasses; prefer `default` phases over
   re-implementing them.
-
-## Adding a test phase (Python/pytest)
-
-- Test-only deps go in `BDEPEND="test? ( ... )"` with `PYTHON_USEDEP`, never
-  DEPEND; keep `DEPEND="${RDEPEND}"`.
-- distutils-r1: `distutils_enable_tests pytest` (or `unittest`). Non-distutils
-  (python-single-r1): define `src_test() { epytest; }` — EPYTHON is already set.
-- `epytest` plugin model: if `EPYTEST_PLUGINS` is unset, plugin autoload is
-  OFF (`-p no:cov -p no:sugar …`) and addopts needing those plugins get
-  stripped. With `EPYTEST_PLUGINS` set, only listed plugins load and **no
-  stripping happens**. Set the minimal verified set at module scope, one per
-  line — verify each by grepping the suite for its fixtures *and* marks
-  (`mocker`, `httpx_mock`, `@pytest.mark.flaky` …). Django packages need
-  `pytest-django` + `pytest-env` loaded or their ini env vars never apply.
-- `EPYTEST_IGNORE`/`EPYTEST_DESELECT`/`EPYTEST_PLUGINS` all at module scope
-  (celery ebuild style), one entry per line, per-entry `# why` comments.
-- Upstream pytest config from `pyproject.toml` (`[tool.pytest]` /
-  `[tool.pytest_env]`, pytest ≥9) is picked up automatically when tests run
-  from the project root.
-- Packages that read system config at import (`load_dotenv('/etc/…')`) or
-  `mkdir` runtime dirs during settings import need env overrides in
-  `src_test`: pre-set the vars (`local -x …`) — `load_dotenv` uses
-  `override=False`, so pre-set env wins; redirect data paths into `${T}`.
-- Prefer upstream test deps in TEST BDEPEND over deselects when cheap
-  (e.g. a package needing `django-auditlog` imports it unconditionally in
-  tests even though it's an optional runtime USE dep — install it for tests
-  and force-enable via env).
-
-## Build-time-only python (codegen in cmake/meson builds)
-
-Eclass choice per the Python guide
-(<https://projects.gentoo.org/python/guide/eclass.html>): python used purely
-at build time (codegen, translators, doc builds) → `python-any-r1`; python
-needed at runtime → `python-single-r1`/`python-r1`/`distutils-r1`. Do NOT put
-python deps in RDEPEND "because the old ebuild did" — verify runtime use
-first (check the installed file list for `.py` files; cmake codegen macros
-like jinja templates run at build time only).
-
-- **The trap**: `python-any-r1`'s `python_setup` picks the newest installed
-  impl from `PYTHON_COMPAT` — it does NOT know which impl has the build-time
-  python modules installed (jinja2, mako, …). Upstream build systems
-  (e.g. workrave's cmake `DBus.cmake`) silently fall back to
-  `python -m venv` + `pip install` when the module import fails, which the
-  network sandbox then blocks with `Could not find a version that satisfies
-  the requirement`.
-- **Required three-part pattern** (module deps with any-r1):
-
-  ```bash
-  BDEPEND="dbus? ( ${PYTHON_DEPS}
-      $(python_gen_any_dep 'dev-python/jinja2[${PYTHON_USEDEP}]') )"
-
-  pkg_setup() { python-any-r1_pkg_setup; }
-
-  python_check_deps() {
-      use dbus && python_has_version "dev-python/jinja2[${PYTHON_USEDEP}]"
-  }
-  ```
-
-  `python_check_deps()` is the load-bearing part: `python_setup` calls it per
-  impl (via `_python_run_check_deps`, with `PYTHON_USEDEP` exported) and
-  falls back down the impl list until one actually has the module. Without
-  this override the default returns success and the newest impl is chosen
-  blind — the failure only shows up in a real `emerge`, because direct
-  `ebuild <file> clean …` phase walks skip `pkg_setup`.
-- Verify after fixing: build log shows `Checking whether python3_X is
-  suitable …` lines per impl and `Found PY_<module>` (cmake
-  `find_python_module`), and no `pip install` / `venv` rule executing in
-  `build.ninja`. A command-less `build <name>: phony` venv target left in
-  build.ninja is a harmless leftover.
 
 ## Resolver gotchas
 
@@ -203,12 +156,20 @@ like jinja templates run at build time only).
 - No write access to `/etc/portage` (uid≠0)? Do scoped pretend checks with a
   throwaway `PORTAGE_CONFIGROOT=/tmp/pcfg` containing `repos.conf` (real repo
   locations), a `make.profile` symlink, and `package.use/…`.
-- The live overlay may be registered under an unexpected repo id — check
-  `cat /etc/portage/repos.conf/*.conf` (here `[local]` → the git tree itself)
-  and `portageq get_repo_path / <id>`.
+- A live overlay may be registered under an unexpected repo id — check
+  `cat /etc/portage/repos.conf/*.conf` and `portageq get_repo_path /
+  <id>` (slonko's: `slonko.md`).
 - An already-installed version satisfying a *loose* constraint never upgrades
   on re-emerge. If the code provably needs newer (upstream `uv.lock` can pin
   newer than the pyproject specifier implies), floor the RDEPEND version.
+- `masters=gentoo` means `::gentoo`'s `profiles/package.mask` applies
+  to the overlay too: a package we carry getting masked upstream makes
+  its dependents fail `NonsolvableDeps` even though our copy is fine.
+  Fix via overlay `profiles/package.unmask` — or move to the
+  replacement named in the mask comment (see packages.gentoo.org /
+  the mask's bug refs). Caveat: pkgcheck's `NonsolvableDeps` check
+  ignores a repo-root `package.unmask` (known pkgcore gap) — repoman
+  and real `emerge` honor it.
 
 ## The loop (any repo/overlay)
 
@@ -217,9 +178,8 @@ like jinja templates run at build time only).
 2. Update the Manifest after every add/edit: `pkgdev manifest` (or
    `ebuild <file> digest`). Without it, Portage ignores the new ebuild or
    fetches fail digest verification.
-   - Exception: in `~/repos/slonko` always use `ebuild <file> digest` —
-     that repo is kept digest-synced by hand; don't assume other overlays
-     work the same way.
+   - Repo-specific digest workflow: `slonko.md` (differs for
+     `~/repos/slonko`; don't assume other overlays work the same way).
 3. Static check: `pkgcheck scan` in the package dir.
 4. Phase walk (non-destructive): `ebuild ./<pn>-<pv>.ebuild clean unpack`
    then `prepare configure compile test install` — stop where it breaks.
@@ -237,8 +197,19 @@ like jinja templates run at build time only).
      sets these itself; for direct `ebuild` testing use
      `PORTAGE_INST_UID=$(id -u) PORTAGE_INST_GID=$(id -g)` and `USE=...`
      env overrides.
-5. Real install test: `emerge -11 =<cat>/<pn>-<pv>` (exercises the resolver,
-   USE flags, and dep graph, unlike the raw `ebuild` command).
+   - New/changed SRC_URI: test fetch+unpack first with
+     `GENTOO_MIRRORS="" ebuild <file> manifest clean unpack` — forces
+     an upstream fetch, so 404s/bad URLs surface immediately instead of
+     silently succeeding from a cached distfile.
+   - A failed root `emerge` leaves `<workdir>` root-owned; later
+     user-run `ebuild`/`pkgcheck` then die with `Permission denied` on
+     cleanup — clear `/var/tmp/portage/<cat>/<pn>-<pv>` before
+     retrying as user. Suspect this when phases fail on permissions
+     before doing anything. After the install phase, sanity-check
+     `find <workdir>/image | sort` for stray layout.
+5. Real install test: `emerge -11 =<cat>/<pn>-<pv>` — the raw `ebuild`
+   command never checks RDEPEND; only the emerge resolver validates
+   atoms (and `emerge -fp =...` verifies every dep distfile fetches).
 6. Version bump: copy old→new ebuild, fix `SRC_URI`/checksums, drop `files/`
    patches that upstream merged, digest, `pkgcheck scan`, `emerge` test.
 
@@ -283,7 +254,7 @@ Failure categories and canonical fixes:
 | `ImportError: attempted relative import with no known parent package` / `cannot import name X from 'tests' (unknown location)` (test) | PyPI sdist omits `tests/__init__.py`/helpers that the git repo has (MANIFEST.in bug) | compare sdist vs git tree; switch SRC_URI to the GitHub tarball (convertdate pattern), `S` = repo dir name |
 | `'flaky' not found in \`markers\` configuration option` (test) | strict markers + mark registered by an unloaded plugin (e.g. pytest-rerunfailures) | grep for the mark, add the registering plugin to `EPYTEST_PLUGINS` |
 | `ImportError while loading conftest …` optional dep (test) | conftest.py imports an unpackaged dep at collection; **`--ignore` does not prevent conftest imports** | `rm -rf` that tests dir in `src_prepare` (wrapt pattern) or ship the dep in TEST BDEPEND |
-| `pip install` / `Failed to resolve 'pypi.org'` during compile (venv fallback) | build-time python module missing for the impl python_setup picked — any-r1 without `python_check_deps()` override | add `python_check_deps()` + `python_gen_any_dep` (see "Build-time-only python" above) |
+| `pip install` / `Failed to resolve 'pypi.org'` during compile (venv fallback) | build-time python module missing for the impl python_setup picked — any-r1 without `python_check_deps()` override | add `python_check_deps()` + `python_gen_any_dep` (`python.md`) |
 | `PermissionError` reading `/etc/*.conf` or `mkdir /var/lib/…` during settings import (test) | package reads/makes runtime config dirs as the build user; stale root-owned conf from an earlier merge | pre-set env overrides in `src_test` (`load_dotenv` `override=False`), point config at an in-tree file, redirect dirs into `${T}` |
 | QA Notice: files left in S / not in image dir (install) | files built but never moved to `${D}` | replace `cp`/`mv` with `dosym/doins/doexe` (or use eclass `*_src_install`) |
 | Sandbox violation (access to /foo denied) (install) | phase writes outside `${D}`/`${T}` | fix to use `${D}`/`${T}`; `addwrite`/`addread` are a last resort with a comment |
@@ -291,6 +262,7 @@ Failure categories and canonical fixes:
 | `pkg_postinst`/`pkg_preinst` die | broken in-ebuild logic | reproduce standalone in a shell (they're just bash); `ebuild … preinst postinst` runs them without rebuilding (needs an unmerged ebuild in `$PWD`) |
 | Works under `ebuild …` but breaks under `emerge` | missing `DEPEND` (host tool) or wrong BDEPEND/RDEPEND split | emerge runs in a clean sandbox; the `ebuild` command runs in your env — trust the emerge failure, fix the dep split (`reference.md`) |
 | revdep-rebuild finds broken .so after install | linked lib not in `RDEPEND`, or slot moved | add the runtime slot dep (`:=`); `equery b <file>.so` finds the owning package |
+| `NonsolvableDeps` on a dep that *does* exist in the overlay (resolve) | `::gentoo` package.mask inherited via masters=gentoo | read the mask comment (packages.gentoo.org, gitweb) for the bug + replacement, then overlay `profiles/package.unmask` — or migrate to the replacement; not ebuild surgery |
 
 3. **Look up the answer before inventing it.** Search bugs.gentoo.org and
    GitHub `gentoo/gentoo` PRs for the package — most build failures against
@@ -312,7 +284,10 @@ Failure categories and canonical fixes:
 
 ## Source of truth
 
-When this skill and `reference.md` are silent or conflict: devmanual
-<https://devmanual.gentoo.org/ebuild-writing/index.html> and QA policy guide
-<https://projects.gentoo.org/qa/policy-guide/>. Fetch the relevant page rather
-than guessing.
+When this skill and its reference files are silent or conflict: `man 5
+ebuild` / `man 1 ebuild` (local ground truth), devmanual
+<https://devmanual.gentoo.org/ebuild-writing/index.html>, the QA policy
+guide <https://projects.gentoo.org/qa/policy-guide/>, and the ecosystem
+hub <https://wiki.gentoo.org/wiki/Ebuild_guidance_for_ecosystems>
+(holds Writing Rust Ebuilds / Writing go Ebuilds — seed material for
+future language files). Fetch the relevant page rather than guessing.
