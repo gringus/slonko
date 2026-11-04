@@ -13,7 +13,10 @@ IUSE="ffmpeg +gd imagemagick +mysql netpbm postgres raw sqlite unzip zip"
 
 case ${PV} in
 *.9999)
-	EGIT_REPO_URI="https://github.com/gregstoll/gallery2"
+	#EGIT_REPO_URI="https://github.com/gregstoll/gallery2"
+	EGIT_REPO_URI="https://github.com/gringus/gallery2"
+	EGIT_BRANCH="adodb5-pdo-sqlite"
+
 	inherit git-r3
 	;;
 *)
