@@ -23,8 +23,8 @@ RDEPEND="
 "
 BDEPEND="
 	test? (
-		dev-python/gitpython[${PYTHON_USEDEP}]
 		dev-python/convertdate[${PYTHON_USEDEP}]
+		dev-python/gitpython[${PYTHON_USEDEP}]
 		dev-python/hijridate[${PYTHON_USEDEP}]
 		dev-python/langdetect[${PYTHON_USEDEP}]
 		dev-python/parameterized[${PYTHON_USEDEP}]
