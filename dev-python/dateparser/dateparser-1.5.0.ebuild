@@ -32,7 +32,9 @@ BDEPEND="
 		dev-python/ruamel-yaml[${PYTHON_USEDEP}]
 	)
 "
+
 EPYTEST_PLUGINS=( )
+EPYTEST_XDIST=1
 distutils_enable_tests pytest
 distutils_enable_sphinx docs \
 	dev-python/sphinx-rtd-theme
