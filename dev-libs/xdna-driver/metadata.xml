@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>marcin.deranek@slonko.net</email>
+		<name>Marcin Deranek</name>
+	</maintainer>
+	<upstream>
+		<bugs-to>https://github.com/amd/xdna-driver/issues</bugs-to>
+		<remote-id type="github">amd/xdna-driver</remote-id>
+		<remote-id type="gitlab">kernel-firmware/drm-firmware</remote-id>
+	</upstream>
+	<longdescription>
+		Firmware-only variant of amd/xdna-driver: installs the XDNA NPU
+		firmware blobs without building the out-of-tree kernel module.
+		Intended for monolithic kernels with CONFIG_DRM_ACCEL_AMDXDNA=y
+		(and/or firmware embedded via CONFIG_EXTRA_FIRMWARE), where the
+		module cannot build and the driver is already present in-kernel.
+	</longdescription>
+</pkgmetadata>
