@@ -151,12 +151,17 @@ PACKAGES_UNPACK=(
 	tokenizers/punkt_tab
 )
 
+# Pin the nltk_data gh-pages commit serving the ${PV} content; branch URLs
+# roll, commit URLs are immutable (verified byte-identical with the ${PV}
+# distfiles).
+NLTK_DATA_COMMIT=550b6625bcef1f2abff2ff770a5a0d272c9c6b2a
+
 add_data() {
 	local data=${1}
 
 	for data; do
 		SRC_URI+="
-			https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/${data}.zip
+			https://raw.githubusercontent.com/nltk/nltk_data/${NLTK_DATA_COMMIT}/packages/${data}.zip
 				-> nltk-${data#*/}-${PV}.zip"
 	done
 }
