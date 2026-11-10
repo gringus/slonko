@@ -8,6 +8,9 @@
 	<use>
 		<flag name="audit">Enables an audit trail for documents, document types, correspondents and tags</flag>
 		<flag name="compression">Enable compression of the responses in application</flag>
+		<flag name="huggingface">Enable only local AI embeddings via the llama-index huggingface backend (pytorch)</flag>
+		<flag name="ollama">Enable AI via an Ollama server (local or remote LLM and embeddings)</flag>
+		<flag name="openai">Enable AI via OpenAI-compatible APIs (remote LLM and embeddings)</flag>
 		<flag name="remote-redis">Use remote Redis instance</flag>
 		<flag name="zxing">Use zxing-cpp as an alternative barcodes scanning library (2.x only; a hard dependency since 3.x)</flag>
 	</use>

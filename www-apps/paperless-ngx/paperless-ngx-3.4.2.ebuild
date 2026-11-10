@@ -10,12 +10,31 @@ inherit python-single-r1 systemd tmpfiles
 DESCRIPTION="A community-supported supercharged document management system"
 HOMEPAGE="https://github.com/paperless-ngx/paperless-ngx"
 SRC_URI="https://github.com/paperless-ngx/paperless-ngx/releases/download/v${PV}/paperless-ngx-v${PV}.tar.xz"
+# Test-only distfiles: the AI tests tokenize via tiktoken's model registry,
+# which fetches the encodings from openaipublic on first use (different
+# code paths map to different encodings); pre-seeded in python_test.
+SRC_URI+="
+	test? (
+		https://openaipublic.blob.core.windows.net/gpt-2/encodings/main/vocab.bpe
+			-> tiktoken-gpt2-vocab.bpe
+		https://openaipublic.blob.core.windows.net/gpt-2/encodings/main/encoder.json
+			-> tiktoken-gpt2-encoder.json
+		https://openaipublic.blob.core.windows.net/encodings/r50k_base.tiktoken
+			-> tiktoken-r50k_base.tiktoken
+		https://openaipublic.blob.core.windows.net/encodings/p50k_base.tiktoken
+			-> tiktoken-p50k_base.tiktoken
+		https://openaipublic.blob.core.windows.net/encodings/cl100k_base.tiktoken
+			-> tiktoken-cl100k_base.tiktoken
+		https://openaipublic.blob.core.windows.net/encodings/o200k_base.tiktoken
+			-> tiktoken-o200k_base.tiktoken
+	)
+"
 S="${WORKDIR}/${PN}"
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="audit compression mysql postgres remote-redis +sqlite test"
+IUSE="audit compression huggingface mysql postgres ollama openai remote-redis +sqlite test"
 REQUIRED_USE="
 	${PYTHON_REQUIRED_USE}
 	|| ( mysql postgres sqlite )
@@ -35,25 +54,58 @@ ALLAUTH_MFA_DEPEND="
 		>=dev-python/fido2-1.1.2[${PYTHON_USEDEP}]
 		>=dev-python/qrcode-7.0.0[${PYTHON_USEDEP}]')
 "
+# Shared AI core: llama-index vector store stack needed by every AI feature
+# regardless of the configured backend. sqlite-vec is a C library package
+# (dev-db) whose python binding is enabled via the python USE flag.
+AI_CORE_DEPEND="
+	$(python_gen_cond_dep '
+		>=dev-python/llama-index-core-0.14.23[${PYTHON_USEDEP}]')
+	dev-db/sqlite-vec[python]
+"
+# AI test stack: everything the AI test suite touches (all backends, so the
+# full suite runs unconditionally with USE=test); the runtime deps stay
+# gated behind the USE flags.
+AI_TEST_DEPEND="
+	${AI_CORE_DEPEND}
+	$(python_gen_cond_dep '
+		>=dev-python/llama-index-llms-openai-like-0.7.1[${PYTHON_USEDEP}]
+		>=dev-python/llama-index-embeddings-openai-like-0.2.2[${PYTHON_USEDEP}]
+		>=dev-python/openai-2.48[${PYTHON_USEDEP}]
+		>=dev-python/llama-index-embeddings-huggingface-0.6.1[${PYTHON_USEDEP}]
+		>=dev-python/sentence-transformers-5.6.1[${PYTHON_USEDEP}]
+		>=sci-ml/pytorch-2.13
+		<sci-ml/pytorch-2.15
+		>=dev-python/llama-index-llms-ollama-0.9.1[${PYTHON_USEDEP}]
+		>=dev-python/llama-index-embeddings-ollama-0.9[${PYTHON_USEDEP}]
+		>=dev-python/ollama-0.5.3[${PYTHON_USEDEP}]')
+"
 PATCHES=(
 	# make django-compression-middleware optional for USE=-compression
 	"${FILESDIR}/${PN}-optional-compression-middleware.patch"
 	# stub channels.testing.live so test_websockets.py can run without daphne
 	"${FILESDIR}/${PN}-channels-live-stub.patch"
 )
-# Microsoft's Azure "Document Intelligence (REMOTE_OCR_ENGINE="azureai")
-# - azure-ai-documentintelligence>=1.0.2
-# PAPERLESS_AI_ENABLED=true
-# - llama-index-core>=0.14.23
-# - llama-index-embeddings-huggingface>=0.6.1
-# - llama-index-embeddings-ollama>=0.9
-# - llama-index-embeddings-openai-like>=0.2.2
-# - llama-index-llms-ollama>=0.9.1
-# - llama-index-llms-openai-like>=0.7.1
-# - openai>=2.48
-# - sentence-transformers>=5.6.1
-# - sqlite-vec>=0.1.9
-# - torch>=2.13.0 <2.15
+# AI backends; PAPERLESS_AI_ENABLED is written from the USE flags below:
+# - openai: remote LLM/embeddings via any OpenAI-compatible API
+#   - llama-index-core>=0.14.23
+#   - llama-index-llms-openai-like>=0.7.1
+#   - llama-index-embeddings-openai-like>=0.2.2
+#   - openai>=2.48
+#   - sqlite-vec~=0.1.9 (upstream pins ==0.1.9; ~ tolerates -rN ebuild revisions)
+# - huggingface: local embeddings, no extra service
+#   - llama-index-embeddings-huggingface>=0.6.1
+#   - sentence-transformers>=5.6.1
+#   - torch>=2.13.0 <2.15 (sci-ml/pytorch)
+# - ollama: local LLM/embeddings via an Ollama server
+#   - llama-index-llms-ollama>=0.9.1
+#   - llama-index-embeddings-ollama>=0.9
+#   - ollama>=0.5.3 (client only; the server is sci-ml/ollama or remote)
+# Not packaged:
+# - Microsoft's Azure "Document Intelligence" (REMOTE_OCR_ENGINE="azureai")
+#   - azure-ai-documentintelligence>=1.0.2
+# Version ceilings from llama-index pins, revisit on bump:
+# - llama-index-llms-openai 0.8.x caps openai<3
+# - llama-index-embeddings-openai-like 0.4.x caps llama-index-embeddings-openai<0.7
 # tantivy-0.27 breaks whoosh-compat-0.3.0's emitter semantics (json/phrase
 # query behavior changed); keep the search stack on 0.26 until whoosh-compat
 # adapts
@@ -136,9 +188,35 @@ RDEPEND="
 	mysql? ( >=dev-python/mysqlclient-2.2.7 )
 	postgres? ( $(python_gen_cond_dep '
 		>=dev-python/psycopg-3.3.4[native-extensions,${PYTHON_USEDEP}]') )
+	openai? (
+		${AI_CORE_DEPEND}
+		$(python_gen_cond_dep '
+			>=dev-python/llama-index-llms-openai-like-0.7.1[${PYTHON_USEDEP}]
+			>=dev-python/llama-index-embeddings-openai-like-0.2.2[${PYTHON_USEDEP}]
+			>=dev-python/openai-2.48[${PYTHON_USEDEP}]')
+	)
+	ollama? (
+		${AI_CORE_DEPEND}
+		$(python_gen_cond_dep '
+			>=dev-python/llama-index-llms-ollama-0.9.1[${PYTHON_USEDEP}]
+			>=dev-python/llama-index-embeddings-ollama-0.9[${PYTHON_USEDEP}]
+			>=dev-python/ollama-0.5.3[${PYTHON_USEDEP}]')
+	)
+	huggingface? (
+		${AI_CORE_DEPEND}
+		$(python_gen_cond_dep '
+			>=dev-python/llama-index-embeddings-huggingface-0.6.1[${PYTHON_USEDEP}]
+			>=dev-python/sentence-transformers-5.6.1[${PYTHON_USEDEP}]
+			>=sci-ml/pytorch-2.13
+			<sci-ml/pytorch-2.15')
+	)
 	!remote-redis? ( dev-db/redis )
 "
 DEPEND="${RDEPEND}"
+# The AI test suite runs unconditionally with USE=test (no real LLM needed —
+# all backends are mock-patched), testing everything the ebuild supports:
+# the openai stack and the huggingface embedding backend (incl. the torch
+# chain). Only the ollama-backend tests are excluded — not supported.
 BDEPEND="test? (
 	app-text/tessdata_fast[l10n_en(+)]
 	$(python_gen_cond_dep '
@@ -158,6 +236,7 @@ BDEPEND="test? (
 		>=dev-python/pytest-xdist-3.8[${PYTHON_USEDEP}]
 		>=dev-python/time-machine-2.13[${PYTHON_USEDEP}]
 	')
+	${AI_TEST_DEPEND}
 )"
 
 EPYTEST_PLUGINS=(
@@ -176,8 +255,6 @@ EPYTEST_IGNORE=(
 EPYTEST_DESELECT=(
 	# webhook delivery to a real remote host (paperless-ngx.com)
 	src/documents/tests/test_workflows.py::TestWebhookSend::test_send_webhook_data_or_json
-	# needs sqlite-vec (AI stack, not packaged)
-	src/documents/tests/test_api_app_config.py::TestApiAppConfig::test_update_llm_embedding_model_triggers_rebuild
 	# needs pillow HEIF support (ocrmypdf[heic] extra, not packaged)
 	src/paperless/tests/parsers/test_tesseract_parser.py::TestParserFileTypes::test_heic
 )
@@ -206,17 +283,34 @@ src_test() {
 	# is enabled (like upstream CI, which runs on defaults). The conf's
 	# use-flag value would leave the class undefined with USE=-compression.
 	local -x PAPERLESS_ENABLE_COMPRESSION=true
+	# The generated paperless.conf derives PAPERLESS_AI_ENABLED from the USE
+	# flags; tests run against upstream defaults (AI off) — the AI tests set
+	# their own settings via override_settings.
+	local -x PAPERLESS_AI_ENABLED=false
+	# Seed the tiktoken encodings the AI tests tokenize with (see SRC_URI).
+	local cache_dir="${T}"/tiktoken-cache
+	mkdir -p "${cache_dir}" || die
+	local entry url distfile
+	while read -r entry; do
+		[[ -z ${entry} ]] && continue
+		url=${entry%%|*}
+		distfile=${entry#*|}
+		cp "${DISTDIR}/${distfile}" "${cache_dir}/$(printf '%s' "${url}" | sha1sum | awk '{print $1}')" || die
+	done <<-EOF
+		https://openaipublic.blob.core.windows.net/gpt-2/encodings/main/vocab.bpe|tiktoken-gpt2-vocab.bpe
+		https://openaipublic.blob.core.windows.net/gpt-2/encodings/main/encoder.json|tiktoken-gpt2-encoder.json
+		https://openaipublic.blob.core.windows.net/encodings/r50k_base.tiktoken|tiktoken-r50k_base.tiktoken
+		https://openaipublic.blob.core.windows.net/encodings/p50k_base.tiktoken|tiktoken-p50k_base.tiktoken
+		https://openaipublic.blob.core.windows.net/encodings/cl100k_base.tiktoken|tiktoken-cl100k_base.tiktoken
+		https://openaipublic.blob.core.windows.net/encodings/o200k_base.tiktoken|tiktoken-o200k_base.tiktoken
+	EOF
+	local -x TIKTOKEN_CACHE_DIR="${cache_dir}"
 
 	epytest
 }
 
 src_prepare() {
 	default
-
-	# AI tests need the llama-index stack, not packaged by this ebuild; their
-	# conftest.py imports it at collection time, before --ignore applies.
-	# Tests are stripped at install anyway.
-	rm -rf src/paperless_ai/tests || die
 
 	# drop coverage addopts: pytest-cov is not installed
 	sed -i -e '/--cov/d' pyproject.toml || die
@@ -238,6 +332,18 @@ src_prepare() {
 
 	PAPERLESS_ENABLE_COMPRESSION=$(use compression && echo true || echo false)
 	PAPERLESS_AUDIT_LOG_ENABLED=$(use audit && echo true || echo false)
+	# AI features; the LLM/embedding backends and endpoints are configured in
+	# the web UI (Application Configuration) or via these env overrides:
+	# PAPERLESS_AI_LLM_BACKEND=openai-like
+	# PAPERLESS_AI_LLM_ENDPOINT=http://localhost:8000/v1
+	# PAPERLESS_AI_LLM_MODEL=...
+	# PAPERLESS_AI_LLM_EMBEDDING_BACKEND=openai-like
+	# PAPERLESS_AI_LLM_EMBEDDING_ENDPOINT=http://localhost:8000/v1
+	# PAPERLESS_AI_LLM_EMBEDDING_MODEL=...
+	# (openai-like points at any OpenAI-compatible API; ollama defaults to
+	# http://localhost:11434. One backend per role; the web UI configures
+	# the same settings under Application Configuration.)
+	PAPERLESS_AI_ENABLED=$( { use openai || use huggingface || use ollama; } && echo true || echo false)
 	# See https://github.com/paperless-ngx/paperless-ngx/discussions/9920
 	OMP_NUM_THREADS=1
 	EOF
