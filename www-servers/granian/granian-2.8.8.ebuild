@@ -12,9 +12,9 @@ RUST_MIN_VER=1.95
 CRATES="
 	aead@0.6.1
 	aes-gcm@0.11.1
-	aes@0.9.3
+	aes@0.9.4
 	anyhow@1.0.104
-	arc-swap@1.9.3
+	arc-swap@1.9.5
 	atomic-waker@1.1.2
 	base64@0.22.1
 	base64ct@1.8.3
@@ -23,7 +23,7 @@ CRATES="
 	block-padding@0.4.2
 	bytes@1.12.1
 	cbc@0.2.1
-	cc@1.10.0
+	cc@1.11.1
 	cfg-if@1.0.5
 	chacha20@0.10.2
 	ciborium-io@0.2.2
@@ -31,7 +31,7 @@ CRATES="
 	ciborium@0.2.2
 	cipher@0.5.2
 	cmov@0.5.4
-	const-oid@0.10.2
+	const-oid@0.10.3
 	core_detect@1.0.0
 	cpubits@0.1.1
 	cpufeatures@0.3.1
@@ -40,14 +40,14 @@ CRATES="
 	crunchy@0.2.4
 	crypto-common@0.2.2
 	ctr@0.10.1
-	ctutils@0.4.6
+	ctutils@0.4.8
 	data-encoding@2.11.1
 	der@0.8.3
 	digest@0.11.3
 	dispatch2@0.3.1
 	doctest-file@1.1.1
 	either@1.19.0
-	encoding_rs@0.8.42
+	encoding_rs@0.8.44
 	equivalent@1.0.3
 	errno@0.3.14
 	find-msvc-tools@0.1.15
@@ -78,16 +78,16 @@ CRATES="
 	hyper-util@0.1.21
 	hyper@1.12.0
 	indexmap@2.14.2
-	inout@0.2.5
+	inout@0.2.6
 	itertools@0.15.0
-	itoa@1.0.18
+	itoa@1.0.19
 	libc@0.2.191
 	libmimalloc-sys@0.1.49
 	lock_api@0.4.14
-	log@0.4.34
+	log@0.4.35
 	memchr@2.8.3
 	mimalloc@0.1.52
-	mime@0.3.17
+	mime@0.3.18
 	mime_guess@2.0.5
 	mio@1.2.4
 	multiversion_no_op@1.0.0
@@ -123,7 +123,7 @@ CRATES="
 	redox_syscall@0.5.18
 	ring@0.17.14
 	rustls-pemfile@2.2.0
-	rustls-pki-types@1.15.1
+	rustls-pki-types@1.16.0
 	rustls-webpki@0.103.16
 	rustls@0.23.46
 	rustversion@1.0.23
@@ -139,12 +139,12 @@ CRATES="
 	signal-hook-registry@1.4.8
 	simdutf8@0.1.5
 	slab@0.4.12
-	smallvec@1.16.4
+	smallvec@1.16.5
 	socket2@0.6.5
 	spki@0.8.1
 	subtle@2.6.1
 	syn@2.0.119
-	syn@3.0.9
+	syn@3.0.10
 	sysinfo@0.39.6
 	target-lexicon@0.13.5
 	thiserror-impl@2.0.21
