@@ -9,17 +9,19 @@ HOMEPAGE="https://pdfium.googlesource.com"
 inherit git-r3 ninja-utils
 
 # Latest chrium version
-CHROMIUM_VERSION="151.0.${PV}.0"
+CHROMIUM_VERSION="159.0.${PV}.0"
 TEST_FONT="cd96fc55dc243f6c6f4cb63ad117cad6cd48dceb"
 
 EGIT_REPO_URI="https://pdfium.googlesource.com/pdfium.git"
 EGIT_BRANCH="chromium/${PV}"
-EGIT_COMMIT="e9fc01804a0c5224ea780ad782abb8cfede628ef"
+EGIT_COMMIT="5f092b52993bfd98f94f04deff391918fe0fdcfd"
 
 SRC_URI="test? ( https://chromium-fonts.storage.googleapis.com/${TEST_FONT} -> chromium-testfonts-${TEST_FONT}.tar.gz )"
 
 LICENSE="BSD"
-SLOT="0"
+# Version subslot: pdfium guarantees no ABI stability between builds, so
+# consumers with a := slot operator must rebuild on every version change.
+SLOT="0/${PV}"
 KEYWORDS="~amd64"
 IUSE="test"
 RESTRICT="!test? ( test )"
@@ -51,44 +53,38 @@ PATCHES=(
 
 CHROMIUM_REPO="https://chromium.googlesource.com"
 
+fetch() {
+	local url="${1}"
+	local path="${2}"
+	local name="${3}"
+
+	local EGIT_BRANCH=""
+	local EGIT_REPO_URI="${url}"
+	local EGIT_CHECKOUT_DIR="${S}/${path}"
+	local EGIT_COMMIT=$(awk -F\' "\$2 == \"${name}_revision\" && NF == 5 {print \$4}" "${S}"/DEPS)
+
+	git-r3_src_unpack
+}
+
 src_unpack() {
 	# pdfium
 	git-r3_src_unpack
-
-	EGIT_BRANCH=""
-
 	# build
-	EGIT_REPO_URI="${CHROMIUM_REPO}"/chromium/src/build
-	EGIT_CHECKOUT_DIR="${S}"/build
-	EGIT_COMMIT=$(awk -F\' '$2 == "build_revision" && NF == 5 {print $4}' "${S}"/DEPS)
-	git-r3_src_unpack
-
+	fetch "${CHROMIUM_REPO}/chromium/src/build" build build
 	# abseil-cpp
-	EGIT_REPO_URI="${CHROMIUM_REPO}"/chromium/src/third_party/abseil-cpp
-	EGIT_CHECKOUT_DIR="${S}"/third_party/abseil-cpp
-	EGIT_COMMIT=$(awk -F\' '$2 == "abseil_revision" && NF == 5 {print $4}' "${S}"/DEPS)
-	git-r3_src_unpack
+	fetch "${CHROMIUM_REPO}/chromium/src/third_party/abseil-cpp" third_party/abseil-cpp abseil
+	# dragonbox
+	fetch "${CHROMIUM_REPO}/external/github.com/jk-jeon/dragonbox" third_party/dragonbox/src dragonbox
+	# highway
+	fetch "${CHROMIUM_REPO}/external/github.com/google/highway" third_party/highway/src highway
 
 	if use test; then
 		# gtest
-		EGIT_REPO_URI="${CHROMIUM_REPO}"/external/github.com/google/googletest
-		EGIT_CHECKOUT_DIR="${S}"/third_party/googletest/src
-		EGIT_COMMIT=$(awk -F\' '$2 == "gtest_revision" && NF == 5 {print $4}' "${S}"/DEPS)
-		git-r3_src_unpack
+		fetch "${CHROMIUM_REPO}/external/github.com/google/googletest" third_party/googletest/src gtest
 
 		# test_fonts
-		EGIT_REPO_URI="${CHROMIUM_REPO}"/chromium/src/third_party/test_fonts
-		EGIT_CHECKOUT_DIR="${S}"/third_party/test_fonts
-		EGIT_COMMIT=$(awk -F\' '$2 == "test_fonts_revision" && NF == 5 {print $4}' "${S}"/DEPS)
-		git-r3_src_unpack
-
+		fetch "${CHROMIUM_REPO}/chromium/src/third_party/test_fonts" third_party/test_fonts test_fonts
 		tar xf "${DISTDIR}"/chromium-testfonts-${TEST_FONT}.tar.gz -C "${S}"/third_party/test_fonts || die
-	else
-		# Remove test dependencies
-		sed -i \
-			-e '/\/\/third_party\/test_fonts/d' \
-			-e '/\/\/third_party\/simdutf/d' \
-			"${S}"/testing/BUILD.gn || die
 	fi
 
 	# generate_shim_headers
@@ -113,6 +109,25 @@ src_prepare() {
 	# Use system fast_float
 	mkdir -p third_party/fast_float/src/include/
 	ln -sf /usr/include/fast_float third_party/fast_float/src/include/
+
+	# https://pdfium.googlesource.com/pdfium/+/2ca2e91deab056540c3e05049b4a6029c262ec90
+	sed -ri \
+		-e 's/(script_executable) = "(.+)"/\1 = "python3"/' "${S}/.gn" || die
+
+	# Remove test dependencies
+	if ! use test; then
+		sed -i \
+			-e '/\/\/third_party\/test_fonts/d' \
+			-e '/\/\/third_party\/simdutf/d' \
+			"${S}"/testing/BUILD.gn || die
+	fi
+
+	# Drop the new-in-8138 libjpeg_turbo headers dep: gn refuses to generate
+	# without third_party/libjpeg_turbo/BUILD.gn, but the target is a headers-only
+	# source_set and jpeg_common.h spells its includes system-style
+	# (<jpeglib.h>), which media-libs/libjpeg-turbo already provides.
+	sed -i '/third_party\/libjpeg_turbo:libjpeg_headers/d' \
+		"${S}"/core/fxcodec/BUILD.gn || die
 }
 
 src_configure() {
@@ -123,8 +138,10 @@ src_configure() {
 		"is_clang=false"
 		"use_lld=false"
 		"is_debug=false"
+		"pdf_enable_brotli=false"
 		"pdf_enable_v8=false"
 		"pdf_enable_xfa=false"
+		"pdf_use_libyuv=false"
 		"is_component_build=false"
 		"pdf_is_standalone=true"
 		"treat_warnings_as_errors=false"
