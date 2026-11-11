@@ -6,7 +6,7 @@ EAPI=8
 DISTUTILS_USE_PEP517=hatchling
 PYTHON_COMPAT=( python3_{11..14} )
 
-inherit distutils-r1
+inherit distutils-r1 slonko-test
 
 DESCRIPTION="llama-index llms openai integration"
 HOMEPAGE="
@@ -61,15 +61,7 @@ src_test() {
 	# encodings from openaipublic on first use (different test models map
 	# to different encodings); pre-seed TIKTOKEN_CACHE_DIR with all of them
 	# (filenames are sha1 of the blob URLs).
-	local cache_dir="${T}"/tiktoken-cache
-	mkdir -p "${cache_dir}" || die
-	local entry url distfile
-	while read -r entry; do
-		[[ -z ${entry} ]] && continue
-		url=${entry%%|*}
-		distfile=${entry#*|}
-		cp "${DISTDIR}/${distfile}" "${cache_dir}/$(printf '%s' "${url}" | sha1sum | awk '{print $1}')" || die
-	done <<-EOF
+	slonko_test_seed_tiktoken_cache "${T}"/tiktoken-cache <<-EOF
 		https://openaipublic.blob.core.windows.net/gpt-2/encodings/main/vocab.bpe|tiktoken-gpt2-vocab.bpe
 		https://openaipublic.blob.core.windows.net/gpt-2/encodings/main/encoder.json|tiktoken-gpt2-encoder.json
 		https://openaipublic.blob.core.windows.net/encodings/r50k_base.tiktoken|tiktoken-r50k_base.tiktoken
@@ -77,7 +69,6 @@ src_test() {
 		https://openaipublic.blob.core.windows.net/encodings/cl100k_base.tiktoken|tiktoken-cl100k_base.tiktoken
 		https://openaipublic.blob.core.windows.net/encodings/o200k_base.tiktoken|tiktoken-o200k_base.tiktoken
 	EOF
-	local -x TIKTOKEN_CACHE_DIR="${cache_dir}"
 
 	distutils-r1_src_test
 }

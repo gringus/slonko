@@ -6,7 +6,7 @@ EAPI=8
 DISTUTILS_USE_PEP517=hatchling
 PYTHON_COMPAT=( python3_{11..14} )
 
-inherit distutils-r1
+inherit distutils-r1 slonko-test
 
 DESCRIPTION="Interface between LLMs and your data"
 HOMEPAGE="
@@ -128,17 +128,14 @@ src_prepare() {
 		[https://astrabert.github.io/hophop-science/images/whale_doing_science.png]=whale_doing_science.png
 		[https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png]=googlelogo_color_272x92dp.png
 	)
+	local -a urls=()
 	local url file
 	for url in "${!map[@]}"; do
-		file=${map[${url}]}
-		grep -rlF "${url}" tests/ | xargs sed -i "s|${url}|http://127.0.0.1:${port}/${file}|g" || die
+		urls+=( -e "s|${url}|http://127.0.0.1:${port}/${map[${url}]}|g" )
 	done
+	grep -rlF -f <(printf '%s\n' "${!map[@]}") tests/ |
+		xargs sed -i "${urls[@]}" || die
 }
-
-_llama_index_core_kill_server() {
-	[[ -n ${_LLAMA_TEST_SERVER_PID} ]] && kill "${_LLAMA_TEST_SERVER_PID}" 2>/dev/null
-}
-EBUILD_DEATH_HOOKS+=" _llama_index_core_kill_server"
 
 src_test() {
 	# Serve the static test resources fetched by the suite (see
@@ -149,38 +146,19 @@ src_test() {
 	for f in dummy.pdf scene.jpg whale_doing_science.png googlelogo_color_272x92dp.png; do
 		cp "${DISTDIR}/${P}-${f}" "${srv_dir}/${f}" || die
 	done
-	python3 -m http.server 47471 --bind 127.0.0.1 --directory "${srv_dir}" \
-		&>"${T}"/test-http-server.log &
-	_LLAMA_TEST_SERVER_PID=${!}
-	local i
-	for (( i = 0; i < 50; i++ )); do
-		(echo > /dev/tcp/127.0.0.1/47471) 2>/dev/null && break
-		sleep 0.1
-	done
-	if ! (echo > /dev/tcp/127.0.0.1/47471) 2>/dev/null; then
-		_llama_index_core_kill_server
-		die "test http server failed to start"
-	fi
+	slonko_test_spawn_server 47471 "${T}"/test-http-server.log \
+		python3 -m http.server 47471 --bind 127.0.0.1 --directory "${srv_dir}"
 
 	# The suite calls tiktoken.get_encoding("cl100k_base")/"gpt2" and
 	# encoding_for_model("gpt-3.5-turbo"), which fetch the files from
 	# openaipublic on first use (the package's bundled _static cache is
 	# empty). Pre-seed TIKTOKEN_CACHE_DIR (filenames are sha1 of the blob
 	# URL) so everything runs offline.
-	local cache_dir="${T}"/tiktoken-cache
-	mkdir -p "${cache_dir}" || die
-	local entry url distfile
-	while read -r entry; do
-		[[ -z ${entry} ]] && continue
-		url=${entry%%|*}
-		distfile=${entry#*|}
-		cp "${DISTDIR}/${distfile}" "${cache_dir}/$(printf '%s' "${url}" | sha1sum | awk '{print $1}')" || die
-	done <<-EOF
+	slonko_test_seed_tiktoken_cache "${T}"/tiktoken-cache <<-EOF
 		https://openaipublic.blob.core.windows.net/gpt-2/encodings/main/vocab.bpe|tiktoken-gpt2-vocab.bpe
 		https://openaipublic.blob.core.windows.net/gpt-2/encodings/main/encoder.json|tiktoken-gpt2-encoder.json
 		https://openaipublic.blob.core.windows.net/encodings/cl100k_base.tiktoken|tiktoken-cl100k_base.tiktoken
 	EOF
-	local -x TIKTOKEN_CACHE_DIR="${cache_dir}"
 
 	# The default SentenceSplitter/tokenizer path seeds punkt_tab and
 	# stopwords via nltk.data.find(paths=[NLTK_DATA]) — which searches only
@@ -190,5 +168,5 @@ src_test() {
 
 	distutils-r1_src_test
 
-	_llama_index_core_kill_server
+	slonko_test_stop_server
 }

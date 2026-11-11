@@ -39,7 +39,7 @@ CRATES="
 	unicode-ident@1.0.24
 "
 
-inherit cargo distutils-r1 pypi
+inherit cargo distutils-r1 pypi slonko-test
 
 DESCRIPTION="A fast BPE tokeniser for use with OpenAI's models"
 HOMEPAGE="
@@ -96,18 +96,9 @@ src_prepare() {
 src_test() {
 	# The suite calls tiktoken.get_encoding()/encoding_for_model() for several
 	# encodings, which fetch the files from openaipublic on first use.
-	# Pre-seed TIKTOKEN_CACHE_DIR (filenames are sha1 of the blob URL) from
-	# the distfiles so everything runs offline; tiktoken verifies the
-	# expected sha256 on every cache read.
-	local cache_dir="${T}"/tiktoken-cache
-	mkdir -p "${cache_dir}" || die
-	local entry url distfile
-	while read -r entry; do
-		[[ -z ${entry} ]] && continue
-		url=${entry%%|*}
-		distfile=${entry#*|}
-		cp "${DISTDIR}/${distfile}" "${cache_dir}/$(printf '%s' "${url}" | sha1sum | awk '{print $1}')" || die
-	done <<-EOF
+	# Pre-seed TIKTOKEN_CACHE_DIR from the distfiles so everything runs
+	# offline; tiktoken verifies the expected sha256 on every cache read.
+	slonko_test_seed_tiktoken_cache "${T}"/tiktoken-cache <<-EOF
 		https://openaipublic.blob.core.windows.net/gpt-2/encodings/main/vocab.bpe|tiktoken-gpt2-vocab.bpe
 		https://openaipublic.blob.core.windows.net/gpt-2/encodings/main/encoder.json|tiktoken-gpt2-encoder.json
 		https://openaipublic.blob.core.windows.net/encodings/r50k_base.tiktoken|tiktoken-r50k_base.tiktoken
@@ -115,7 +106,6 @@ src_test() {
 		https://openaipublic.blob.core.windows.net/encodings/cl100k_base.tiktoken|tiktoken-cl100k_base.tiktoken
 		https://openaipublic.blob.core.windows.net/encodings/o200k_base.tiktoken|tiktoken-o200k_base.tiktoken
 	EOF
-	local -x TIKTOKEN_CACHE_DIR="${cache_dir}"
 
 	distutils-r1_src_test
 }

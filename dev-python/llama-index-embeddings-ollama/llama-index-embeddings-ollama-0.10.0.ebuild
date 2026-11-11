@@ -6,7 +6,7 @@ EAPI=8
 DISTUTILS_USE_PEP517=hatchling
 PYTHON_COMPAT=( python3_{11..14} )
 
-inherit distutils-r1
+inherit distutils-r1 slonko-test
 
 DESCRIPTION="llama-index embeddings ollama integration"
 HOMEPAGE="
@@ -40,30 +40,15 @@ BDEPEND="
 
 distutils_enable_tests pytest
 
-_ollama_emb_kill_server() {
-	[[ -n ${_OLLAMA_MOCK_PID} ]] && kill "${_OLLAMA_MOCK_PID}" 2>/dev/null
-}
-EBUILD_DEATH_HOOKS+=" _ollama_emb_kill_server"
-
 src_test() {
 	# The suite is a live-server integration test; run it against a local
 	# mock of the ollama API (the wrapper's client hardcodes its default
 	# host, localhost:11434).
-	local mock="${T}"/mock-ollama-server.py
-	cp "${FILESDIR}/mock-ollama-server.py" "${mock}" || die
-	python3 "${mock}" &>"${T}"/mock-ollama-server.log &
-	_OLLAMA_MOCK_PID=${!}
-	local i
-	for (( i = 0; i < 50; i++ )); do
-		(echo > /dev/tcp/127.0.0.1/11434) 2>/dev/null && break
-		sleep 0.1
-	done
-	if ! (echo > /dev/tcp/127.0.0.1/11434) 2>/dev/null; then
-		_ollama_emb_kill_server
-		die "mock ollama server failed to start"
-	fi
+	slonko_test_write_ollama_mock "${T}"/mock-ollama-server.py
+	slonko_test_spawn_server 11434 "${T}"/mock-ollama-server.log \
+		python3 "${T}"/mock-ollama-server.py
 
 	distutils-r1_src_test
 
-	_ollama_emb_kill_server
+	slonko_test_stop_server
 }

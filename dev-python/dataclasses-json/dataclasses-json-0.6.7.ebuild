@@ -14,7 +14,6 @@ HOMEPAGE="
 	https://pypi.org/project/dataclasses-json/
 "
 SRC_URI="https://github.com/lidatong/dataclasses-json/archive/refs/tags/v${PV}.tar.gz -> ${P}.gh.tar.gz"
-#S="${WORKDIR}/dataclasses-json-${PV}"
 
 LICENSE="MIT"
 SLOT="0"

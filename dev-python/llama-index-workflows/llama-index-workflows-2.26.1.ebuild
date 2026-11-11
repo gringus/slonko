@@ -6,7 +6,7 @@ EAPI=8
 DISTUTILS_USE_PEP517=uv-build
 PYTHON_COMPAT=( python3_{11..14} )
 
-inherit distutils-r1
+inherit distutils-r1 slonko-test
 
 DESCRIPTION="Event-driven, async-first, step-based control flow for LLM apps"
 HOMEPAGE="
@@ -55,12 +55,9 @@ src_test() {
 	# tests/context/test_state_copy.py fetches the cl100k_base encoding on
 	# first use; pre-seed TIKTOKEN_CACHE_DIR (filename is sha1 of the blob
 	# URL) so it runs offline.
-	local cache_dir="${T}"/tiktoken-cache
-	mkdir -p "${cache_dir}" || die
-	local url='https://openaipublic.blob.core.windows.net/encodings/cl100k_base.tiktoken'
-	cp "${DISTDIR}/tiktoken-cl100k_base.tiktoken" \
-		"${cache_dir}/$(printf '%s' "${url}" | sha1sum | awk '{print $1}')" || die
-	local -x TIKTOKEN_CACHE_DIR="${cache_dir}"
+	slonko_test_seed_tiktoken_cache "${T}"/tiktoken-cache <<-EOF
+		https://openaipublic.blob.core.windows.net/encodings/cl100k_base.tiktoken|tiktoken-cl100k_base.tiktoken
+	EOF
 
 	distutils-r1_src_test
 }

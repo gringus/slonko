@@ -6,7 +6,7 @@ EAPI=8
 DISTUTILS_USE_PEP517=setuptools
 PYTHON_COMPAT=( python3_{11..14} )
 
-inherit distutils-r1
+inherit distutils-r1 slonko-test
 
 DESCRIPTION="Embeddings, Retrieval, and Reranking"
 HOMEPAGE="
@@ -156,9 +156,16 @@ EPYTEST_DESELECT=(
 )
 distutils_enable_tests pytest
 
-python_test() {
-	local hf_cache="${T}"/hf-cache
-	_seed_hf_repo models--sentence-transformers-testing--stsb-bert-tiny-safetensors f3cb857cba53019a20df283396bcca179cf051a4 <<-EOF
+src_test() {
+	# Seed the HF hub cache once (not per python impl) before the test
+	# phases; env exports propagate to each impl's pytest run.
+	local hf_cache="${T}"/hf-cache/hub
+	# repo dir names match the HF cache convention (models--org--name).
+	local st_tiny=models--sentence-transformers-testing--stsb-bert-tiny-safetensors
+	local bert_base=models--google-bert--bert-base-uncased
+	local reranker_stv54=models--cross-encoder-testing--reranker-bert-tiny-gooaq-bce-STv54
+	local reranker_bce=models--cross-encoder-testing--reranker-bert-tiny-gooaq-bce
+	slonko_test_seed_hf_repo "${hf_cache}" "${st_tiny}" f3cb857cba53019a20df283396bcca179cf051a4 <<-EOF
 		stsb-bert-tiny-config.json|config.json
 		stsb-bert-tiny-modules.json|modules.json
 		stsb-bert-tiny-1_Pooling-config.json|1_Pooling/config.json
@@ -171,13 +178,13 @@ python_test() {
 	EOF
 	# tokenizer files for the session-scoped _tokenizer fixture; the full
 	# model is NOT needed.
-	_seed_hf_repo models--google-bert--bert-base-uncased 86b5e0934494bd15c9632b12f734a8a67f723594 <<-EOF
+	slonko_test_seed_hf_repo "${hf_cache}" "${bert_base}" 86b5e0934494bd15c9632b12f734a8a67f723594 <<-EOF
 		bert-base-uncased-tokenizer.json|tokenizer.json
 		bert-base-uncased-tokenizer_config.json|tokenizer_config.json
 		bert-base-uncased-vocab.txt|vocab.txt
 		bert-base-uncased-config.json|config.json
 	EOF
-	_seed_hf_repo models--cross-encoder-testing--reranker-bert-tiny-gooaq-bce-STv54 bac0cf4def13f328707f1c0cddd688a56b567bb6 <<-EOF
+	slonko_test_seed_hf_repo "${hf_cache}" "${reranker_stv54}" bac0cf4def13f328707f1c0cddd688a56b567bb6 <<-EOF
 		reranker-gooaq-config.json|config.json
 		reranker-gooaq-modules.json|modules.json
 		reranker-gooaq-sentence_bert_config.json|sentence_bert_config.json
@@ -187,7 +194,7 @@ python_test() {
 		reranker-gooaq-special_tokens_map.json|special_tokens_map.json
 		reranker-gooaq-vocab.txt|vocab.txt
 	EOF
-	_seed_hf_repo models--cross-encoder-testing--reranker-bert-tiny-gooaq-bce 0d75677beaddce2ff048cbd96079c3e2ce0e984f <<-EOF
+	slonko_test_seed_hf_repo "${hf_cache}" "${reranker_bce}" 0d75677beaddce2ff048cbd96079c3e2ce0e984f <<-EOF
 		reranker-bce-config.json|config.json
 		reranker-bce-model.safetensors|model.safetensors
 		reranker-bce-special_tokens_map.json|special_tokens_map.json
@@ -195,30 +202,8 @@ python_test() {
 		reranker-bce-tokenizer_config.json|tokenizer_config.json
 		reranker-bce-vocab.txt|vocab.txt
 	EOF
-	local -x HF_HUB_CACHE="${hf_cache}/hub"
+	local -x HF_HUB_CACHE="${hf_cache}"
 	local -x HF_HUB_OFFLINE=1
 
-	epytest
-}
-
-_seed_hf_repo() {
-	local repo=$1 rev=$2
-	local repo_dir="${T}/hf-cache/hub/${repo}"
-	mkdir -p "${repo_dir}/refs" "${repo_dir}/blobs" "${repo_dir}/snapshots/${rev}" || die
-	printf '%s' "${rev}" > "${repo_dir}/refs/main" || die
-	local entry distfile path destdir ups slashes
-	while read -r entry; do
-		[[ -z ${entry} ]] && continue
-		distfile=${entry%%|*}
-		path=${entry#*|}
-		cp "${DISTDIR}/${distfile}" "${repo_dir}/blobs/${distfile}" || die
-		destdir="${repo_dir}/snapshots/${rev}"/$(dirname "${path}")
-		mkdir -p "${destdir}" || die
-		# The symlink lives one dir deeper per path component: blobs/ is
-		# reached via ../../ from snapshot root, ../../../ from a subfolder.
-		slashes="${path//[!\/]/}"
-		ups="../../"
-		for ((i = 0; i < ${#slashes}; i++)); do ups="${ups}/.."; done
-		ln -s "${ups}/blobs/${distfile}" "${repo_dir}/snapshots/${rev}/${path}" || die
-	done
+	distutils-r1_src_test
 }

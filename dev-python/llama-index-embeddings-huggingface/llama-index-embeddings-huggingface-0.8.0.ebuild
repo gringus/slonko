@@ -6,7 +6,7 @@ EAPI=8
 DISTUTILS_USE_PEP517=hatchling
 PYTHON_COMPAT=( python3_{11..14} )
 
-inherit distutils-r1
+inherit distutils-r1 slonko-test
 
 DESCRIPTION="llama-index embeddings huggingface integration"
 HOMEPAGE="
@@ -65,7 +65,8 @@ src_test() {
 	# layout (refs/main + snapshots/<rev> symlinks into blobs/) directly
 	# inside, then run offline.
 	local -x LLAMA_INDEX_CACHE_DIR="${T}"/llama-index-cache
-	_seed_hf_repo models--BAAI--bge-small-en 2275a7bdee235e9b4f01fa73aa60d3311983cfea <<-EOF
+	local bge_repo=models--BAAI--bge-small-en
+	slonko_test_seed_hf_repo "${LLAMA_INDEX_CACHE_DIR}" "${bge_repo}" 2275a7bdee235e9b4f01fa73aa60d3311983cfea <<-EOF
 		bge-small-en-config.json|config.json
 		bge-small-en-config_sentence_transformers.json|config_sentence_transformers.json
 		bge-small-en-modules.json|modules.json
@@ -80,26 +81,4 @@ src_test() {
 	local -x HF_HUB_OFFLINE=1
 
 	distutils-r1_src_test
-}
-
-_seed_hf_repo() {
-	local repo=$1 rev=$2
-	local repo_dir="${LLAMA_INDEX_CACHE_DIR}/${repo}"
-	mkdir -p "${repo_dir}/refs" "${repo_dir}/blobs" "${repo_dir}/snapshots/${rev}" || die
-	printf '%s' "${rev}" > "${repo_dir}/refs/main" || die
-	local entry distfile path destdir ups slashes
-	while read -r entry; do
-		[[ -z ${entry} ]] && continue
-		distfile=${entry%%|*}
-		path=${entry#*|}
-		cp "${DISTDIR}/${distfile}" "${repo_dir}/blobs/${distfile}" || die
-		destdir="${repo_dir}/snapshots/${rev}"/$(dirname "${path}")
-		mkdir -p "${destdir}" || die
-		# The symlink lives one dir deeper per path component: blobs/ is
-		# reached via ../../ from snapshot root, ../../../ from a subfolder.
-		slashes="${path//[!\/]/}"
-		ups="../../"
-		for ((i = 0; i < ${#slashes}; i++)); do ups="${ups}/.."; done
-		ln -s "${ups}/blobs/${distfile}" "${repo_dir}/snapshots/${rev}/${path}" || die
-	done
 }

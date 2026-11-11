@@ -5,14 +5,14 @@ EAPI=8
 
 PYTHON_COMPAT=( python3_{11..14} )
 
-inherit python-single-r1 systemd tmpfiles
+inherit python-single-r1 slonko-test systemd tmpfiles
 
 DESCRIPTION="A community-supported supercharged document management system"
 HOMEPAGE="https://github.com/paperless-ngx/paperless-ngx"
 SRC_URI="https://github.com/paperless-ngx/paperless-ngx/releases/download/v${PV}/paperless-ngx-v${PV}.tar.xz"
 # Test-only distfiles: the AI tests tokenize via tiktoken's model registry,
 # which fetches the encodings from openaipublic on first use (different
-# code paths map to different encodings); pre-seeded in python_test.
+# code paths map to different encodings); pre-seeded in src_test.
 SRC_URI+="
 	test? (
 		https://openaipublic.blob.core.windows.net/gpt-2/encodings/main/vocab.bpe
@@ -62,22 +62,33 @@ AI_CORE_DEPEND="
 		>=dev-python/llama-index-core-0.14.23[${PYTHON_USEDEP}]')
 	dev-db/sqlite-vec[python]
 "
-# AI test stack: everything the AI test suite touches (all backends, so the
-# full suite runs unconditionally with USE=test); the runtime deps stay
-# gated behind the USE flags.
-AI_TEST_DEPEND="
-	${AI_CORE_DEPEND}
+AI_OPENAI_DEPEND="
 	$(python_gen_cond_dep '
 		>=dev-python/llama-index-llms-openai-like-0.7.1[${PYTHON_USEDEP}]
 		>=dev-python/llama-index-embeddings-openai-like-0.2.2[${PYTHON_USEDEP}]
 		>=dev-python/openai-2.48[${PYTHON_USEDEP}]
+		')
+"
+AI_OLLAMA_DEPEND="
+	$(python_gen_cond_dep '
+		>=dev-python/llama-index-llms-ollama-0.9.1[${PYTHON_USEDEP}]
+		>=dev-python/llama-index-embeddings-ollama-0.9[${PYTHON_USEDEP}]
+		>=dev-python/ollama-0.5.3[${PYTHON_USEDEP}]
+		')
+"
+AI_HUGGINGFACE_DEPEND="
+	$(python_gen_cond_dep '
 		>=dev-python/llama-index-embeddings-huggingface-0.6.1[${PYTHON_USEDEP}]
 		>=dev-python/sentence-transformers-5.6.1[${PYTHON_USEDEP}]
 		>=sci-ml/pytorch-2.13
 		<sci-ml/pytorch-2.15
-		>=dev-python/llama-index-llms-ollama-0.9.1[${PYTHON_USEDEP}]
-		>=dev-python/llama-index-embeddings-ollama-0.9[${PYTHON_USEDEP}]
-		>=dev-python/ollama-0.5.3[${PYTHON_USEDEP}]')
+		')
+"
+AI_TEST_DEPEND="
+	${AI_CORE_DEPEND}
+	${AI_OPENAI_DEPEND}
+	${AI_OLLAMA_DEPEND}
+	${AI_HUGGINGFACE_DEPEND}
 "
 PATCHES=(
 	# make django-compression-middleware optional for USE=-compression
@@ -85,24 +96,15 @@ PATCHES=(
 	# stub channels.testing.live so test_websockets.py can run without daphne
 	"${FILESDIR}/${PN}-channels-live-stub.patch"
 )
-# AI backends; PAPERLESS_AI_ENABLED is written from the USE flags below:
+# AI backends; PAPERLESS_AI_ENABLED is written from the USE flags below
+# (the dep atoms live in AI_*_DEPEND above):
 # - openai: remote LLM/embeddings via any OpenAI-compatible API
-#   - llama-index-core>=0.14.23
-#   - llama-index-llms-openai-like>=0.7.1
-#   - llama-index-embeddings-openai-like>=0.2.2
-#   - openai>=2.48
-#   - sqlite-vec~=0.1.9 (upstream pins ==0.1.9; ~ tolerates -rN ebuild revisions)
-# - huggingface: local embeddings, no extra service
-#   - llama-index-embeddings-huggingface>=0.6.1
-#   - sentence-transformers>=5.6.1
-#   - torch>=2.13.0 <2.15 (sci-ml/pytorch)
+#   (sqlite-vec~=0.1.9: upstream pins ==0.1.9; ~ tolerates -rN revisions)
+# - huggingface: local embeddings only, no extra service
 # - ollama: local LLM/embeddings via an Ollama server
-#   - llama-index-llms-ollama>=0.9.1
-#   - llama-index-embeddings-ollama>=0.9
-#   - ollama>=0.5.3 (client only; the server is sci-ml/ollama or remote)
+#   (ollama>=0.5.3 is the client; the server is sci-ml/ollama or remote)
 # Not packaged:
 # - Microsoft's Azure "Document Intelligence" (REMOTE_OCR_ENGINE="azureai")
-#   - azure-ai-documentintelligence>=1.0.2
 # Version ceilings from llama-index pins, revisit on bump:
 # - llama-index-llms-openai 0.8.x caps openai<3
 # - llama-index-embeddings-openai-like 0.4.x caps llama-index-embeddings-openai<0.7
@@ -190,33 +192,22 @@ RDEPEND="
 		>=dev-python/psycopg-3.3.4[native-extensions,${PYTHON_USEDEP}]') )
 	openai? (
 		${AI_CORE_DEPEND}
-		$(python_gen_cond_dep '
-			>=dev-python/llama-index-llms-openai-like-0.7.1[${PYTHON_USEDEP}]
-			>=dev-python/llama-index-embeddings-openai-like-0.2.2[${PYTHON_USEDEP}]
-			>=dev-python/openai-2.48[${PYTHON_USEDEP}]')
+		${AI_OPENAI_DEPEND}
 	)
 	ollama? (
 		${AI_CORE_DEPEND}
-		$(python_gen_cond_dep '
-			>=dev-python/llama-index-llms-ollama-0.9.1[${PYTHON_USEDEP}]
-			>=dev-python/llama-index-embeddings-ollama-0.9[${PYTHON_USEDEP}]
-			>=dev-python/ollama-0.5.3[${PYTHON_USEDEP}]')
+		${AI_OLLAMA_DEPEND}
 	)
 	huggingface? (
 		${AI_CORE_DEPEND}
-		$(python_gen_cond_dep '
-			>=dev-python/llama-index-embeddings-huggingface-0.6.1[${PYTHON_USEDEP}]
-			>=dev-python/sentence-transformers-5.6.1[${PYTHON_USEDEP}]
-			>=sci-ml/pytorch-2.13
-			<sci-ml/pytorch-2.15')
+		${AI_HUGGINGFACE_DEPEND}
 	)
 	!remote-redis? ( dev-db/redis )
 "
 DEPEND="${RDEPEND}"
 # The AI test suite runs unconditionally with USE=test (no real LLM needed —
 # all backends are mock-patched), testing everything the ebuild supports:
-# the openai stack and the huggingface embedding backend (incl. the torch
-# chain). Only the ollama-backend tests are excluded — not supported.
+# all three backends incl. the torch chain.
 BDEPEND="test? (
 	app-text/tessdata_fast[l10n_en(+)]
 	$(python_gen_cond_dep '
@@ -288,15 +279,7 @@ src_test() {
 	# their own settings via override_settings.
 	local -x PAPERLESS_AI_ENABLED=false
 	# Seed the tiktoken encodings the AI tests tokenize with (see SRC_URI).
-	local cache_dir="${T}"/tiktoken-cache
-	mkdir -p "${cache_dir}" || die
-	local entry url distfile
-	while read -r entry; do
-		[[ -z ${entry} ]] && continue
-		url=${entry%%|*}
-		distfile=${entry#*|}
-		cp "${DISTDIR}/${distfile}" "${cache_dir}/$(printf '%s' "${url}" | sha1sum | awk '{print $1}')" || die
-	done <<-EOF
+	slonko_test_seed_tiktoken_cache "${T}"/tiktoken-cache <<-EOF
 		https://openaipublic.blob.core.windows.net/gpt-2/encodings/main/vocab.bpe|tiktoken-gpt2-vocab.bpe
 		https://openaipublic.blob.core.windows.net/gpt-2/encodings/main/encoder.json|tiktoken-gpt2-encoder.json
 		https://openaipublic.blob.core.windows.net/encodings/r50k_base.tiktoken|tiktoken-r50k_base.tiktoken
@@ -304,8 +287,6 @@ src_test() {
 		https://openaipublic.blob.core.windows.net/encodings/cl100k_base.tiktoken|tiktoken-cl100k_base.tiktoken
 		https://openaipublic.blob.core.windows.net/encodings/o200k_base.tiktoken|tiktoken-o200k_base.tiktoken
 	EOF
-	local -x TIKTOKEN_CACHE_DIR="${cache_dir}"
-
 	epytest
 }
 
