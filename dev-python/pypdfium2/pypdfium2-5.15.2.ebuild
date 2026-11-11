@@ -6,7 +6,7 @@ EAPI=8
 DISTUTILS_USE_PEP517=setuptools
 PYTHON_COMPAT=( python3_{10..14} )
 
-inherit distutils-r1
+inherit distutils-r1 git-r3
 
 DESCRIPTION="pypdfium2 is an ABI-level Python 3 binding to PDFium"
 HOMEPAGE="https://github.com/pypdfium2-team/pypdfium2"
@@ -16,8 +16,14 @@ LICENSE="Apache-2.0 BSD CC-BY-4.0 LGPL-3 MIT MPL-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
 
+# pypdfium2 generates its bindings from the installed pdfium headers via
+# ctypesgen at build time and records the detected version (SONAME/pkg-config),
+# so any pdfium >= the release's pinned build works; the floor blocks pdfium
+# builds too old for 5.15.x's API expectations. The := operator (with pdfium's
+# version subslot) triggers a rebuild — and thus binding regeneration — on
+# every pdfium change, since pdfium makes no ABI stability guarantees.
 RDEPEND="
-	~app-text/pdfium-7999
+	>=app-text/pdfium-8138:=
 "
 BDEPEND="
 	test? (
@@ -39,6 +45,18 @@ distutils_enable_sphinx docs/source \
 	dev-python/sphinx-issues \
 	dev-python/sphinx-rtd-theme \
 	dev-python/sphinxcontrib-programoutput
+
+src_unpack() {
+	default
+
+	# ctypesgen
+	EGIT_BRANCH="pypdfium2"
+	EGIT_REPO_URI="https://github.com/pypdfium2-team/ctypesgen"
+	EGIT_CHECKOUT_DIR="${S}/deps/ctypesgen"
+	git-r3_src_unpack
+	# remove ctypesges tests
+	rm -rf "${S}/deps/ctypesgen/tests" || die
+}
 
 src_configure() {
 	export PDFIUM_PLATFORM="system-search"
