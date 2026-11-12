@@ -418,6 +418,12 @@ _stainless_death_cleanup() {
 	wait "${STAINLESS_MOCK_SERVER_PID}" 2>/dev/null
 }
 
+# @VARIABLE: EBUILD_DEATH_HOOKS
+# @DEFAULT_UNSET
+# @DESCRIPTION:
+# Extended by this eclass: _stainless_death_cleanup is registered at inherit
+# time so a mock server spawned by the test phase is stopped even if the
+# phase dies.
 has _stainless_death_cleanup "${EBUILD_DEATH_HOOKS}" ||
 	EBUILD_DEATH_HOOKS+=" _stainless_death_cleanup"
 
