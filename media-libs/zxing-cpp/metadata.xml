@@ -13,5 +13,6 @@
 	<upstream>
 		<bugs-to>https://github.com/zxing-cpp/zxing-cpp/issues</bugs-to>
 		<remote-id type="github">zxing-cpp/zxing-cpp</remote-id>
+		<remote-id type="pypi">zxing-cpp</remote-id>
 	</upstream>
 </pkgmetadata>

@@ -11,5 +11,6 @@
 	<upstream>
 		<bugs-to>https://github.com/searxng/searxng/issues</bugs-to>
 		<remote-id type="github">searxng/searxng</remote-id>
+		<remote-id type="pypi">searxng</remote-id>
 	</upstream>
 </pkgmetadata>

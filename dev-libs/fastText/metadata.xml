@@ -8,5 +8,6 @@
 	<upstream>
 		<bugs-to>https://github.com/facebookresearch/fastText/issues</bugs-to>
 		<remote-id type="github">facebookresearch/fastText</remote-id>
+		<remote-id type="pypi">fasttext</remote-id>
 	</upstream>
 </pkgmetadata>

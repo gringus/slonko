@@ -9,5 +9,6 @@
 	<upstream>
 		<remote-id type="github">dlenski/vpn-slice</remote-id>
 		<bugs-to>https://github.com/dlenski/vpn-slice/issues</bugs-to>
+		<remote-id type="pypi">vpn-slice</remote-id>
 	</upstream>
 </pkgmetadata>
