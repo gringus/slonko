@@ -250,7 +250,7 @@ declare -A GIT_CRATES=(
 	[zipunsplitlib]='https://github.com/chenxiaolong/zipunsplit;ca8f56f167477c9e6733db46f2b329386b33f7fb;zipunsplit-%commit%/zipunsplitlib'
 )
 
-inherit cargo
+inherit cargo shell-completion
 
 DESCRIPTION="Navigation Update Downloader for HMG infotainment systems"
 HOMEPAGE="https://github.com/chenxiaolong/nudl"
@@ -267,4 +267,16 @@ LICENSE+="
 "
 SLOT="0"
 KEYWORDS="~amd64"
+IUSE="bash-completion"
 RESTRICT="mirror"
+
+BDEPEND="bash-completion? ( >=app-shells/bash-completion-2.0 )"
+
+src_install() {
+	cargo_src_install
+
+	if use bash-completion; then
+		local nudl_bin=$(cargo_target_dir)/nudl
+		newbashcomp - nudl < <("${nudl_bin}" completion -s bash)
+	fi
+}
