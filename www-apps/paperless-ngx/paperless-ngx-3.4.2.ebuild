@@ -313,18 +313,13 @@ src_prepare() {
 
 	PAPERLESS_ENABLE_COMPRESSION=$(use compression && echo true || echo false)
 	PAPERLESS_AUDIT_LOG_ENABLED=$(use audit && echo true || echo false)
-	# AI features; the LLM/embedding backends and endpoints are configured in
-	# the web UI (Application Configuration) or via these env overrides:
-	# PAPERLESS_AI_LLM_BACKEND=openai-like
-	# PAPERLESS_AI_LLM_ENDPOINT=http://localhost:8000/v1
-	# PAPERLESS_AI_LLM_MODEL=...
+	PAPERLESS_AI_ENABLED=$( { use openai || use huggingface || use ollama; } && echo true || echo false)
 	# PAPERLESS_AI_LLM_EMBEDDING_BACKEND=openai-like
 	# PAPERLESS_AI_LLM_EMBEDDING_ENDPOINT=http://localhost:8000/v1
 	# PAPERLESS_AI_LLM_EMBEDDING_MODEL=...
-	# (openai-like points at any OpenAI-compatible API; ollama defaults to
-	# http://localhost:11434. One backend per role; the web UI configures
-	# the same settings under Application Configuration.)
-	PAPERLESS_AI_ENABLED=$( { use openai || use huggingface || use ollama; } && echo true || echo false)
+	# PAPERLESS_AI_LLM_BACKEND=openai-like
+	# PAPERLESS_AI_LLM_ENDPOINT=http://localhost:8000/v1
+	# PAPERLESS_AI_LLM_MODEL=...
 	# See https://github.com/paperless-ngx/paperless-ngx/discussions/9920
 	OMP_NUM_THREADS=1
 	EOF
@@ -369,6 +364,13 @@ src_install() {
 		*)    fperms 750 /var/lib/paperless/${dir} ;;
 		esac
 	done
+
+	# AI resource caches: tiktoken encodings (llama_index defaults to its own
+	# root-owned site-packages dir, unusable for the service user) and NLTK
+	# corpora via dev-python/nltk-data (/usr/share/nltk_data).
+	keepdir /var/lib/paperless/data/tiktoken_cache
+	fowners paperless:paperless /var/lib/paperless/data/tiktoken_cache
+	fperms 700 /var/lib/paperless/data/tiktoken_cache
 
 	# Main executable
 	fperms 755 "/usr/share/paperless/src/manage.py"

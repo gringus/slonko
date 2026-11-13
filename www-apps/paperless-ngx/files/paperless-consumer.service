@@ -4,6 +4,7 @@ Requires=redis.service
 PartOf=paperless.target
 
 [Service]
+Environment=TIKTOKEN_CACHE_DIR=/var/lib/paperless/data/tiktoken_cache
 User=paperless
 Group=paperless
 WorkingDirectory=/usr/share/paperless/src

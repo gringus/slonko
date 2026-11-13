@@ -13,6 +13,7 @@ Environment=PYTHONUNBUFFERED=1
 Environment=GRANIAN_HOST=::
 Environment=GRANIAN_PORT=8000
 Environment=GRANIAN_WORKERS=1
+Environment=TIKTOKEN_CACHE_DIR=/var/lib/paperless/data/tiktoken_cache
 WorkingDirectory=/usr/share/paperless/src
 ExecStart=/bin/sh -c '\
   # Host: GRANIAN_HOST -> PAPERLESS_BIND_ADDR -> default \
