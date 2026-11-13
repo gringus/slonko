@@ -153,6 +153,35 @@ REQUIRED_USE operators: `|| ( a b c )` ≥one; `^^ ( )` exactly one;
 exclusion. Check the conflicting-USE policy page before adding conflicts —
 some belong in `package.use.mask` instead.
 
+### Runtime-generated shell completions
+
+CLI tools that emit their own completions (`tool completion -s bash`;
+no completion files in the tarball): gate behind the global
+`bash-completion` flag (no metadata.xml entry needed — it's in
+use.desc), dep `bash-completion? ( >=app-shells/bash-completion-2.0 )`
+in **BDEPEND** (tree convention: libvirt, fwupd — not RDEPEND), and
+generate in `src_install` from the just-built binary, not `${D}`:
+
+```bash
+inherit cargo shell-completion   # not bash-completion-r1 (UnusedInherits)
+
+src_install() {
+	cargo_src_install
+	if use bash-completion; then
+		newbashcomp - ${PN} < <("$(cargo_target_dir)/${PN}" completion -s bash)
+	fi
+}
+```
+
+Gate BOTH the dep and the install on the flag — a file nothing loads
+plus no dep is the worst half-state. Tree pattern: `dev-util/pixi`
+(`newbashcomp - pixi < <("${pixi_bin}" completion --shell=bash)`);
+in-tree completion *files* (not generated) → plain
+`newbashcomp files/x.bash x` (bugbite-cli). For cmake/meson builds the
+just-built binary sits in `${BUILD_DIR}`. Tested live in slonko
+`app-misc/nudl-1.3.0` (also completes flags/prefixes via the binary's
+`__complete_word__` responder — don't hand-verify more than `bash -n`).
+
 ## Phase functions
 
 Order (source install): `pkg_pretend → pkg_setup → src_unpack → src_prepare →
@@ -295,9 +324,11 @@ gentoo-golang-dist), `git-r3` (`EGIT_REPO_URI`, `EGIT_BRANCH`, `EGIT_COMMIT`,
 `EGIT_SUBMODULES`), `toolchain-funcs`, `flag-o-matic`, `systemd`
 (`systemd_dounit`/`systemd_newunit`/`systemd_enable_service`), `tmpfiles`,
 `desktop`+`xdg` (`domenu`, .desktop validation), `shell-completion`
-(EAPI 8: `dobashcomp`/`dozshcomp`/`dofishcomp`; supersedes
-`bash-completion-r1`)
-(`dobashcomp`), `acct-user`/`acct-group` (`ACCT_USER_ID=-1` auto,
+(EAPI 7/8/9: `dobashcomp`/`dozshcomp`/`dofishcomp` +
+`newbashcomp`/`newzshcomp`/`newfishcomp`; supersedes
+`bash-completion-r1` — inheriting the latter alongside is flagged
+UnusedInherits when only the `new*`/`do*` helpers are called),
+`acct-user`/`acct-group` (`ACCT_USER_ID=-1` auto,
 `ACCT_USER_GROUPS`, `acct-user_add_deps`; pkgcheck flags acct IDs `-1`
 static via InvalidAccountIdentifier), `multilib`/`multilib-minimal`
 (`ABI_*`), `perl-module`, `ruby-single`/`ruby-fakegem`, `java-pkg*`,
