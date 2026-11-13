@@ -154,6 +154,7 @@ RDEPEND="
 		<dev-python/imap-tools-1.16[${PYTHON_USEDEP}]
 		>=dev-python/jinja2-3.1.6[${PYTHON_USEDEP}]
 		>=dev-python/langdetect-1.0.9[${PYTHON_USEDEP}]
+		>=dev-python/nltk-data-20260801
 		>=dev-python/pathvalidate-3.3.1[${PYTHON_USEDEP}]
 		>=dev-python/pdf2image-1.17.0[${PYTHON_USEDEP}]
 		>=dev-python/python-dateutil-2.9.0[${PYTHON_USEDEP}]
@@ -365,9 +366,7 @@ src_install() {
 		esac
 	done
 
-	# AI resource caches: tiktoken encodings (llama_index defaults to its own
-	# root-owned site-packages dir, unusable for the service user) and NLTK
-	# corpora via dev-python/nltk-data (/usr/share/nltk_data).
+	# AI resource caches: tiktoken encodings
 	keepdir /var/lib/paperless/data/tiktoken_cache
 	fowners paperless:paperless /var/lib/paperless/data/tiktoken_cache
 	fperms 700 /var/lib/paperless/data/tiktoken_cache
