@@ -2,6 +2,11 @@
 
 use_default_settings: true
 
+general:
+  # wikipedia/wikidata/openstreetmap engines fail setup() without a non-empty
+  # contact; set a real one for public instances
+  contact_url: mailto:admin@example.com
+
 server:
   secret_key: ultrasecretkey  # replaced with a random key on first install
   bind_address: "127.0.0.1"
