@@ -66,8 +66,6 @@ BDEPEND="
 EPYTEST_PLUGINS=( )
 EPYTEST_XDIST=1
 EPYTEST_DESELECT=(
-	# Recompressing/Deflating JPEGs
-	tests/test_hocrtransform.py::test_fpdf2_matches_sandwich
 	# Known language issues
 	tests/test_multilingual_direct.py::TestMultilingual::test_render_multilingual_hocr_basic
 )
@@ -85,7 +83,7 @@ python_test() {
 src_prepare() {
 	distutils-r1_src_prepare
 
-	# Remove non-existing modules for doc generation
+	# Remove non-existent modules for doc generation
 	sed \
 	-e '/sphinx_reredirects/d' \
 		-i docs/conf.py || die
