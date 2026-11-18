@@ -93,6 +93,10 @@ AI_TEST_DEPEND="
 PATCHES=(
 	# make django-compression-middleware optional for USE=-compression
 	"${FILESDIR}/${PN}-optional-compression-middleware.patch"
+	# make django-auditlog optional for USE=-audit (unguarded module-level
+	# import added upstream in 3.5.1's bulk_operations.py; everything else
+	# already guards on settings.AUDIT_LOG_ENABLED)
+	"${FILESDIR}/${PN}-optional-auditlog.patch"
 	# stub channels.testing.live so test_websockets.py can run without daphne
 	"${FILESDIR}/${PN}-channels-live-stub.patch"
 )
@@ -270,8 +274,8 @@ src_test() {
 	local -x PAPERLESS_MEDIA_ROOT="${T}/media"
 	local -x PAPERLESS_CONSUMPTION_DIR="${T}/consume"
 	local -x PAPERLESS_CONVERT_TMPDIR="${T}/convert-tmp"
-	# Tests exercise audit history regardless of the runtime audit USE flag;
-	# django-auditlog is provided by TEST_DEPEND.
+	# Tests exercise audit history regardless of the runtime audit USE flag.
+	local -x PAPERLESS_AUDIT_LOG_ENABLED=true
 	local -x PAPERLESS_AUDIT_LOG_ENABLED=true
 	# test_compression_middleware.py imports StreamAwareCompressionMiddleware
 	# directly; the optional-compression patch only defines it when compression
