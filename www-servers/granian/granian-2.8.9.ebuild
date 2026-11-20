@@ -21,9 +21,9 @@ CRATES="
 	bitflags@2.13.2
 	block-buffer@0.12.1
 	block-padding@0.4.2
-	bytes@1.12.1
+	bytes@1.12.2
 	cbc@0.2.1
-	cc@1.11.1
+	cc@1.11.3
 	cfg-if@1.0.5
 	chacha20@0.10.2
 	ciborium-io@0.2.2
@@ -49,7 +49,7 @@ CRATES="
 	either@1.19.0
 	encoding_rs@0.8.44
 	equivalent@1.0.3
-	errno@0.3.14
+	errno@0.3.15
 	find-msvc-tools@0.1.15
 	fnv@1.0.7
 	futures-channel@0.3.34
@@ -89,7 +89,7 @@ CRATES="
 	mimalloc@0.1.52
 	mime@0.3.18
 	mime_guess@2.0.5
-	mio@1.2.4
+	mio@1.2.5
 	multiversion_no_op@1.0.0
 	ntapi@0.4.3
 	objc2-core-foundation@0.3.2
@@ -104,7 +104,7 @@ CRATES="
 	pbkdf2@0.13.0
 	pem@3.0.6
 	percent-encoding@2.3.2
-	pin-project-lite@0.2.17
+	pin-project-lite@0.2.18
 	pkcs5@0.8.1
 	pkcs8@0.11.0
 	polyval@0.7.3
@@ -117,14 +117,14 @@ CRATES="
 	pyo3@0.30.1
 	quote@1.0.47
 	r-efi@6.0.0
-	rand@0.10.3
+	rand@0.10.4
 	rand_core@0.10.1
 	recvmsg@1.0.0
 	redox_syscall@0.5.18
 	ring@0.17.14
 	rustls-pemfile@2.2.0
 	rustls-pki-types@1.16.0
-	rustls-webpki@0.103.16
+	rustls-webpki@0.103.17
 	rustls@0.23.46
 	rustversion@1.0.23
 	salsa20@0.11.0
@@ -139,14 +139,14 @@ CRATES="
 	signal-hook-registry@1.4.8
 	simdutf8@0.1.5
 	slab@0.4.12
-	smallvec@1.16.5
+	smallvec@1.16.6
 	socket2@0.6.5
 	spki@0.8.1
 	subtle@2.6.1
 	syn@2.0.119
 	syn@3.0.10
 	sysinfo@0.39.6
-	target-lexicon@0.13.5
+	target-lexicon@0.13.6
 	thiserror-impl@2.0.21
 	thiserror@2.0.21
 	tikv-jemalloc-sys@0.7.1+5.3.1-0-g81034ce1f1373e37dc865038e1bc8eeecf559ce8
@@ -194,7 +194,7 @@ CRATES="
 	windows_x86_64_msvc@0.52.6
 	zerocopy-derive@0.8.63
 	zerocopy@0.8.63
-	zeroize@1.9.1
+	zeroize@1.9.2
 "
 
 declare -A GIT_CRATES=(
