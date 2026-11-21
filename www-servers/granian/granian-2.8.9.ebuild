@@ -219,8 +219,13 @@ LICENSE+="
 	0BSD Apache-2.0 Apache-2.0-with-LLVM-exceptions BSD ISC MIT
 	Unicode-3.0
 "
+# tikv-jemalloc-sys bundles the BSD-2-licensed jemalloc C source
+LICENSE+=" jemalloc? ( BSD-2 )"
 SLOT="0"
 KEYWORDS="~amd64"
+IUSE="mimalloc jemalloc"
+# at most one; upstream cfg() would match neither if both were passed
+REQUIRED_USE="?? ( mimalloc jemalloc )"
 
 DOCS=( README.md )
 
@@ -246,6 +251,14 @@ distutils_enable_tests pytest
 
 src_unpack() {
 	cargo_src_unpack
+}
+
+python_compile() {
+	local -a feats=()
+	use mimalloc && feats+=( mimalloc )
+	use jemalloc && feats+=( jemalloc )
+	[[ ${feats[*]} ]] && DISTUTILS_ARGS=( --features "${feats[*]}" )
+	distutils-r1_python_compile
 }
 
 python_test() {
