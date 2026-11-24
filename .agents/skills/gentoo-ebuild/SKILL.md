@@ -189,6 +189,19 @@ possible. Real examples: `grep -rl EGIT_REPO_URI /usr/portage/*/*/*.ebuild`.
      silently keep the OLD `IUSE`/flags/variables — edits look ignored.
      Deleting `<workdir>/temp/environment` + the `.installed` marker is the
      cheap alternative, but `clean` is the reliable default.
+   - `FEATURES=keepwork` also suppresses the `.compiled` marker removal in
+     `clean` (`phase-functions.sh` `__dyn_clean`), so a following
+     `ebuild … clean compile` silently SKIPS the build
+     ("Remove '…/.compiled' to force compilation") and reuses the old
+     artifact — regardless of USE or ebuild edits. Hit 2026-11-21
+     verifying granian allocator flags: two "verifications" checked a
+     stale .so. keepwork also keeps `temp/`, so the stale-environment
+     problem above comes back too (a later run restored the old USE and
+     silently built the wrong feature set). After a keepwork run, `rm -f
+     /var/tmp/portage/<cat>/<pn>-<pv>/.compiled{,.configured}` before
+     re-running, or drop keepwork when iterating — note direct-`ebuild`
+     workdirs persist between runs anyway, so keepwork is rarely needed
+     to inspect artifacts.
    - A failed install leaves partial files in `<workdir>/image/`; `rm -rf`
      that image dir (or run `clean`) before retrying install.
    - Bare non-root `ebuild` runs fail `dobin`/`newbin` with
