@@ -4,8 +4,8 @@
 EAPI="8"
 
 ETYPE="sources"
-K_WANT_GENPATCHES="base extras"
-K_GENPATCHES_VER="5"
+K_WANT_GENPATCHES="base extras experimental"
+K_GENPATCHES_VER="132"
 
 inherit check-reqs kernel-2
 detect_version
@@ -18,7 +18,7 @@ HOMEPAGE="https://dev.gentoo.org/~mpagano/genpatches https://github.com/anthraxx
 SRC_URI="${KERNEL_URI} ${GENPATCHES_URI} ${HARDENED_URI} ${ARCH_URI}"
 KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86"
 IUSE="experimental"
-UNIPATCH_LIST="${DISTDIR}/linux-hardened-v${PV%.0}-${SUBREL}.patch"
+UNIPATCH_LIST="${FILESDIR}/9999_revert-conflicts-v1.patch ${DISTDIR}/linux-hardened-v${PV%.0}-${SUBREL}.patch"
 UNIPATCH_EXCLUDE="1510_fs-enable-link-security-restrictions-by-default.patch"
 
 pkg_pretend() {
